@@ -37,9 +37,7 @@
             mix-blend-mode: multiply; 
         }
 
-        /* * LAYOUT DE EXPORTAÇÃO E IMPRESSÃO 
-         * Escondemos o formulário de tela e mostramos apenas o relatório limpo
-         */
+        /* * LAYOUT DE EXPORTAÇÃO E IMPRESSÃO */
         #relatorioExportacao {
             position: absolute;
             left: -9999px; /* Oculto na tela normal */
@@ -67,7 +65,7 @@
 <body class="bg-gray-100 min-h-screen p-4 md:p-8 font-sans text-gray-800">
 
     <!-- ÁREA DE PREENCHIMENTO (UI do Usuário) -->
-    <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 mb-20 relative">
+    <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 mb-32 relative">
         
         <!-- Cabeçalho -->
         <header class="flex flex-col md:flex-row items-center md:items-start border-b-2 border-green-200 pb-6 mb-8 gap-4">
@@ -241,19 +239,12 @@
                 </div>
             </div>
 
-            <!-- Gráficos -->
-            <div class="flex flex-col gap-8 pt-6 border-t border-gray-200">
+            <!-- Gráfico (Apenas Barras agora, ocupando todo o espaço) -->
+            <div class="pt-6 border-t border-gray-200">
                 <div class="bg-white p-6 border rounded-xl shadow-sm w-full">
                     <h4 class="text-center font-bold text-gray-700 mb-4 text-sm uppercase">Análise de Causas (Qtd e %)</h4>
-                    <div class="relative h-80 w-full">
+                    <div class="relative h-96 w-full">
                         <canvas id="graficoBarras"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 border rounded-xl shadow-sm w-full">
-                    <h4 class="text-center font-bold text-gray-700 mb-4 text-sm uppercase">Distribuição do Percentual Pendente</h4>
-                    <div class="relative h-80 w-full flex justify-center">
-                        <canvas id="graficoPizza"></canvas>
                     </div>
                 </div>
             </div>
@@ -351,16 +342,10 @@
             </table>
         </div>
 
-        <!-- Imagens dos Gráficos (Geradas na hora do clique) -->
-        <div class="grid grid-cols-2 gap-4 mt-8">
-            <div class="border border-gray-200 rounded p-2 text-center">
-                <p class="text-xs font-bold text-gray-600 uppercase mb-2">Gráfico de Quantidades</p>
-                <img id="relImgBarras" src="" alt="Gráfico Barras" class="w-full object-contain h-48">
-            </div>
-            <div class="border border-gray-200 rounded p-2 text-center">
-                <p class="text-xs font-bold text-gray-600 uppercase mb-2">Distribuição das Causas</p>
-                <img id="relImgPizza" src="" alt="Gráfico Pizza" class="w-full object-contain h-48">
-            </div>
+        <!-- Gráfico expandido na exportação -->
+        <div class="mt-8 border border-gray-200 rounded p-4 text-center bg-white shadow-sm w-full">
+            <p class="text-xs font-bold text-gray-600 uppercase mb-2">Gráfico de Quantidades e Percentuais</p>
+            <img id="relImgBarras" src="" alt="Gráfico Barras" class="w-full object-contain h-80">
         </div>
         
         <div class="mt-8 text-center text-xs text-gray-400 font-semibold border-t border-gray-200 pt-4">
@@ -370,20 +355,24 @@
 
     <!-- Barra Inferior Fixa para Botões -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] flex justify-center flex-wrap gap-2 md:gap-4 no-print z-50">
-        <button type="button" onclick="limparFormulario()" class="px-4 py-2 text-gray-700 border-2 border-gray-300 hover:bg-gray-100 rounded-lg font-bold transition-colors text-sm md:text-base">
-            Limpar Dados
+        <button type="button" onclick="limparFormulario()" class="px-3 md:px-4 py-2 text-gray-700 border-2 border-gray-300 hover:bg-gray-100 rounded-lg font-bold transition-colors text-sm md:text-base">
+            Limpar
         </button>
         
-        <button type="button" onclick="prepararEImprimir()" class="px-4 py-2 text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors flex items-center text-sm md:text-base">
-            🖨️ Imprimir Layout
+        <button type="button" onclick="prepararEImprimir()" class="px-3 md:px-4 py-2 text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold transition-colors flex items-center text-sm md:text-base">
+            🖨️ Imprimir
         </button>
 
-        <button type="button" onclick="exportarPDF()" class="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg font-bold shadow transition-colors flex items-center text-sm md:text-base">
-            📄 Baixar PDF do Relatório
+        <button type="button" onclick="exportarPDF()" class="px-3 md:px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg font-bold shadow transition-colors flex items-center text-sm md:text-base">
+            📄 Baixar PDF
         </button>
 
-        <button type="button" onclick="exportarJPEG()" class="px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg font-bold shadow transition-colors flex items-center text-sm md:text-base">
-            🖼️ Baixar JPEG do Relatório
+        <button type="button" onclick="exportarJPEG()" class="px-3 md:px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg font-bold shadow transition-colors flex items-center text-sm md:text-base">
+            🖼️ Baixar JPEG
+        </button>
+        
+        <button type="button" onclick="enviarParaPlanilha()" id="btnEnviarPlanilha" class="px-3 md:px-6 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold shadow-lg transition-colors flex items-center text-sm md:text-base">
+            ☁️ Enviar p/ Planilha
         </button>
     </div>
 
@@ -395,7 +384,6 @@
         let totalColhidoGlob = 0;
         let totalPendenteGlob = 0;
         let graficoBarrasObj = null;
-        let graficoPizzaObj = null;
 
         function getWeekNumber(d) {
             d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -540,29 +528,38 @@
             const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${Math.min(progressoFracao, 100)}%`;
 
-            atualizarGraficos(totalJustificado, livre);
+            atualizarGraficos();
         }
 
         function inicializarGraficos() {
             const ctxBar = document.getElementById('graficoBarras').getContext('2d');
-            const ctxPie = document.getElementById('graficoPizza').getContext('2d');
+            
             graficoBarrasObj = new Chart(ctxBar, {
                 type: 'bar',
                 data: { labels: [], datasets: [
-                        { type: 'line', label: '% de Perda', data: [], borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderWidth: 3, fill: true, tension: 0.4, yAxisID: 'y1', datalabels: { align: 'top', formatter: v => Math.round(v) + '%', color: '#b91c1c', font: { weight: 'bold', size: 12 } } },
-                        { type: 'bar', label: 'Qtd Perdas', data: [], backgroundColor: '#f97316', borderRadius: 6, yAxisID: 'y', datalabels: { align: 'bottom', anchor: 'end', formatter: v => v + ' un', color: '#ffffff', font: { weight: 'bold', size: 11 } } }
+                        { 
+                            type: 'line', label: '% de Perda', data: [], borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderWidth: 3, fill: true, tension: 0.4, yAxisID: 'y1', 
+                            datalabels: { align: 'top', formatter: v => Math.round(v) + '%', color: '#b91c1c', font: { weight: 'bold', size: 16 } }
+                        },
+                        { 
+                            type: 'bar', label: 'Qtd Perdas', data: [], backgroundColor: '#f97316', borderRadius: 6, yAxisID: 'y', 
+                            datalabels: { align: 'bottom', anchor: 'end', formatter: v => v + ' un', color: '#ffffff', font: { weight: 'bold', size: 14 } }
+                        }
                 ]},
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 100 } }, animation: { duration: 0 } }
-            });
-
-            graficoPizzaObj = new Chart(ctxPie, {
-                type: 'pie',
-                data: { labels: ['Sem dados'], datasets: [{ data: [100], backgroundColor: ['#e5e7eb'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { datalabels: { color: '#fff', font: { weight: 'bold', size: 12 }, formatter: (v, ctx) => { let sum=0; ctx.chart.data.datasets[0].data.forEach(d=>sum+=d); return sum===0 ? '' : Math.round(v*100/sum) + "%"; } } }, animation: { duration: 0 } }
+                options: { 
+                    responsive: true, maintainAspectRatio: false, 
+                    scales: { 
+                        x: { ticks: { font: { size: 14, weight: 'bold' } } }, 
+                        y: { type: 'linear', position: 'left', ticks: { font: { size: 14 } } },
+                        y1: { type: 'linear', position: 'right', max: 100, ticks: { font: { size: 14 } } } 
+                    }, 
+                    animation: { duration: 0 },
+                    plugins: { legend: { labels: { font: { size: 14 } } } }
+                }
             });
         }
 
-        function atualizarGraficos(totalJustificado, pendenteNaoJustificado) {
+        function atualizarGraficos() {
             const labels = causasList.map(c => c.nome);
             const qtds = causasList.map(c => c.qtd);
             const percs = causasList.map(c => (c.qtd / (totalTransplantadoGlob||1)) * 100);
@@ -573,18 +570,6 @@
             const maxPerc = Math.max(...percs, 10);
             graficoBarrasObj.options.scales.y1.max = Math.min(Math.ceil(maxPerc + 10), 100);
             graficoBarrasObj.update();
-
-            const bgColors = ['#f97316', '#ef4444', '#eab308', '#84cc16', '#06b6d4', '#8b5cf6'];
-            if (totalPendenteGlob === 0) {
-                graficoPizzaObj.data.labels = ['Nenhuma Perda'];
-                graficoPizzaObj.data.datasets[0].data = [1];
-                graficoPizzaObj.data.datasets[0].backgroundColor = ['#22c55e'];
-            } else {
-                let pLabels = [...labels], pData = [...qtds], colors = causasList.map((_, i) => bgColors[i % bgColors.length]);
-                if (pendenteNaoJustificado > 0) { pLabels.push('Não detalhado'); pData.push(pendenteNaoJustificado); colors.push('#d1d5db'); }
-                graficoPizzaObj.data.labels = pLabels; graficoPizzaObj.data.datasets[0].data = pData; graficoPizzaObj.data.datasets[0].backgroundColor = colors;
-            }
-            graficoPizzaObj.update();
         }
 
         function limparFormulario() {
@@ -602,12 +587,10 @@
                 const outroVal = document.getElementById(idOutro).value.trim();
                 return outroVal !== "" ? outroVal : "Não informado";
             }
-            // Retorna o texto amigável do Option selecionado (ex: "Couve flor" em vez do value se fosse diferente)
             return el.options[el.selectedIndex].text;
         }
 
         function preencherRelatorioOculto() {
-            // Pega dados do Formulário
             document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
             document.getElementById('relVariedade').textContent = getSelectValue('variedade', 'variedadeOutro');
@@ -621,7 +604,6 @@
             document.getElementById('relPercColhido').textContent = `${pCol}%`;
             document.getElementById('relPercPendente').textContent = `${pPen}%`;
 
-            // Tabela Detalhada de Causas
             const relBody = document.getElementById('relTableBody');
             relBody.innerHTML = '';
             let somaQtdJustificada = 0;
@@ -642,7 +624,6 @@
                 });
             }
 
-            // Não Detalhado
             const naoDetalhado = totalPendenteGlob - somaQtdJustificada;
             const rowNaoDetalhado = document.getElementById('relRowNaoDetalhado');
             if (naoDetalhado > 0) {
@@ -654,15 +635,11 @@
                 rowNaoDetalhado.classList.add('hidden');
             }
 
-            // Somatória Total (Tem que bater com o Pendente lá de cima)
             document.getElementById('relTotalQtd').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${pPen}%`;
 
-            // Copiar Gráficos
             const cBarras = document.getElementById('graficoBarras');
-            const cPizza = document.getElementById('graficoPizza');
             document.getElementById('relImgBarras').src = cBarras.toDataURL("image/png");
-            document.getElementById('relImgPizza').src = cPizza.toDataURL("image/png");
         }
 
         const captureOptions = { scale: 2, useCORS: true, backgroundColor: '#ffffff' };
@@ -677,7 +654,6 @@
             try {
                 preencherRelatorioOculto();
                 const nodeRel = document.getElementById('relatorioExportacao');
-                // Tira de left -9999 momentaneamente para renderizar perfeito no html2canvas
                 nodeRel.style.left = '0px'; 
                 const canvas = await html2canvas(nodeRel, captureOptions);
                 nodeRel.style.left = '-9999px'; 
@@ -704,25 +680,82 @@
                 const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
                 const pdfWidth = doc.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                let pdfHeight = (canvas.height * pdfWidth) / canvas.width;
                 const pageHeightLimit = doc.internal.pageSize.getHeight();
 
                 if (pdfHeight > pageHeightLimit) {
-                    let heightLeft = pdfHeight, position = 0;
-                    doc.addImage(imgData, 'JPEG', 0, position, pdfWidth, pdfHeight);
-                    heightLeft -= pageHeightLimit;
-                    while (heightLeft >= 0) {
-                        position = heightLeft - pdfHeight;
-                        doc.addPage();
-                        doc.addImage(imgData, 'JPEG', 0, position, pdfWidth, pdfHeight);
-                        heightLeft -= pageHeightLimit;
-                    }
+                    const proporcao = pageHeightLimit / pdfHeight;
+                    pdfHeight = pageHeightLimit; 
+                    const novaLargura = pdfWidth * proporcao; 
+                    const margemX = (pdfWidth - novaLargura) / 2;
+                    doc.addImage(imgData, 'JPEG', margemX, 0, novaLargura, pdfHeight);
                 } else {
                     doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 }
+                
                 doc.save(`Relatorio_FazendaOasis_Sem${document.getElementById('semanaAtual').textContent}.pdf`);
             } catch (err) { alert('Erro: ' + err.message); } 
             finally { btn.innerHTML = textOrig; }
+        }
+
+        // --- SISTEMA DE ENVIO PARA O GOOGLE SHEETS ---
+        async function enviarParaPlanilha() {
+            // URL embutida diretamente no código conforme solicitado
+            const url = "https://script.google.com/macros/s/AKfycbz2jvZJ7k6hIwjS3pP7-Q01rKCvGK24f6W-c78WXJoc-U8Qi1iVn6qbVTKjtiIobvq5/exec";
+
+            if(totalTransplantadoGlob <= 0) {
+                alert("Preencha as informações do plantio (Total Transplantado e Colhido) antes de enviar.");
+                return;
+            }
+
+            const btn = document.getElementById('btnEnviarPlanilha');
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '⏳ Enviando...';
+            btn.disabled = true;
+
+            // Formata as causas para jogar em uma única célula
+            let textoCausas = causasList.map(c => `${c.nome}: ${c.qtd} un.`).join(' | ');
+            if (!textoCausas) {
+                if (totalPendenteGlob > 0) textoCausas = `Não detalhado (${totalPendenteGlob} un.)`;
+                else textoCausas = "Sem perdas";
+            }
+
+            const payload = {
+                data: document.getElementById('dataAtual').textContent,
+                semana: document.getElementById('semanaAtual').textContent,
+                bloco: getSelectValue('bloco', 'blocoOutro'),
+                cultura: getSelectValue('cultura', 'culturaOutro'),
+                variedade: getSelectValue('variedade', 'variedadeOutro'),
+                transplantado: totalTransplantadoGlob,
+                colhido: totalColhidoGlob,
+                pendente: totalPendenteGlob,
+                percColhido: document.getElementById('percColhido').textContent + '%',
+                percPendente: document.getElementById('percPendente').textContent + '%',
+                causas: textoCausas
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    // Enviar como text/plain previne problemas automáticos de CORS no Apps Script
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if(result.status === 'success') {
+                    alert('✅ Dados enviados para a planilha com sucesso!');
+                } else {
+                    alert('⚠️ Erro relatado pela planilha: ' + (result.message || 'Erro desconhecido.'));
+                }
+            } catch (error) {
+                console.error('Erro de envio:', error);
+                alert('❌ Erro de conexão! Verifique se a URL da planilha está correta e se o Web App foi publicado para "Qualquer pessoa".');
+            } finally {
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
