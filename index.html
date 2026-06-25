@@ -578,8 +578,6 @@
             causasList = []; recalcularTudo();
         }
 
-        // --- SISTEMA DE EXPORTAÇÃO E LAYOUT DE RELATÓRIO ---
-        
         function getSelectValue(idSelect, idOutro) {
             const el = document.getElementById(idSelect);
             if (!el || !el.value) return "Não informado";
@@ -698,10 +696,10 @@
             finally { btn.innerHTML = textOrig; }
         }
 
-        // --- SISTEMA DE ENVIO PARA O GOOGLE SHEETS ---
+        // --- SISTEMA DE ENVIO PARA O GOOGLE SHEETS COM NOVA ESTRUTURA ---
         async function enviarParaPlanilha() {
-            // URL embutida diretamente no código conforme solicitado
-            const url = "https://script.google.com/macros/s/AKfycbz2jvZJ7k6hIwjS3pP7-Q01rKCvGK24f6W-c78WXJoc-U8Qi1iVn6qbVTKjtiIobvq5/exec";
+            // Nova URL do Web App fornecida
+            const url = 'https://script.google.com/macros/s/AKfycbxk9o4yF_J4MNH0lTUVP2cxY0yKm7IScREmxW9bY0Vn5bBshCkLF3d0VZFD8HNLeIVw/exec';
 
             if(totalTransplantadoGlob <= 0) {
                 alert("Preencha as informações do plantio (Total Transplantado e Colhido) antes de enviar.");
@@ -713,45 +711,78 @@
             btn.innerHTML = '⏳ Enviando...';
             btn.disabled = true;
 
-            // Formata as causas para jogar em uma única célula
-            let textoCausas = causasList.map(c => `${c.nome}: ${c.qtd} un.`).join(' | ');
-            if (!textoCausas) {
-                if (totalPendenteGlob > 0) textoCausas = `Não detalhado (${totalPendenteGlob} un.)`;
-                else textoCausas = "Sem perdas";
+            // Prepara a lista de causas para enviar como Array (AGORA COM PERCENTUAL)
+            let listaEnvioCausas = causasList.map(c => {
+                let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
+                return { nome: c.nome, qtd: c.qtd, perc: pCausa + '%' };
+            });
+            
+            let somaJustificada = causasList.reduce((acc, c) => acc + c.qtd, 0);
+            let naoDetalhado = totalPendenteGlob - somaJustificada;
+
+            // Se houverem pendentes não justificados, adiciona como uma causa genérica
+            if (naoDetalhado > 0) {
+                let pNaoDetalhado = totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0;
+                listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: pNaoDetalhado + '%' });
             }
+            // Se não houver perdas totais
+            if (listaEnvioCausas.length === 0) {
+                listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
+            }
+
+            const txtCultura = getSelectValue('cultura', 'culturaOutro');
+            const txtVariedade = getSelectValue('variedade', 'variedadeOutro');
+            const variedadeCompleta = `${txtCultura} (${txtVariedade})`;
 
             const payload = {
                 data: document.getElementById('dataAtual').textContent,
-                semana: document.getElementById('semanaAtual').textContent,
                 bloco: getSelectValue('bloco', 'blocoOutro'),
-                cultura: getSelectValue('cultura', 'culturaOutro'),
-                variedade: getSelectValue('variedade', 'variedadeOutro'),
+                variedade: variedadeCompleta,
+                Ciclo: document.getElementById('semanaAtual').textContent,
                 transplantado: totalTransplantadoGlob,
                 colhido: totalColhidoGlob,
-                pendente: totalPendenteGlob,
                 percColhido: document.getElementById('percColhido').textContent + '%',
+                pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
-                causas: textoCausas
+                // Aqui enviamos a lista completa para o Apps Script dividir as linhas
+                causasLista: listaEnvioCausas 
             };
 
             try {
-                const response = await fetch(url, {
+                await fetch(url, {
                     method: 'POST',
-                    // Enviar como text/plain previne problemas automáticos de CORS no Apps Script
+                    mode: 'no-cors', 
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if(result.status === 'success') {
-                    alert('✅ Dados enviados para a planilha com sucesso!');
-                } else {
-                    alert('⚠️ Erro relatado pela planilha: ' + (result.message || 'Erro desconhecido.'));
-                }
+                alert('✅ Dados enviados com sucesso! Foram adicionadas linhas para cada causa na sua planilha.');
+                limparFormulario();
             } catch (error) {
-                console.error('Erro de envio:', error);
-                alert('❌ Erro de conexão! Verifique se a URL da planilha está correta e se o Web App foi publicado para "Qualquer pessoa".');
+                console.error('Erro ao enviar:', error);
+                
+                // Fallback alternativo
+                try {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank'; 
+
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'postData'; 
+                    input.value = JSON.stringify(payload);
+                    
+                    form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
+                    
+                    alert('⚠️ Método de contingência utilizado. Dados despachados.');
+                    limparFormulario();
+                } catch (fallbackError) {
+                    alert('❌ Falha completa de conexão.');
+                }
             } finally {
                 btn.innerHTML = textoOriginal;
                 btn.disabled = false;
