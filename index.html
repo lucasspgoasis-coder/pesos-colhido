@@ -96,6 +96,8 @@
                 <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                     <span class="bg-green-600 w-2 h-6 rounded mr-2"></span> Informações do Plantio
                 </h3>
+                
+                <!-- Linha 1: Bloco, Cultura, Variedade -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-1">
                         <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1">Bloco da Plantação *</label>
@@ -140,6 +142,28 @@
                     </div>
                 </div>
 
+                <!-- Linha 2: Status, Data Finalização, Dias de Produção -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-gray-200">
+                    <div class="col-span-1">
+                        <label for="statusPlantio" class="block text-sm font-semibold text-gray-700 mb-1">Status da Safra *</label>
+                        <select id="statusPlantio" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white" required onchange="toggleDataFim()">
+                            <option value="Em Andamento" selected>Em Andamento</option>
+                            <option value="Finalizado">Finalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-1 hidden transition-all duration-300" id="boxDataFim">
+                        <label for="dataFinalizacao" class="block text-sm font-semibold text-gray-700 mb-1">Data de Finalização *</label>
+                        <input type="date" id="dataFinalizacao" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="diasProducao" class="block text-sm font-semibold text-gray-700 mb-1">Dias de Produção</label>
+                        <input type="number" min="0" id="diasProducao" placeholder="Ex: 90" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white">
+                    </div>
+                </div>
+
+                <!-- Linha 3: Totais -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-gray-200">
                     <div class="col-span-1 relative">
                         <label for="totalTransplantado" class="block text-sm font-semibold text-gray-700 mb-1">Total Transplantado (Unidades) *</label>
@@ -239,7 +263,7 @@
                 </div>
             </div>
 
-            <!-- Gráfico (Apenas Barras agora, ocupando todo o espaço) -->
+            <!-- Gráfico -->
             <div class="pt-6 border-t border-gray-200">
                 <div class="bg-white p-6 border rounded-xl shadow-sm w-full">
                     <h4 class="text-center font-bold text-gray-700 mb-4 text-sm uppercase">Análise de Causas (Qtd e %)</h4>
@@ -270,21 +294,40 @@
             </div>
         </div>
 
-        <!-- Dados do Plantio -->
+        <!-- Dados do Plantio (Layout Atualizado Profissional em Grid) -->
         <div class="mb-8">
             <h3 class="text-lg font-bold text-gray-800 uppercase border-b-2 border-gray-300 pb-1 mb-3">1. Informações da Área de Plantio</h3>
-            <div class="grid grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <div>
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Bloco da Plantação</span>
-                    <span class="block text-lg font-bold text-gray-900" id="relBloco">-</span>
+            
+            <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <!-- Primeira Linha da Grade -->
+                <div class="grid grid-cols-3 divide-x-2 divide-gray-200 border-b-2 border-gray-200 bg-gray-50">
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Bloco da Plantação</span>
+                        <span class="block text-xl font-black text-gray-900" id="relBloco">-</span>
+                    </div>
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Cultura</span>
+                        <span class="block text-xl font-black text-gray-900" id="relCultura">-</span>
+                    </div>
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Variedade</span>
+                        <span class="block text-xl font-black text-gray-900" id="relVariedade">-</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Cultura</span>
-                    <span class="block text-lg font-bold text-gray-900" id="relCultura">-</span>
-                </div>
-                <div>
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Variedade</span>
-                    <span class="block text-lg font-bold text-gray-900" id="relVariedade">-</span>
+                <!-- Segunda Linha da Grade (Novos Campos) -->
+                <div class="grid grid-cols-3 divide-x-2 divide-gray-200 bg-white">
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Status da Safra</span>
+                        <span class="block text-lg font-bold text-blue-700" id="relStatus">-</span>
+                    </div>
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Data de Finalização</span>
+                        <span class="block text-lg font-bold text-gray-900" id="relDataFim">-</span>
+                    </div>
+                    <div class="p-4">
+                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Dias de Produção</span>
+                        <span class="block text-lg font-bold text-gray-900" id="relDiasProd">-</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -326,13 +369,11 @@
                     <!-- Preenchido via JS -->
                 </tbody>
                 <tfoot>
-                    <!-- Subtotal de pendentes não justificados -->
                     <tr id="relRowNaoDetalhado" class="bg-orange-50 hidden text-sm border-b border-gray-200">
                         <td class="py-2 px-3 font-semibold text-orange-800 italic">Perdas não detalhadas / Outros motivos pendentes</td>
                         <td class="py-2 px-3 text-center font-semibold text-orange-800" id="relNaoDetalhadoQtd">0</td>
                         <td class="py-2 px-3 text-center font-semibold text-orange-800" id="relNaoDetalhadoPerc">0%</td>
                     </tr>
-                    <!-- Somatória totalizando o Pendente -->
                     <tr class="bg-gray-800 text-white">
                         <td class="py-3 px-3 font-bold uppercase text-right">Somatória Geral das Perdas =</td>
                         <td class="py-3 px-3 text-center font-bold text-lg" id="relTotalQtd">0</td>
@@ -399,6 +440,13 @@
             return `${dia}/${mes}/${ano}`;
         }
 
+        function formatarDataInputToBR(dataISO) {
+            if(!dataISO) return '';
+            const partes = dataISO.split('-');
+            if(partes.length !== 3) return '';
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const hoje = new Date();
             document.getElementById('dataAtual').textContent = formatarData(hoje);
@@ -412,6 +460,20 @@
             document.getElementById('totalTransplantado').addEventListener('input', recalcularTudo);
             document.getElementById('totalColhido').addEventListener('input', recalcularTudo);
         });
+
+        // Função para alternar a visibilidade da Data de Finalização
+        function toggleDataFim() {
+            const status = document.getElementById('statusPlantio').value;
+            const boxData = document.getElementById('boxDataFim');
+            
+            if (status === 'Finalizado') {
+                boxData.classList.remove('hidden');
+                document.getElementById('dataFinalizacao').focus();
+            } else {
+                boxData.classList.add('hidden');
+                document.getElementById('dataFinalizacao').value = '';
+            }
+        }
 
         function configurarCamposOutros() {
             const campos = [
@@ -574,7 +636,9 @@
 
         function limparFormulario() {
             document.getElementById('registroForm').reset();
-            ['blocoOutro', 'culturaOutro', 'variedadeOutro', 'causaOutro'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['blocoOutro', 'culturaOutro', 'variedadeOutro', 'causaOutro', 'boxDataFim'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
             causasList = []; recalcularTudo();
         }
 
@@ -589,10 +653,26 @@
         }
 
         function preencherRelatorioOculto() {
+            // Dados da Área
             document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
             document.getElementById('relVariedade').textContent = getSelectValue('variedade', 'variedadeOutro');
             
+            // Novos Campos
+            const status = document.getElementById('statusPlantio').value;
+            document.getElementById('relStatus').textContent = status;
+            
+            const diasProd = document.getElementById('diasProducao').value;
+            document.getElementById('relDiasProd').textContent = diasProd ? `${diasProd} dias` : 'Não inf.';
+
+            if (status === 'Finalizado') {
+                const dataF = document.getElementById('dataFinalizacao').value;
+                document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
+            } else {
+                document.getElementById('relDataFim').textContent = '-'; // Tracinho elegante se não for finalizado
+            }
+
+            // Resumo Produção
             document.getElementById('relTransp').textContent = totalTransplantadoGlob.toLocaleString('pt-BR');
             document.getElementById('relColhido').textContent = totalColhidoGlob.toLocaleString('pt-BR');
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
@@ -696,9 +776,7 @@
             finally { btn.innerHTML = textOrig; }
         }
 
-        // --- SISTEMA DE ENVIO PARA O GOOGLE SHEETS COM NOVA ESTRUTURA ---
         async function enviarParaPlanilha() {
-            // Nova URL do Web App fornecida
             const url = 'https://script.google.com/macros/s/AKfycbxk9o4yF_J4MNH0lTUVP2cxY0yKm7IScREmxW9bY0Vn5bBshCkLF3d0VZFD8HNLeIVw/exec';
 
             if(totalTransplantadoGlob <= 0) {
@@ -711,7 +789,6 @@
             btn.innerHTML = '⏳ Enviando...';
             btn.disabled = true;
 
-            // Prepara a lista de causas para enviar como Array (AGORA COM PERCENTUAL)
             let listaEnvioCausas = causasList.map(c => {
                 let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                 return { nome: c.nome, qtd: c.qtd, perc: pCausa + '%' };
@@ -720,12 +797,10 @@
             let somaJustificada = causasList.reduce((acc, c) => acc + c.qtd, 0);
             let naoDetalhado = totalPendenteGlob - somaJustificada;
 
-            // Se houverem pendentes não justificados, adiciona como uma causa genérica
             if (naoDetalhado > 0) {
                 let pNaoDetalhado = totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0;
                 listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: pNaoDetalhado + '%' });
             }
-            // Se não houver perdas totais
             if (listaEnvioCausas.length === 0) {
                 listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
             }
@@ -734,17 +809,24 @@
             const txtVariedade = getSelectValue('variedade', 'variedadeOutro');
             const variedadeCompleta = `${txtCultura} (${txtVariedade})`;
 
+            // Adicionando os novos campos no envio
+            const statusStr = document.getElementById('statusPlantio').value;
+            const dataFimStr = statusStr === 'Finalizado' ? document.getElementById('dataFinalizacao').value : '';
+            const diasProdStr = document.getElementById('diasProducao').value;
+
             const payload = {
                 data: document.getElementById('dataAtual').textContent,
                 bloco: getSelectValue('bloco', 'blocoOutro'),
                 variedade: variedadeCompleta,
                 Ciclo: document.getElementById('semanaAtual').textContent,
+                status: statusStr,
+                dataFinalizacao: dataFimStr,
+                diasProducao: diasProdStr,
                 transplantado: totalTransplantadoGlob,
                 colhido: totalColhidoGlob,
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
-                // Aqui enviamos a lista completa para o Apps Script dividir as linhas
                 causasLista: listaEnvioCausas 
             };
 
@@ -760,8 +842,6 @@
                 limparFormulario();
             } catch (error) {
                 console.error('Erro ao enviar:', error);
-                
-                // Fallback alternativo
                 try {
                     const form = document.createElement('form');
                     form.method = 'POST';
