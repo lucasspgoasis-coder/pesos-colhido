@@ -37,18 +37,18 @@
             mix-blend-mode: multiply; 
         }
 
-        /* * LAYOUT DE EXPORTAÇÃO E IMPRESSÃO */
+        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Versão Executiva) */
         #relatorioExportacao {
             position: absolute;
             left: -9999px; /* Oculto na tela normal */
             top: 0;
-            width: 850px; /* Largura fixa ideal para PDF A4 em retrato */
+            width: 1050px; /* Largura um pouco maior para acomodar a densidade executiva */
             background-color: white;
             padding: 40px;
         }
 
         @media print {
-            body { background-color: white; }
+            body { background-color: white; margin: 0; padding: 0;}
             .no-print, #captureArea, .fixed { display: none !important; }
             
             #relatorioExportacao {
@@ -56,7 +56,7 @@
                 left: 0 !important;
                 top: 0 !important;
                 width: 100% !important;
-                padding: 0 !important;
+                padding: 20px !important;
                 display: block !important;
             }
         }
@@ -275,122 +275,159 @@
         </form>
     </div>
 
-    <!-- ÁREA DE EXPORTAÇÃO (Oculta na tela, renderiza como Relatório Profissional) -->
-    <div id="relatorioExportacao" class="font-sans text-gray-900">
-        <!-- Cabeçalho do Relatório -->
-        <div class="flex justify-between items-end border-b-4 border-green-700 pb-4 mb-6">
+    <!-- ÁREA DE EXPORTAÇÃO (Oculta na tela, renderiza como Relatório Oficial Executivo) -->
+    <div id="relatorioExportacao" class="font-sans text-gray-900 mx-auto relative overflow-hidden">
+
+        <!-- Cabeçalho Executivo -->
+        <div class="bg-[#0f2e1b] text-white p-8 -mx-10 -mt-10 mb-8 flex justify-between items-center border-b-8 border-green-500 shadow-sm">
             <div class="flex items-center gap-6">
-                <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain logo-img">
+                <!-- Alterado aqui: Logo sem fundo d'água, bordas ou sombras -->
                 <div>
-                    <h1 class="text-3xl font-black uppercase text-gray-900">Resumo de produção </h1>
-                    <h2 class="text-xl font-bold text-green-700">Fazenda Oásis</h2>
+                    <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain filter brightness-0 invert opacity-95">
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black uppercase tracking-widest text-green-400 mb-1">Desempenho de Safra</h1>
+                    <h2 class="text-lg font-medium text-gray-300 tracking-wide">Fazenda Oásis • Relatório Oficial de Produção e Perdas</h2>
                 </div>
             </div>
-            <div class="text-right pb-1">
-                <p class="text-sm text-gray-600 font-semibold uppercase">Data do Relatório</p>
-                <p class="text-lg font-bold text-gray-900" id="relData">--/--/----</p>
-                <p class="text-sm text-gray-600 font-semibold uppercase mt-2">Semana</p>
-                <p class="text-lg font-bold text-gray-900" id="relSemana">--</p>
+            <div class="text-right border-l-2 border-green-800/50 pl-8 py-2">
+                <p class="text-xs text-green-400 font-bold uppercase tracking-widest mb-1">Semana Produtiva</p>
+                <p class="text-4xl font-black text-white leading-none mb-2" id="relSemana">--</p>
+                <p class="text-xs text-gray-400 font-medium tracking-wider" id="relData">--/--/----</p>
             </div>
         </div>
 
-        <!-- Dados do Plantio (Layout Atualizado Profissional em Grid) -->
+        <!-- Secão 1: Parâmetros -->
         <div class="mb-8">
-            <h3 class="text-lg font-bold text-gray-800 uppercase border-b-2 border-gray-300 pb-1 mb-3">1. Informações da Área de Produção</h3>
-            
-            <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden shadow-sm">
-                <!-- Primeira Linha da Grade -->
-                <div class="grid grid-cols-3 divide-x-2 divide-gray-200 border-b-2 border-gray-200 bg-gray-50">
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Bloco da Plantação</span>
-                        <span class="block text-xl font-black text-gray-900" id="relBloco">-</span>
-                    </div>
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Cultura</span>
-                        <span class="block text-xl font-black text-gray-900" id="relCultura">-</span>
-                    </div>
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Variedade</span>
-                        <span class="block text-xl font-black text-gray-900" id="relVariedade">-</span>
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="w-4 h-4 bg-gray-300 rounded-sm inline-block"></span> 1. Parâmetros da Área de Cultivo
+            </h3>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Bloco / Setor</span>
+                    <span class="block text-2xl font-black text-gray-900" id="relBloco">-</span>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Cultura Cultivada</span>
+                    <span class="block text-2xl font-black text-gray-900" id="relCultura">-</span>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Variedade Genética</span>
+                    <span class="block text-2xl font-black text-gray-900" id="relVariedade">-</span>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Status da Safra</span>
+                    <span class="block text-xl font-bold text-blue-700" id="relStatus">-</span>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Data de Finalização</span>
+                    <span class="block text-xl font-bold text-gray-900" id="relDataFim">-</span>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Ciclo Produtivo (Dias)</span>
+                    <span class="block text-xl font-bold text-gray-900" id="relDiasProd">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secão 2: KPIs -->
+        <div class="mb-8">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="w-4 h-4 bg-gray-300 rounded-sm inline-block"></span> 2. Síntese de Volume e Aproveitamento
+            </h3>
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Box Total Transplantado -->
+                <div class="bg-white border border-gray-200 border-l-4 border-l-slate-600 p-6 rounded-r-xl shadow-sm">
+                    <span class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Total Transplantado (Base)</span>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="text-4xl font-black text-slate-800" id="relTransp">0</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase mt-2">UN</span>
                     </div>
                 </div>
-                <!-- Segunda Linha da Grade (Novos Campos) -->
-                <div class="grid grid-cols-3 divide-x-2 divide-gray-200 bg-white">
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Status da Safra</span>
-                        <span class="block text-lg font-bold text-blue-700" id="relStatus">-</span>
+                
+                <!-- Box Aproveitamento (Sem número de fundo, com badge elegante) -->
+                <div class="bg-blue-50/40 border border-blue-100 border-l-4 border-l-blue-500 p-6 rounded-r-xl shadow-sm">
+                    <span class="block text-xs font-bold text-blue-800 uppercase tracking-wider mb-3">Volume Colhido (Aproveitamento)</span>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-4xl font-black text-blue-700" id="relColhido">0</span>
+                            <span class="text-xs font-bold text-blue-400 uppercase mt-2">UN</span>
+                        </div>
+                        <div class="bg-blue-100/80 px-4 py-1.5 rounded-lg border border-blue-200 shadow-sm">
+                            <span class="text-xl font-black text-blue-700" id="relPercColhido">0%</span>
+                        </div>
                     </div>
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Data de Finalização</span>
-                        <span class="block text-lg font-bold text-gray-900" id="relDataFim">-</span>
-                    </div>
-                    <div class="p-4">
-                        <span class="block text-xs font-bold text-gray-500 uppercase mb-1">Dias de Produção</span>
-                        <span class="block text-lg font-bold text-gray-900" id="relDiasProd">-</span>
+                </div>
+
+                <!-- Box Quebra de Safra (Sem número de fundo, com badge elegante) -->
+                <div class="bg-red-50/40 border border-red-100 border-l-4 border-l-red-500 p-6 rounded-r-xl shadow-sm">
+                    <span class="block text-xs font-bold text-red-800 uppercase tracking-wider mb-3">Quebra de Safra (Perda)</span>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-4xl font-black text-red-700" id="relPendente">0</span>
+                            <span class="text-xs font-bold text-red-400 uppercase mt-2">UN</span>
+                        </div>
+                        <div class="bg-red-100/80 px-4 py-1.5 rounded-lg border border-red-200 shadow-sm">
+                            <span class="text-xl font-black text-red-700" id="relPercPendente">0%</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Resumo de Produção -->
+        <!-- Secão 3: Tabela de Causas -->
         <div class="mb-8">
-            <h3 class="text-lg font-bold text-gray-800 uppercase border-b-2 border-gray-300 pb-1 mb-3">2. Resumo de Produção</h3>
-            <div class="grid grid-cols-3 gap-4 text-center">
-                <div class="border-2 border-gray-200 p-3 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-600 uppercase">Total Transplantado</span>
-                    <span class="block text-2xl font-black text-gray-800" id="relTransp">0</span>
-                    <span class="text-sm font-bold text-gray-500">100% (Referência)</span>
-                </div>
-                <div class="border-2 border-blue-200 p-3 rounded-lg bg-blue-50">
-                    <span class="block text-xs font-bold text-blue-800 uppercase">Total Colhido</span>
-                    <span class="block text-2xl font-black text-blue-700" id="relColhido">0</span>
-                    <span class="text-sm font-bold text-blue-600" id="relPercColhido">0%</span>
-                </div>
-                <div class="border-2 border-red-200 p-3 rounded-lg bg-red-50">
-                    <span class="block text-xs font-bold text-red-800 uppercase">Não Colhido / Perda</span>
-                    <span class="block text-2xl font-black text-red-700" id="relPendente">0</span>
-                    <span class="text-sm font-bold text-red-600" id="relPercPendente">0%</span>
-                </div>
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="w-4 h-4 bg-gray-300 rounded-sm inline-block"></span> 3. Análise Qualitativa de Perdas (Detalhamento)
+            </h3>
+            <div class="rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse bg-white">
+                    <thead class="bg-slate-800 text-white">
+                        <tr>
+                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest w-1/2">Fator Causal Registrado</th>
+                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest text-right">Volume Perdido (Un)</th>
+                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest text-right">Impacto Relativo (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="relTableBody" class="divide-y divide-gray-100 text-gray-800">
+                        <!-- Preenchido via JS -->
+                    </tbody>
+                    <tfoot class="bg-gray-50 border-t border-gray-200">
+                        <tr id="relRowNaoDetalhado" class="hidden text-sm">
+                            <td class="py-4 px-6 text-gray-500 italic font-medium">Perdas sistêmicas não justificadas (Diferença)</td>
+                            <td class="py-4 px-6 text-right text-gray-600 font-bold" id="relNaoDetalhadoQtd">0</td>
+                            <td class="py-4 px-6 text-right text-gray-600 font-bold" id="relNaoDetalhadoPerc">0%</td>
+                        </tr>
+                        <tr class="bg-slate-100 text-slate-900 border-t-2 border-slate-300">
+                            <td class="py-5 px-6 font-black uppercase text-right text-sm tracking-widest">Soma Total das Perdas Computadas</td>
+                            <td class="py-5 px-6 text-right font-black text-2xl text-slate-800" id="relTotalQtd">0</td>
+                            <td class="py-5 px-6 text-right font-black text-2xl text-red-600" id="relTotalPerc">0%</td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
 
-        <!-- Tabela Oficial de Causas -->
-        <div class="mb-8">
-            <h3 class="text-lg font-bold text-gray-800 uppercase border-b-2 border-gray-300 pb-1 mb-3">3. Detalhamento e Causas das Perdas</h3>
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-100 border-y-2 border-gray-300">
-                        <th class="py-2 px-3 font-bold text-gray-700 uppercase text-sm w-1/2">Causas Apontadas</th>
-                        <th class="py-2 px-3 font-bold text-gray-700 uppercase text-sm text-center">Qtd. Unidades</th>
-                        <th class="py-2 px-3 font-bold text-gray-700 uppercase text-sm text-center">% de Perda<br><span class="text-xs font-normal">(Ref: Transplantado)</span></th>
-                    </tr>
-                </thead>
-                <tbody id="relTableBody" class="divide-y divide-gray-200 text-sm">
-                    <!-- Preenchido via JS -->
-                </tbody>
-                <tfoot>
-                    <tr id="relRowNaoDetalhado" class="bg-orange-50 hidden text-sm border-b border-gray-200">
-                        <td class="py-2 px-3 font-semibold text-orange-800 italic">Perdas não detalhadas / Outros motivos pendentes</td>
-                        <td class="py-2 px-3 text-center font-semibold text-orange-800" id="relNaoDetalhadoQtd">0</td>
-                        <td class="py-2 px-3 text-center font-semibold text-orange-800" id="relNaoDetalhadoPerc">0%</td>
-                    </tr>
-                    <tr class="bg-gray-800 text-white">
-                        <td class="py-3 px-3 font-bold uppercase text-right">Somatória Geral das Perdas =</td>
-                        <td class="py-3 px-3 text-center font-bold text-lg" id="relTotalQtd">0</td>
-                        <td class="py-3 px-3 text-center font-bold text-lg text-red-400" id="relTotalPerc">0%</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-        <!-- Gráfico expandido na exportação -->
-        <div class="mt-8 border border-gray-200 rounded p-4 text-center bg-white shadow-sm w-full">
-            <p class="text-xs font-bold text-gray-600 uppercase mb-2">Gráfico de Quantidades e Percentuais</p>
-            <img id="relImgBarras" src="" alt="Gráfico Barras" class="w-full object-contain h-80">
+        <!-- Secão 4: Gráfico -->
+        <div class="mb-6">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="w-4 h-4 bg-gray-300 rounded-sm inline-block"></span> 4. Projeção Gráfica de Anomalias
+            </h3>
+            <div class="bg-white border border-gray-200 rounded-xl p-6 flex justify-center shadow-sm">
+                <img id="relImgBarras" src="" alt="Gráfico Barras" class="w-full object-contain h-[350px]">
+            </div>
         </div>
         
-        <div class="mt-8 text-center text-xs text-gray-400 font-semibold border-t border-gray-200 pt-4">
-            Documento gerado eletronicamente pelo Sistema Fazenda Oásis.
+        <!-- Rodapé Executivo -->
+        <div class="mt-8 border-t-2 border-slate-800 pt-6 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-widest pb-4">
+            <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                Documento de Uso Restrito • Diretoria Executiva
+            </div>
+            <div class="text-right">
+                Fazenda Oásis © <script>document.write(new Date().getFullYear())</script> <br>
+                <span class="text-gray-400 font-semibold">Emitido via Sistema Integrado de Gestão</span>
+            </div>
         </div>
     </div>
 
@@ -461,7 +498,6 @@
             document.getElementById('totalColhido').addEventListener('input', recalcularTudo);
         });
 
-        // Função para alternar a visibilidade da Data de Finalização
         function toggleDataFim() {
             const status = document.getElementById('statusPlantio').value;
             const boxData = document.getElementById('boxDataFim');
@@ -669,7 +705,7 @@
                 const dataF = document.getElementById('dataFinalizacao').value;
                 document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
             } else {
-                document.getElementById('relDataFim').textContent = '-'; // Tracinho elegante se não for finalizado
+                document.getElementById('relDataFim').textContent = '-';
             }
 
             // Resumo Produção
@@ -679,6 +715,7 @@
             
             let pCol = totalTransplantadoGlob > 0 ? Math.round((totalColhidoGlob/totalTransplantadoGlob)*100) : 0;
             let pPen = totalTransplantadoGlob > 0 ? Math.round((totalPendenteGlob/totalTransplantadoGlob)*100) : 0;
+            
             document.getElementById('relPercColhido').textContent = `${pCol}%`;
             document.getElementById('relPercPendente').textContent = `${pPen}%`;
 
@@ -687,16 +724,16 @@
             let somaQtdJustificada = 0;
 
             if(causasList.length === 0 && totalPendenteGlob === 0) {
-                relBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-gray-500 italic">Nenhuma perda registrada.</td></tr>`;
+                relBody.innerHTML = `<tr><td colspan="3" class="py-6 px-6 text-center text-gray-500 italic">Nenhuma perda registrada neste ciclo.</td></tr>`;
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                     relBody.innerHTML += `
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-3 font-semibold text-gray-800">${c.nome}</td>
-                            <td class="py-2 px-3 text-center text-gray-700">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-2 px-3 text-center font-bold text-gray-800">${pCausa}%</td>
+                        <tr class="hover:bg-slate-50 border-b border-gray-100 last:border-0 transition-colors">
+                            <td class="py-4 px-6 font-bold text-gray-800">${c.nome}</td>
+                            <td class="py-4 px-6 text-right font-semibold text-gray-700">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-4 px-6 text-right font-black text-slate-700">${pCausa}%</td>
                         </tr>
                     `;
                 });
@@ -720,7 +757,7 @@
             document.getElementById('relImgBarras').src = cBarras.toDataURL("image/png");
         }
 
-        const captureOptions = { scale: 2, useCORS: true, backgroundColor: '#ffffff' };
+        const captureOptions = { scale: 3, useCORS: true, backgroundColor: '#ffffff' };
 
         function prepararEImprimir() {
             preencherRelatorioOculto();
@@ -738,7 +775,7 @@
 
                 const link = document.createElement('a');
                 link.download = `Relatorio_FazendaOasis_Sem${document.getElementById('semanaAtual').textContent}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.href = canvas.toDataURL('image/jpeg', 0.98); 
                 link.click();
             } catch (err) { alert('Erro: ' + err.message); } 
             finally { btn.innerHTML = textOrig; }
@@ -753,7 +790,7 @@
                 const canvas = await html2canvas(nodeRel, captureOptions);
                 nodeRel.style.left = '-9999px';
                 
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
@@ -809,7 +846,6 @@
             const txtVariedade = getSelectValue('variedade', 'variedadeOutro');
             const variedadeCompleta = `${txtCultura} (${txtVariedade})`;
 
-            // Adicionando os novos campos no envio
             const statusStr = document.getElementById('statusPlantio').value;
             const dataFimStr = statusStr === 'Finalizado' ? document.getElementById('dataFinalizacao').value : '';
             const diasProdStr = document.getElementById('diasProducao').value;
