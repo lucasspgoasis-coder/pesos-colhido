@@ -31,12 +31,13 @@
             outline: none;
         }
         
-        /* Logo sem contornos */
+        /* Logo limpa sem contornos */
         .logo-img {
             border: none;
             outline: none;
             background: transparent;
-            mix-blend-mode: multiply; 
+            box-shadow: none;
+            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25)); /* Apenas uma sombra suave na imagem em si */
         }
 
         /* Abas */
@@ -94,10 +95,10 @@
     <!-- ÁREA DE PREENCHIMENTO (UI do Usuário) -->
     <div id="captureArea" class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden relative">
         
-        <!-- Cabeçalho Principal (Ajustado) -->
+        <!-- Cabeçalho Principal -->
         <header class="bg-gradient-to-r from-green-900 to-green-700 p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start justify-between">
             <div class="flex flex-row items-center gap-4">
-                <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-16 h-16 md:w-20 md:h-20 object-contain logo-img flex-shrink-0">
+                <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-16 h-16 md:w-24 md:h-24 object-contain logo-img flex-shrink-0">
                 <div class="text-left text-white">
                     <h1 class="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight drop-shadow-md">Gestão de Safra e Packing</h1>
                     <h2 class="text-sm md:text-lg font-medium text-green-200 mt-1 flex flex-wrap items-center gap-2">
@@ -140,27 +141,27 @@
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
-                <p class="text-sm font-semibold tracking-wide">CONSOLIDAÇÃO TOTAL DE PERDAS DA SAFRA:</p>
+                <p class="text-sm font-semibold tracking-wide">CONSOLIDAÇÃO TOTAL DE PERDAS:</p>
             </div>
             <div class="flex flex-wrap items-center gap-6 justify-center">
                 <div class="text-center">
                     <span class="block text-[10px] text-gray-400 font-bold uppercase">1. Perda de Campo</span>
-                    <span id="txtPerdaCampoRef" class="text-lg font-black text-rose-300">0.0%</span>
+                    <span id="txtPerdaCampoRef" class="text-lg font-black text-rose-300">0%</span>
                 </div>
                 <span class="text-gray-500 font-bold">+</span>
                 <div class="text-center">
                     <span class="block text-[10px] text-gray-400 font-bold uppercase">2. Perda Packing (Refletida)</span>
-                    <span id="txtPerdaPackingRef" class="text-lg font-black text-rose-400">0.0%</span>
+                    <span id="txtPerdaPackingRef" class="text-lg font-black text-rose-400">0%</span>
                 </div>
                 <span class="text-gray-500 font-bold">=</span>
-                <div class="text-center bg-rose-900/50 px-3 py-1 rounded">
+                <div class="text-center bg-rose-900/50 px-3 py-1 rounded border border-rose-700/50">
                     <span class="block text-[10px] text-gray-300 font-bold uppercase">Perda Total Consolidada</span>
-                    <span id="txtPerdaGlobal" class="text-xl font-black text-rose-500">0.0%</span>
+                    <span id="txtPerdaGlobal" class="text-xl font-black text-rose-500">0%</span>
                 </div>
                 <div class="w-px h-8 bg-gray-600 hidden md:block"></div>
-                <div class="text-center">
+                <div class="text-center bg-emerald-900/40 px-3 py-1 rounded border border-emerald-700/50">
                     <span class="block text-[10px] text-emerald-200 font-bold uppercase">Aproveitamento Final</span>
-                    <span id="txtEficienciaGlobal" class="text-xl font-black text-emerald-400">0.0%</span>
+                    <span id="txtEficienciaGlobal" class="text-xl font-black text-emerald-400">0%</span>
                 </div>
             </div>
         </div>
@@ -248,21 +249,25 @@
 
                     <!-- Resumo Campo -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white border-l-4 border-blue-500 p-5 rounded-r-xl shadow-sm border-y border-r border-gray-200">
-                            <p class="text-sm font-bold text-gray-500 uppercase">Aproveitamento de Campo</p>
-                            <div class="flex items-end mt-1">
+                        <div class="bg-white border-l-4 border-blue-500 p-5 rounded-r-xl shadow-sm border-y border-r border-gray-200 flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-bold text-gray-500 uppercase">Aproveitamento de Campo</p>
+                                <p id="unidadesColhidasDesc" class="text-xs font-semibold text-gray-400 mt-1">-- un</p>
+                            </div>
+                            <div class="flex items-end">
                                 <span id="percColhido" class="text-4xl font-black text-blue-600">0</span>
                                 <span class="text-xl font-bold text-blue-600 ml-1 mb-1">%</span>
                             </div>
-                            <p id="unidadesColhidasDesc" class="text-xs font-semibold text-gray-400 mt-1">-- un</p>
                         </div>
-                        <div class="bg-white border-l-4 border-red-500 p-5 rounded-r-xl shadow-sm border-y border-r border-gray-200">
-                            <p class="text-sm font-bold text-gray-500 uppercase">Perda de Campo (Não Colhido)</p>
+                        <div class="bg-white border-l-4 border-red-500 p-5 rounded-r-xl shadow-sm border-y border-r border-gray-200 flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-bold text-gray-500 uppercase">Perda de Campo (Não Colhido)</p>
+                                <p id="unidadesPerdidasDesc" class="text-xs font-semibold text-gray-400 mt-1">-- un</p>
+                            </div>
                             <div class="flex items-end mt-1">
                                 <span id="percPendente" class="text-4xl font-black text-red-600">0</span>
                                 <span class="text-xl font-bold text-red-600 ml-1 mb-1">%</span>
                             </div>
-                            <p id="unidadesPerdidasDesc" class="text-xs font-semibold text-gray-400 mt-1">-- un</p>
                         </div>
                     </div>
 
@@ -318,52 +323,109 @@
                 <!-- ================= ABA 2: PACKING HOUSE ================= -->
                 <div id="abaPacking" class="hidden space-y-8 animate-fade-in">
                     
+                    <!-- Resumo Superior do Packing -->
                     <div class="bg-blue-50/30 p-6 rounded-xl border border-blue-200">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3 mb-5 border-blue-200">
                             <h3 class="text-lg font-bold text-blue-900 flex items-center">
-                                <span class="bg-blue-600 w-2 h-6 rounded mr-3"></span> Consolidação do Packing House
+                                <span class="bg-blue-600 w-2 h-6 rounded mr-3"></span> Resumo de Massa do Packing House
                             </h3>
                             <button type="button" onclick="copiarColheitaDoCampo()" class="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 shadow-sm">
-                                📥 Estimar Massa a partir do Campo
+                                📥 Prever Massa a partir do Campo
                             </button>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                            <!-- Entrada Principal -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Massa Total Recebida (Kg) *</label>
-                                <input type="number" min="0.1" step="0.1" id="prodTotalKg" placeholder="Ex: 1200.5" class="w-full rounded-lg input-melhorado px-4 py-3 text-lg font-bold text-blue-900" required>
+                            <!-- Entrada Principal (Agora é Automática) -->
+                            <div class="bg-white border border-blue-200 p-3 rounded-lg flex flex-col justify-center h-full shadow-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-2 bg-blue-500"></div>
+                                <span class="block text-xs text-blue-500 font-bold uppercase tracking-wider">Massa Total Calculada</span>
+                                <div class="flex items-end mt-1">
+                                    <input type="text" id="prodTotalKg" value="0.0" class="w-full bg-transparent text-xl font-black text-blue-900 border-none p-0 focus:ring-0 cursor-not-allowed" readonly>
+                                    <span class="text-blue-900 font-bold ml-1">Kg</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 mt-1 italic">Soma do Aproveitado + Descarte</span>
                             </div>
 
-                            <!-- Descarte Total (Soma Automática) -->
-                            <div class="bg-white border border-rose-200 p-3 rounded-lg flex flex-col justify-center h-full shadow-sm">
-                                <span class="block text-xs text-rose-500 font-bold uppercase tracking-wider">Total Descartado</span>
+                            <!-- Aproveitamento Total -->
+                            <div class="bg-white border border-emerald-200 p-3 rounded-lg flex flex-col justify-center h-full shadow-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-2 bg-emerald-500"></div>
+                                <span class="block text-xs text-emerald-500 font-bold uppercase tracking-wider">Total Aproveitado</span>
                                 <div class="flex justify-between items-end mt-1">
-                                    <span id="txtTopDescarteKg" class="text-xl font-black text-rose-600">0.0 Kg</span>
-                                    <span id="txtTopPercDescarte" class="text-sm font-bold text-rose-400">(0%)</span>
+                                    <span id="txtTopAprovKg" class="text-xl font-black text-emerald-600">0.0 Kg</span>
+                                    <span id="txtTopPercAprov" class="text-sm font-bold text-emerald-500 bg-emerald-50 px-2 rounded">(0%)</span>
                                 </div>
                             </div>
 
-                            <!-- Aproveitamento Total (Calculado) -->
-                            <div class="bg-white border border-emerald-200 p-3 rounded-lg flex flex-col justify-center h-full shadow-sm">
-                                <span class="block text-xs text-emerald-500 font-bold uppercase tracking-wider">Total Aproveitado (Saldo)</span>
+                            <!-- Descarte Total -->
+                            <div class="bg-white border border-rose-200 p-3 rounded-lg flex flex-col justify-center h-full shadow-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-2 bg-rose-500"></div>
+                                <span class="block text-xs text-rose-500 font-bold uppercase tracking-wider">Total Descartado</span>
                                 <div class="flex justify-between items-end mt-1">
-                                    <span id="txtTopAprovKg" class="text-xl font-black text-emerald-600">0.0 Kg</span>
-                                    <span id="txtTopPercAprov" class="text-sm font-bold text-emerald-400">(0%)</span>
+                                    <span id="txtTopDescarteKg" class="text-xl font-black text-rose-600">0.0 Kg</span>
+                                    <span id="txtTopPercDescarte" class="text-sm font-bold text-rose-500 bg-rose-50 px-2 rounded">(0%)</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Lançamento Exclusivo de Descartes (Listagem) -->
-                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                        <div class="bg-gray-50 p-4 border-b flex justify-between items-center flex-wrap gap-2">
-                            <h3 class="text-base font-bold text-gray-800 flex items-center">
-                                <span class="bg-orange-500 w-2 h-6 rounded mr-2"></span> Registro Detalhado de Descartes (Perdas Packing)
+                    <!-- NOVO: Lançamento de APROVEITAMENTOS (Categorias) -->
+                    <div class="bg-white border border-emerald-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-center flex-wrap gap-2">
+                            <h3 class="text-base font-bold text-emerald-900 flex items-center">
+                                <span class="bg-emerald-500 w-2 h-6 rounded mr-2"></span> Registro de Produção Aproveitada (Kg)
                             </h3>
-                            <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
-                                Saldo Aproveitado: <span id="pendentesLivresKg" class="font-black">0</span> kg
-                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                                <!-- Categoria/Destino -->
+                                <div class="sm:col-span-1">
+                                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Categoria / Qualidade</label>
+                                    <select id="aprovListaCategoria" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm border-emerald-300">
+                                        <option value="" disabled selected>Selecione a categoria...</option>
+                                        <option value="Extra / Tipo 1">Extra / Tipo 1</option>
+                                        <option value="Comercial / Tipo 2">Comercial / Tipo 2</option>
+                                        <option value="Indústria / Processamento">Indústria / Processamento</option>
+                                        <option value="Estimativa Base (Campo)">Estimativa Base (Campo)</option>
+                                        <option value="outros">Outros...</option>
+                                    </select>
+                                    <input type="text" id="aprovOutroCategoria" placeholder="Especifique" class="mt-2 w-full hidden rounded-lg input-melhorado px-3 py-2 text-sm border-emerald-300">
+                                </div>
+                                <!-- Quantidade Kg -->
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Massa Aproveitada (Kg)</label>
+                                    <input type="number" step="0.1" id="aprovQtdKg" min="0.1" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm border-emerald-300" placeholder="Ex: 500.5">
+                                </div>
+                                <!-- Botão -->
+                                <div>
+                                    <button type="button" onclick="adicionarAprovPacking()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition-colors text-sm">Registrar Aproveitamento</button>
+                                </div>
+                            </div>
+                            <p id="aprovErroPacking" class="text-rose-600 text-sm mt-2 font-semibold hidden"></p>
+
+                            <!-- Tabela de Aproveitamentos -->
+                            <div class="mt-6">
+                                <table class="min-w-full text-sm">
+                                    <thead class="bg-emerald-50 text-emerald-800">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left font-bold">Categoria / Destino</th>
+                                            <th class="px-4 py-2 text-center font-bold">Massa (Kg)</th>
+                                            <th class="px-4 py-2 text-center font-bold">% Relativa</th>
+                                            <th class="px-4 py-2 text-center font-bold no-print">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabelaAprovPackingBody" class="divide-y divide-emerald-100"></tbody>
+                                </table>
+                                <div id="tabelaAprovPackingVazia" class="p-4 text-center text-emerald-600/60 text-sm">Nenhum aproveitamento registrado ainda.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lançamento Exclusivo de DESCARTES -->
+                    <div class="bg-white border border-rose-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-rose-50 p-4 border-b border-rose-100 flex justify-between items-center flex-wrap gap-2">
+                            <h3 class="text-base font-bold text-rose-900 flex items-center">
+                                <span class="bg-rose-500 w-2 h-6 rounded mr-2"></span> Registro Detalhado de Descartes (Perdas)
+                            </h3>
                         </div>
                         <div class="p-5">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
@@ -371,13 +433,13 @@
                                 <!-- Data -->
                                 <div>
                                     <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Data do Descarte</label>
-                                    <input type="date" id="causaDataPacking" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm">
+                                    <input type="date" id="causaDataPacking" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm border-rose-300">
                                 </div>
 
                                 <!-- Motivos Dinâmicos -->
                                 <div>
                                     <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Motivo do Descarte</label>
-                                    <select id="causaListaPacking" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm">
+                                    <select id="causaListaPacking" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm border-rose-300">
                                         <option value="" disabled selected>Selecione...</option>
                                         <option value="Amarelado">Amarelado</option>
                                         <option value="Passado">Passado</option>
@@ -386,18 +448,18 @@
                                         <option value="Mal desenvolvidos">Mal desenvolvidos</option>
                                         <option value="outros">Outros...</option>
                                     </select>
-                                    <input type="text" id="causaOutroPacking" placeholder="Especifique" class="mt-2 w-full hidden rounded-lg input-melhorado px-3 py-2 text-sm">
+                                    <input type="text" id="causaOutroPacking" placeholder="Especifique" class="mt-2 w-full hidden rounded-lg input-melhorado px-3 py-2 text-sm border-rose-300">
                                 </div>
 
                                 <!-- Quantidade -->
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Total Kg (Descarte)</label>
-                                    <input type="number" step="0.1" id="causaQtdPacking" min="0.1" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm" placeholder="Ex: 50.4">
+                                    <label class="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Massa (Kg)</label>
+                                    <input type="number" step="0.1" id="causaQtdPacking" min="0.1" class="w-full rounded-lg input-melhorado px-3 py-2 text-sm border-rose-300" placeholder="Ex: 50.4">
                                 </div>
 
                                 <!-- Botão de Lançamento -->
                                 <div>
-                                    <button type="button" onclick="adicionarDescartePacking()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 rounded-lg transition-colors text-sm">Lançar Descarte</button>
+                                    <button type="button" onclick="adicionarDescartePacking()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded-lg transition-colors text-sm">Lançar Descarte</button>
                                 </div>
                             </div>
                             <p id="causaErroPacking" class="text-rose-600 text-sm mt-2 font-semibold hidden"></p>
@@ -405,20 +467,20 @@
                             <!-- Painel com a Tabela de Lançamentos de Descarte -->
                             <div class="mt-6">
                                 <table class="min-w-full text-sm">
-                                    <thead class="bg-gray-100 text-gray-600">
+                                    <thead class="bg-rose-50 text-rose-800">
                                         <tr>
                                             <th class="px-4 py-2 text-left font-bold">Data</th>
                                             <th class="px-4 py-2 text-left font-bold">Motivo (Descarte)</th>
                                             <th class="px-4 py-2 text-center font-bold">Massa (Kg)</th>
-                                            <th class="px-4 py-2 text-center font-bold">% da Carga</th>
+                                            <th class="px-4 py-2 text-center font-bold">% Relativa</th>
                                             <th class="px-4 py-2 text-center font-bold no-print">Ação</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabelaCausasPackingBody" class="divide-y divide-gray-100">
+                                    <tbody id="tabelaCausasPackingBody" class="divide-y divide-rose-100">
                                         <!-- Gerado Dinamicamente -->
                                     </tbody>
                                 </table>
-                                <div id="tabelaCausasPackingVazia" class="p-4 text-center text-gray-400 text-sm">Nenhum descarte detalhado adicionado ainda.</div>
+                                <div id="tabelaCausasPackingVazia" class="p-4 text-center text-rose-600/60 text-sm">Nenhum descarte detalhado adicionado ainda.</div>
                             </div>
                         </div>
                     </div>
@@ -452,8 +514,8 @@
             <!-- Cabeçalho Executivo -->
             <div class="bg-[#0b2414] text-white p-8 flex justify-between items-center border-b-[12px] border-green-600">
                 <div class="flex items-center gap-6">
-                    <div class="bg-white p-2 rounded shadow-inner">
-                        <img src="https://i.imgur.com/wEozr34.png" class="w-20 h-20 object-contain">
+                    <div class="p-0 m-0"> <!-- Removido bg-white p-2 rounded shadow-inner para logo limpa -->
+                        <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain logo-img">
                     </div>
                     <div>
                         <h1 class="text-3xl font-black uppercase tracking-widest text-green-400 mb-1">Laudo de Desempenho Integrado</h1>
@@ -476,22 +538,22 @@
                 <div class="flex gap-4 w-2/3 justify-end items-center text-center">
                     <div>
                         <span class="text-[9px] font-bold text-gray-400 block uppercase">1. Perda Campo</span>
-                        <span id="relPerdaCampoRef" class="text-lg font-black text-rose-300">0.0%</span>
+                        <span id="relPerdaCampoRef" class="text-lg font-black text-rose-300">0%</span>
                     </div>
                     <span class="text-gray-500 font-bold px-2">+</span>
                     <div>
                         <span class="text-[9px] font-bold text-gray-400 block uppercase">2. Perda Packing</span>
-                        <span id="relPerdaPackingRef" class="text-lg font-black text-rose-400">0.0%</span>
+                        <span id="relPerdaPackingRef" class="text-lg font-black text-rose-400">0%</span>
                     </div>
                     <span class="text-gray-500 font-bold px-2">=</span>
-                    <div class="bg-rose-900/50 px-3 py-1 rounded">
+                    <div class="bg-rose-900/50 px-3 py-1 rounded border border-rose-700">
                         <span class="text-[9px] font-bold text-rose-200 block uppercase">Perda Total</span>
-                        <span id="relPerdaGlobal" class="text-xl font-black text-rose-500">0.0%</span>
+                        <span id="relPerdaGlobal" class="text-xl font-black text-rose-500">0%</span>
                     </div>
                     <div class="border-l border-gray-700 h-8 mx-4"></div>
-                    <div>
-                        <span class="text-[9px] font-bold text-gray-400 block uppercase">Aproveitamento Final</span>
-                        <span id="relEficienciaGlobal" class="text-xl font-black text-emerald-400">0.0%</span>
+                    <div class="bg-emerald-900/40 px-3 py-1 rounded border border-emerald-700">
+                        <span class="text-[9px] font-bold text-emerald-200 block uppercase">Aproveitamento Final</span>
+                        <span id="relEficienciaGlobal" class="text-xl font-black text-emerald-400">0%</span>
                     </div>
                 </div>
             </div>
@@ -548,7 +610,7 @@
                         
                         <div class="flex gap-2 mb-4">
                             <div class="flex-1 bg-slate-50 border border-slate-200 p-3 text-center rounded">
-                                <span class="block text-[9px] uppercase text-slate-500 font-bold">Recebido</span>
+                                <span class="block text-[9px] uppercase text-slate-500 font-bold">Total Calculado</span>
                                 <span class="text-xl font-black text-slate-800" id="relTotalKg">0</span>
                             </div>
                             <div class="flex-1 bg-teal-50 border border-teal-200 p-3 text-center rounded flex flex-col justify-center">
@@ -563,16 +625,29 @@
                             </div>
                         </div>
 
-                        <table class="w-full text-left border-collapse text-[11px]">
-                            <thead class="bg-slate-800 text-white">
+                        <!-- Tabela APROVEITAMENTO (NOVO NO EXPORT) -->
+                        <table class="w-full text-left border-collapse text-[11px] mb-2 border border-emerald-200">
+                            <thead class="bg-emerald-700 text-white">
                                 <tr>
-                                    <th class="py-2 px-3 font-bold uppercase tracking-wider">Data</th>
-                                    <th class="py-2 px-3 font-bold uppercase tracking-wider">Motivo (Descarte)</th>
-                                    <th class="py-2 px-3 font-bold uppercase tracking-wider text-right">Peso (Kg)</th>
-                                    <th class="py-2 px-3 font-bold uppercase tracking-wider text-right">% Relativo</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider">Aproveitamento (Categoria)</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider text-right">Peso (Kg)</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider text-right">%</th>
                                 </tr>
                             </thead>
-                            <tbody id="relTableBodyPacking" class="divide-y divide-gray-200 text-gray-800 bg-white border border-gray-200"></tbody>
+                            <tbody id="relTableBodyAprov" class="divide-y divide-emerald-100 text-gray-800 bg-white"></tbody>
+                        </table>
+
+                        <!-- Tabela DESCARTES -->
+                        <table class="w-full text-left border-collapse text-[11px] border border-rose-200">
+                            <thead class="bg-rose-800 text-white">
+                                <tr>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider">Data</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider">Motivo (Descarte)</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider text-right">Peso (Kg)</th>
+                                    <th class="py-1 px-3 font-bold uppercase tracking-wider text-right">%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="relTableBodyPacking" class="divide-y divide-rose-100 text-gray-800 bg-white"></tbody>
                         </table>
                     </div>
 
@@ -639,8 +714,9 @@
         let chartCampo = null;
 
         // Estado Global - Packing (Kg)
-        let causasPackingList = []; 
-        let totalProdKgGlob = 0;
+        let aprovPackingList = [];  // NOVO: Lista de Aproveitamentos
+        let causasPackingList = []; // Lista de Descartes
+        let totalProdKgGlob = 0;    // Agora é calculado: Aprov + Descarte
         let totalAprovKgGlob = 0;
         let totalDescarteKgGlob = 0;
         let chartPacking = null;
@@ -690,14 +766,9 @@
                 recalcularCampo();
                 calcularDesempenhoGlobal();
             });
-
-            // Listeners Packing
-            document.getElementById('prodTotalKg').addEventListener('input', () => {
-                recalcularPacking();
-            });
         });
 
-        // Copiar colheita do campo e estimar quilos
+        // Copiar colheita do campo e ESTIMAR quilos de APROVEITAMENTO
         function copiarColheitaDoCampo() {
             if (totalColhidoGlob <= 0) {
                 alert("Adicione primeiro as unidades colhidas na aba 'Produção de Campo'.");
@@ -705,9 +776,12 @@
             }
             // Estimativa agronômica padrão: 0.35 Kg (350g) por cabeça
             const pesoEstimado = parseFloat((totalColhidoGlob * 0.35).toFixed(1));
-            document.getElementById('prodTotalKg').value = pesoEstimado;
+            
+            // Adiciona automaticamente como um Aproveitamento
+            aprovPackingList.push({ nome: "Estimativa Base (Campo)", qtd: pesoEstimado });
+            
             recalcularPacking();
-            alert(`📥 Copiado! Base de ${totalColhidoGlob.toLocaleString('pt-BR')} unidades colhidas estimada em ${pesoEstimado.toLocaleString('pt-BR')} Kg de carga de entrada no Packing House.`);
+            alert(`📥 Copiado! Base de ${totalColhidoGlob.toLocaleString('pt-BR')} unidades colhidas adicionada como estimativa de ${pesoEstimado.toLocaleString('pt-BR')} Kg na lista de aproveitamento.`);
         }
 
         // Controle de Abas
@@ -743,7 +817,8 @@
                 { s: 'cultura', i: 'culturaOutro' },
                 { s: 'variedade', i: 'variedadeOutro' }, 
                 { s: 'causaLista', i: 'causaOutro'},
-                { s: 'causaListaPacking', i: 'causaOutroPacking'}
+                { s: 'causaListaPacking', i: 'causaOutroPacking'},
+                { s: 'aprovListaCategoria', i: 'aprovOutroCategoria'} // Novo
             ];
             campos.forEach(c => {
                 document.getElementById(c.s).addEventListener('change', function() {
@@ -761,8 +836,13 @@
             
             if (t > 0 && c <= t) {
                 totalTranspGlob = t; totalColhidoGlob = c; totalPerdaCampoGlob = t - c;
-                document.getElementById('percColhido').textContent = Math.round((c/t)*100);
-                document.getElementById('percPendente').textContent = Math.round((totalPerdaCampoGlob/t)*100);
+                
+                // LÓGICA DE PORCENTAGEM INTEIRA
+                let pPerda = Math.round((totalPerdaCampoGlob / t) * 100);
+                let pColhido = 100 - pPerda; // Garante que a soma é exatamente 100%
+
+                document.getElementById('percColhido').textContent = pColhido;
+                document.getElementById('percPendente').textContent = pPerda;
                 document.getElementById('unidadesColhidasDesc').textContent = `${c.toLocaleString('pt-BR')} un`;
                 document.getElementById('unidadesPerdidasDesc').textContent = `${totalPerdaCampoGlob.toLocaleString('pt-BR')} un perdidas`;
             } else {
@@ -786,9 +866,8 @@
             if (!nome || !qtd || qtd <= 0) return mostrarErro('causaErro', "Preencha o motivo e uma quantidade válida.");
             
             const qtdUsada = causasCampoList.reduce((acc, c) => acc + c.qtd, 0);
-            if (qtd > (totalPerdaCampoGlob - qtdUsada)) return mostrarErro('causaErro', `Quantidade inserida ultrapassa a perda de campo restante (${totalPerdaCampoGlob - qtdUsada} un).`);
+            if (qtd > (totalPerdaCampoGlob - qtdUsada)) return mostrarErro('causaErro', `Quantidade ultrapassa a perda restante (${totalPerdaCampoGlob - qtdUsada} un).`);
 
-            // Salvar lançamento no campo sem data
             const idx = causasCampoList.findIndex(c => c.nome.toLowerCase() === nome.toLowerCase());
             if (idx >= 0) causasCampoList[idx].qtd += qtd; else causasCampoList.push({ nome, qtd });
 
@@ -806,7 +885,8 @@
                 document.getElementById('tabelaCausasVazia').classList.add('hidden');
                 causasCampoList.forEach((c, i) => {
                     usada += c.qtd;
-                    const p = totalTranspGlob > 0 ? ((c.qtd / totalTranspGlob) * 100).toFixed(1) : 0;
+                    // Porcentagem Inteira
+                    const p = totalTranspGlob > 0 ? Math.round((c.qtd / totalTranspGlob) * 100) : 0;
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-4 py-2 font-semibold text-gray-800">${c.nome}</td>
@@ -822,16 +902,39 @@
             updateChartCampo();
         }
 
-        // ================= LÓGICA DO PACKING HOUSE (Kg) =================
+        // ================= LÓGICA DO PACKING HOUSE (Kg) - NOVA ESTRUTURA =================
         function recalcularPacking() {
-            totalProdKgGlob = parseFloat(document.getElementById('prodTotalKg').value) || 0;
-            renderTabelaPacking();
+            // Recalcula Totais baseado nas listas
+            totalAprovKgGlob = aprovPackingList.reduce((acc, c) => acc + c.qtd, 0);
+            totalDescarteKgGlob = causasPackingList.reduce((acc, c) => acc + c.qtd, 0);
+            totalProdKgGlob = totalAprovKgGlob + totalDescarteKgGlob;
+
+            // Atualiza Campo Total (Visual e ReadOnly)
+            document.getElementById('prodTotalKg').value = totalProdKgGlob > 0 ? totalProdKgGlob.toFixed(1) : "0.0";
+
+            renderTabelasPackingUI();
             calcularDesempenhoGlobal();
+        }
+
+        function adicionarAprovPacking() {
+            document.getElementById('aprovErroPacking').classList.add('hidden');
+            
+            const sel = document.getElementById('aprovListaCategoria');
+            let nome = sel.value === 'outros' ? document.getElementById('aprovOutroCategoria').value.trim() : sel.value;
+            const qtd = parseFloat(document.getElementById('aprovQtdKg').value);
+
+            if (!nome || isNaN(qtd) || qtd <= 0) return mostrarErro('aprovErroPacking', "Preencha a categoria e uma quantidade em Kg válida.");
+            
+            aprovPackingList.push({ nome, qtd });
+
+            // Reset
+            sel.value = ''; document.getElementById('aprovOutroCategoria').value = ''; document.getElementById('aprovOutroCategoria').classList.add('hidden'); document.getElementById('aprovQtdKg').value = '';
+            
+            recalcularPacking();
         }
 
         function adicionarDescartePacking() {
             document.getElementById('causaErroPacking').classList.add('hidden');
-            if (totalProdKgGlob <= 0) return mostrarErro('causaErroPacking', "Preencha a Massa Total Recebida primeiro.");
             
             const dataInput = document.getElementById('causaDataPacking').value;
             const sel = document.getElementById('causaListaPacking');
@@ -841,149 +944,134 @@
             if (!dataInput) return mostrarErro('causaErroPacking', "Insira a data do descarte.");
             if (!nome || isNaN(qtd) || qtd <= 0) return mostrarErro('causaErroPacking', "Preencha o motivo e os Kg de descarte validos.");
             
-            const totalJaLançado = causasPackingList.reduce((acc, c) => acc + c.qtd, 0);
-            const restanteVal = parseFloat((totalProdKgGlob - totalJaLançado).toFixed(2));
-            
-            if (qtd > restanteVal) {
-                return mostrarErro('causaErroPacking', `Peso excedido! O descarte não pode ser maior que o saldo disponível de ${restanteVal.toLocaleString('pt-BR')} Kg.`);
-            }
-
-            // Inserir registro apenas de descarte
             causasPackingList.push({ data: dataInput, nome, qtd });
 
-            // Resetar formulário
-            sel.value = ''; 
-            document.getElementById('causaOutroPacking').value = ''; 
-            document.getElementById('causaOutroPacking').classList.add('hidden'); 
-            document.getElementById('causaQtdPacking').value = '';
+            // Reset
+            sel.value = ''; document.getElementById('causaOutroPacking').value = ''; document.getElementById('causaOutroPacking').classList.add('hidden'); document.getElementById('causaQtdPacking').value = '';
             
-            renderTabelaPacking();
-            calcularDesempenhoGlobal();
+            recalcularPacking();
         }
 
-        function renderTabelaPacking() {
-            const tbody = document.getElementById('tabelaCausasPackingBody');
-            tbody.innerHTML = ''; 
-            
-            totalDescarteKgGlob = 0; // Recalculado do Zero baseado na lista
+        function renderTabelasPackingUI() {
+            // LÓGICA DE PORCENTAGENS INTEIRAS PARA PACKING
+            let pDesc = totalProdKgGlob > 0 ? Math.round((totalDescarteKgGlob / totalProdKgGlob) * 100) : 0;
+            let pAprov = totalProdKgGlob > 0 ? (100 - pDesc) : 0; // Garante 100%
 
-            if(causasPackingList.length === 0) {
-                document.getElementById('tabelaCausasPackingVazia').classList.remove('hidden');
-            } else {
-                document.getElementById('tabelaCausasPackingVazia').classList.add('hidden');
-                
-                // Ordenar por data
-                causasPackingList.sort((a,b) => new Date(a.data) - new Date(b.data));
-
-                causasPackingList.forEach((c, i) => {
-                    totalDescarteKgGlob += c.qtd;
-                    const p = totalProdKgGlob > 0 ? ((c.qtd / totalProdKgGlob) * 100).toFixed(1) : 0;
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-4 py-2 text-gray-600 font-medium">${formatarDataISOparaBR(c.data)}</td>
-                            <td class="px-4 py-2 font-semibold text-gray-800">${c.nome}</td>
-                            <td class="text-center font-bold text-gray-800">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})} Kg</td>
-                            <td class="text-center font-bold text-orange-600">${p}%</td>
-                            <td class="text-center no-print">
-                                <button type="button" onclick="causasPackingList.splice(${i},1); renderTabelaPacking(); calcularDesempenhoGlobal();" class="text-red-500 font-bold hover:text-red-700 bg-red-50 px-2 py-1 rounded">Remover</button>
-                            </td>
-                        </tr>`;
-                });
-            }
-
-            // O aproveitamento agora é automaticamente deduzido de quanto você jogou fora na lista
-            totalAprovKgGlob = Math.max(0, totalProdKgGlob - totalDescarteKgGlob);
-            
-            // Renderizando valores superiores do Packing House
-            const pDesc = totalProdKgGlob > 0 ? Math.round((totalDescarteKgGlob / totalProdKgGlob) * 100) : 0;
-            const pAprov = totalProdKgGlob > 0 ? Math.round((totalAprovKgGlob / totalProdKgGlob) * 100) : 0;
-            
+            // Atualiza Topo Packing
             document.getElementById('txtTopDescarteKg').textContent = `${totalDescarteKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1})} Kg`;
             document.getElementById('txtTopPercDescarte').textContent = `(${pDesc}%)`;
             
             document.getElementById('txtTopAprovKg').textContent = `${totalAprovKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1})} Kg`;
             document.getElementById('txtTopPercAprov').textContent = `(${pAprov}%)`;
-            
-            document.getElementById('pendentesLivresKg').textContent = totalAprovKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1});
 
+            // Tabela Aproveitamento
+            const tbodyAprov = document.getElementById('tabelaAprovPackingBody');
+            tbodyAprov.innerHTML = ''; 
+            if(aprovPackingList.length === 0) document.getElementById('tabelaAprovPackingVazia').classList.remove('hidden');
+            else {
+                document.getElementById('tabelaAprovPackingVazia').classList.add('hidden');
+                aprovPackingList.forEach((c, i) => {
+                    const p = totalProdKgGlob > 0 ? Math.round((c.qtd / totalProdKgGlob) * 100) : 0;
+                    tbodyAprov.innerHTML += `
+                        <tr class="hover:bg-emerald-50/50 transition-colors">
+                            <td class="px-4 py-2 font-semibold text-gray-800">${c.nome}</td>
+                            <td class="text-center font-bold text-gray-800">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})} Kg</td>
+                            <td class="text-center font-bold text-emerald-600">${p}%</td>
+                            <td class="text-center no-print">
+                                <button type="button" onclick="aprovPackingList.splice(${i},1); recalcularPacking();" class="text-red-500 font-bold hover:text-red-700 bg-red-50 px-2 py-1 rounded">Remover</button>
+                            </td>
+                        </tr>`;
+                });
+            }
+
+            // Tabela Descarte
+            const tbodyDesc = document.getElementById('tabelaCausasPackingBody');
+            tbodyDesc.innerHTML = ''; 
+            if(causasPackingList.length === 0) {
+                document.getElementById('tabelaCausasPackingVazia').classList.remove('hidden');
+            } else {
+                document.getElementById('tabelaCausasPackingVazia').classList.add('hidden');
+                causasPackingList.sort((a,b) => new Date(a.data) - new Date(b.data));
+                causasPackingList.forEach((c, i) => {
+                    const p = totalProdKgGlob > 0 ? Math.round((c.qtd / totalProdKgGlob) * 100) : 0;
+                    tbodyDesc.innerHTML += `
+                        <tr class="hover:bg-rose-50/50 transition-colors">
+                            <td class="px-4 py-2 text-gray-600 font-medium">${formatarDataISOparaBR(c.data)}</td>
+                            <td class="px-4 py-2 font-semibold text-gray-800">${c.nome}</td>
+                            <td class="text-center font-bold text-gray-800">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})} Kg</td>
+                            <td class="text-center font-bold text-rose-600">${p}%</td>
+                            <td class="text-center no-print">
+                                <button type="button" onclick="causasPackingList.splice(${i},1); recalcularPacking();" class="text-red-500 font-bold hover:text-red-700 bg-red-50 px-2 py-1 rounded">Remover</button>
+                            </td>
+                        </tr>`;
+                });
+            }
             updateChartPacking();
         }
 
-        // ================= CÁLCULO DE EFICIÊNCIA GLOBAL REAL (Consolidação de Campo e Packing) =================
+        // ================= CÁLCULO DE EFICIÊNCIA GLOBAL REAL (INTEIROS) =================
         function calcularDesempenhoGlobal() {
-            // 1. Perda de Campo (%) 
-            let pPerdaCampo = totalTranspGlob > 0 ? (totalPerdaCampoGlob / totalTranspGlob) * 100 : 0;
+            // 1. Perda de Campo (Inteiro)
+            let pPerdaCampo = totalTranspGlob > 0 ? Math.round((totalPerdaCampoGlob / totalTranspGlob) * 100) : 0;
             
-            // 2. Perda do Packing House (%) sobre o Recebido
+            // 2. Perda do Packing House (%) sobre o Recebido (Decimal temporario p/ precisão da tradução)
             let pPerdaPackingInterno = totalProdKgGlob > 0 ? (totalDescarteKgGlob / totalProdKgGlob) : 0;
 
-            // 3. Traduzir a perda do Packing para Unidades (para somar banana com banana)
-            // Se colhi X unidades, e perdi Y% disso no Packing, quantas unidades perdi no Packing?
+            // 3. Traduzir a perda do Packing para Unidades
             let perdaPackingEquivalenteUnidades = totalColhidoGlob * pPerdaPackingInterno;
 
-            // 4. Perda Packing Consolidada (em relação ao total do campo transplantado)
-            let pPerdaPackingConsolidada = totalTranspGlob > 0 ? (perdaPackingEquivalenteUnidades / totalTranspGlob) * 100 : 0;
+            // 4. Perda Packing Consolidada (Inteiro)
+            let pPerdaPackingConsolidada = totalTranspGlob > 0 ? Math.round((perdaPackingEquivalenteUnidades / totalTranspGlob) * 100) : 0;
 
-            // 5. Soma Total (Perda Campo + Perda Packing Refletida)
+            // 5. Soma Total (Inteiro)
             let perdaTotalGlobalPercent = pPerdaCampo + pPerdaPackingConsolidada;
             
-            // 6. Eficiência / Aproveitamento Final
-            let aproveitamentoFinal = 100 - perdaTotalGlobalPercent;
+            // 6. Eficiência / Aproveitamento Final (Inteiro - Restante dos 100%)
+            let aproveitamentoFinal = totalTranspGlob > 0 ? (100 - perdaTotalGlobalPercent) : 0;
 
             // Exibir valores na tela principal
-            document.getElementById('txtPerdaCampoRef').textContent = pPerdaCampo.toFixed(1) + '%';
-            document.getElementById('txtPerdaPackingRef').textContent = pPerdaPackingConsolidada.toFixed(1) + '%';
-            document.getElementById('txtPerdaGlobal').textContent = perdaTotalGlobalPercent.toFixed(1) + '%';
-            document.getElementById('txtEficienciaGlobal').textContent = aproveitamentoFinal.toFixed(1) + '%';
+            document.getElementById('txtPerdaCampoRef').textContent = pPerdaCampo + '%';
+            document.getElementById('txtPerdaPackingRef').textContent = pPerdaPackingConsolidada + '%';
+            document.getElementById('txtPerdaGlobal').textContent = perdaTotalGlobalPercent + '%';
+            document.getElementById('txtEficienciaGlobal').textContent = aproveitamentoFinal + '%';
 
             // Exibir valores no laudo de exportação
-            document.getElementById('relPerdaCampoRef').textContent = pPerdaCampo.toFixed(1) + '%';
-            document.getElementById('relPerdaPackingRef').textContent = pPerdaPackingConsolidada.toFixed(1) + '%';
-            document.getElementById('relPerdaGlobal').textContent = perdaTotalGlobalPercent.toFixed(1) + '%';
-            document.getElementById('relEficienciaGlobal').textContent = aproveitamentoFinal.toFixed(1) + '%';
+            document.getElementById('relPerdaCampoRef').textContent = pPerdaCampo + '%';
+            document.getElementById('relPerdaPackingRef').textContent = pPerdaPackingConsolidada + '%';
+            document.getElementById('relPerdaGlobal').textContent = perdaTotalGlobalPercent + '%';
+            document.getElementById('relEficienciaGlobal').textContent = aproveitamentoFinal + '%';
+        }
+
+        function mostrarErro(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.remove('hidden');
         }
 
         // ================= CONFIGURAÇÃO DOS GRÁFICOS VISUAIS =================
         function initCharts() {
             const optCampo = { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                scales: { y: { beginAtZero: true } }, 
+                responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, 
                 plugins: { 
-                    datalabels: { 
-                        color: '#000', 
-                        font: { weight: 'bold', size: 11 },
-                        formatter: (val) => val > 0 ? `${val} un` : ''
-                    },
+                    datalabels: { color: '#000', font: { weight: 'bold', size: 11 }, formatter: (val) => val > 0 ? `${val} un` : '' },
                     legend: { display: false }
                 } 
             };
 
             const optPacking = { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                scales: { y: { beginAtZero: true } }, 
+                responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, 
                 plugins: { 
-                    datalabels: { 
-                        color: '#000', 
-                        font: { weight: 'bold', size: 11 },
-                        formatter: (val) => val > 0 ? `${val.toFixed(1)} Kg` : ''
-                    },
-                    legend: { display: false } // Como é só descarte, removemos a legenda comparativa
+                    datalabels: { color: '#000', font: { weight: 'bold', size: 11 }, formatter: (val) => val > 0 ? `${val.toFixed(1)} Kg` : '' },
+                    legend: { display: false } 
                 } 
             };
             
             chartCampo = new Chart(document.getElementById('graficoBarrasCampo').getContext('2d'), {
-                type: 'bar', 
-                data: { labels: [], datasets: [{ label: 'Unidades Perdidas', data: [], backgroundColor: '#f43f5e', borderRadius: 4 }] }, 
-                options: optCampo
+                type: 'bar', data: { labels: [], datasets: [{ label: 'Unidades Perdidas', data: [], backgroundColor: '#f43f5e', borderRadius: 4 }] }, options: optCampo
             });
             
             chartPacking = new Chart(document.getElementById('graficoBarrasPacking').getContext('2d'), {
-                type: 'bar', 
-                data: { labels: [], datasets: [{ label: 'Descarte (Kg)', data: [], backgroundColor: '#f97316', borderRadius: 4 }] }, 
-                options: optPacking
+                type: 'bar', data: { labels: [], datasets: [{ label: 'Descarte (Kg)', data: [], backgroundColor: '#f43f5e', borderRadius: 4 }] }, options: optPacking
             });
         }
 
@@ -1008,9 +1096,9 @@
                 document.getElementById('registroForm').reset();
                 causasCampoList = []; 
                 causasPackingList = [];
+                aprovPackingList = [];
                 recalcularCampo(); 
                 recalcularPacking();
-                calcularDesempenhoGlobal();
             }
         }
 
@@ -1022,64 +1110,54 @@
         }
 
         function preencherLaudo() {
-            // Seção 1: Dados Gerais
+            // Seção 1
             document.getElementById('relBloco').textContent = getSelect('bloco', 'blocoOutro');
             document.getElementById('relCultura').textContent = getSelect('cultura', 'culturaOutro');
             document.getElementById('relVariedade').textContent = getSelect('variedade', 'variedadeOutro');
             document.getElementById('relDiasProd').textContent = document.getElementById('diasProducao').value ? `${document.getElementById('diasProducao').value} dias` : '-';
 
-            // Seção 2: Produção de Campo
+            // Seção 2: Campo
             document.getElementById('relTransp').textContent = totalTranspGlob.toLocaleString('pt-BR');
             document.getElementById('relColhido').textContent = totalColhidoGlob.toLocaleString('pt-BR');
             document.getElementById('relPendente').textContent = totalPerdaCampoGlob.toLocaleString('pt-BR');
             document.getElementById('relPercColhido').textContent = `(${document.getElementById('percColhido').textContent}%)`;
             document.getElementById('relPercPendente').textContent = `(${document.getElementById('percPendente').textContent}%)`;
 
-            const tbodyC = document.getElementById('relTableBodyCampo'); 
-            tbodyC.innerHTML = '';
-            if(causasCampoList.length === 0) {
-                tbodyC.innerHTML = `<tr><td colspan="3" class="py-2 px-3 text-center text-gray-500 italic">Sem registros de perdas detalhadas.</td></tr>`;
-            } else {
-                causasCampoList.forEach(c => {
-                    let p = totalTranspGlob ? ((c.qtd/totalTranspGlob)*100).toFixed(1) : 0;
-                    tbodyC.innerHTML += `
-                        <tr class="border-b border-gray-100">
-                            <td class="py-2 px-3 font-semibold text-slate-800">${c.nome}</td>
-                            <td class="py-2 px-3 text-right font-bold">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-2 px-3 text-right text-rose-600 font-bold">${p}%</td>
-                        </tr>`;
-                });
-            }
+            const tbodyC = document.getElementById('relTableBodyCampo'); tbodyC.innerHTML = '';
+            if(causasCampoList.length === 0) tbodyC.innerHTML = `<tr><td colspan="3" class="py-2 px-3 text-center text-gray-500 italic">Sem registros.</td></tr>`;
+            else causasCampoList.forEach(c => {
+                let p = totalTranspGlob ? Math.round((c.qtd/totalTranspGlob)*100) : 0;
+                tbodyC.innerHTML += `<tr class="border-b border-gray-100"><td class="py-2 px-3 font-semibold text-slate-800">${c.nome}</td><td class="py-2 px-3 text-right font-bold">${c.qtd.toLocaleString('pt-BR')}</td><td class="py-2 px-3 text-right text-rose-600 font-bold">${p}%</td></tr>`;
+            });
 
             // Seção 3: Packing House
             document.getElementById('relTotalKg').textContent = totalProdKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1}) + ' Kg';
             document.getElementById('relAprovKg').textContent = totalAprovKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1}) + ' Kg';
             document.getElementById('relDescKg').textContent = totalDescarteKgGlob.toLocaleString('pt-BR', {minimumFractionDigits: 1}) + ' Kg';
             
-            const pAprov = totalProdKgGlob ? Math.round((totalAprovKgGlob / totalProdKgGlob) * 100) : 0;
-            const pDesc = totalProdKgGlob ? Math.round((totalDescarteKgGlob / totalProdKgGlob) * 100) : 0;
+            let pDesc = totalProdKgGlob ? Math.round((totalDescarteKgGlob / totalProdKgGlob) * 100) : 0;
+            let pAprov = totalProdKgGlob ? (100 - pDesc) : 0;
             
             document.getElementById('relPercAprovKg').textContent = `(${pAprov}%)`;
             document.getElementById('relPercDescKg').textContent = `(${pDesc}%)`;
 
-            const tbodyP = document.getElementById('relTableBodyPacking'); 
-            tbodyP.innerHTML = '';
-            if(causasPackingList.length === 0) {
-                tbodyP.innerHTML = `<tr><td colspan="4" class="py-2 px-3 text-center text-gray-500 italic">Sem registros detalhados de descarte.</td></tr>`;
-            } else {
-                causasPackingList.forEach(c => {
-                    let p = totalProdKgGlob ? ((c.qtd/totalProdKgGlob)*100).toFixed(1) : 0;
-                    tbodyP.innerHTML += `
-                        <tr class="border-b border-gray-100">
-                            <td class="py-2 px-3 text-gray-500 font-medium">${formatarDataISOparaBR(c.data)}</td>
-                            <td class="py-2 px-3 font-semibold text-slate-800">${c.nome}</td>
-                            <td class="py-2 px-3 text-right font-bold">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})}</td>
-                            <td class="py-2 px-3 text-right text-orange-600 font-bold">${p}%</td>
-                        </tr>`;
-                });
-            }
+            // Table Aproveitamento (Export)
+            const tbodyA = document.getElementById('relTableBodyAprov'); tbodyA.innerHTML = '';
+            if(aprovPackingList.length === 0) tbodyA.innerHTML = `<tr><td colspan="3" class="py-1 px-3 text-center text-gray-500 italic">Sem registros de aproveitamento.</td></tr>`;
+            else aprovPackingList.forEach(c => {
+                let p = totalProdKgGlob ? Math.round((c.qtd/totalProdKgGlob)*100) : 0;
+                tbodyA.innerHTML += `<tr class="border-b border-gray-100"><td class="py-1 px-3 font-semibold text-slate-800">${c.nome}</td><td class="py-1 px-3 text-right font-bold">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})}</td><td class="py-1 px-3 text-right text-emerald-600 font-bold">${p}%</td></tr>`;
+            });
 
-            // Converter canvas dos gráficos ativos em imagens
+            // Table Descarte (Export)
+            const tbodyP = document.getElementById('relTableBodyPacking'); tbodyP.innerHTML = '';
+            if(causasPackingList.length === 0) tbodyP.innerHTML = `<tr><td colspan="4" class="py-1 px-3 text-center text-gray-500 italic">Sem registros de descarte.</td></tr>`;
+            else causasPackingList.forEach(c => {
+                let p = totalProdKgGlob ? Math.round((c.qtd/totalProdKgGlob)*100) : 0;
+                tbodyP.innerHTML += `<tr class="border-b border-gray-100"><td class="py-1 px-3 text-gray-500 font-medium">${formatarDataISOparaBR(c.data)}</td><td class="py-1 px-3 font-semibold text-slate-800">${c.nome}</td><td class="py-1 px-3 text-right font-bold">${c.qtd.toLocaleString('pt-BR', {minimumFractionDigits: 1})}</td><td class="py-1 px-3 text-right text-rose-600 font-bold">${p}%</td></tr>`;
+            });
+
+            // Converter gráficos
             document.getElementById('relImgBarrasCampo').src = document.getElementById('graficoBarrasCampo').toDataURL();
             document.getElementById('relImgBarrasPacking').src = document.getElementById('graficoBarrasPacking').toDataURL();
         }
@@ -1112,21 +1190,14 @@
                     const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' });
                     const pdfWidth = doc.internal.pageSize.getWidth();
                     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                    
                     doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, Math.min(pdfHeight, doc.internal.pageSize.getHeight()));
                     doc.save(`${nomeArq}.pdf`);
                 } else {
                     const link = document.createElement('a');
-                    link.download = `${nomeArq}.jpg`;
-                    link.href = imgData; 
-                    link.click();
+                    link.download = `${nomeArq}.jpg`; link.href = imgData; link.click();
                 }
-            } catch (err) { 
-                alert('Ocorreu um erro ao gerar o relatório: ' + err.message); 
-            } finally {
-                btnOrig.innerHTML = txtOrig;
-                btnOrig.disabled = false;
-            }
+            } catch (err) { alert('Erro ao gerar relatório: ' + err.message); } 
+            finally { btnOrig.innerHTML = txtOrig; btnOrig.disabled = false; }
         }
 
         const exportarJPEG = () => exportarImagemOuPDF('jpeg');
@@ -1136,39 +1207,25 @@
         async function enviarParaPlanilha() {
             const url = 'https://script.google.com/macros/s/AKfycbxk9o4yF_J4MNH0lTUVP2cxY0yKm7IScREmxW9bY0Vn5bBshCkLF3d0VZFD8HNLeIVw/exec';
             
-            if(totalTranspGlob <= 0 && totalProdKgGlob <= 0) {
-                alert("Por favor, preencha as tabelas de dados de Campo ou de Packing House antes de exportar."); 
-                return;
-            }
+            if(totalTranspGlob <= 0 && totalProdKgGlob <= 0) { alert("Preencha dados antes de exportar."); return; }
 
-            const btn = document.getElementById('btnEnviarPlanilha');
-            const txt = btn.innerHTML; 
-            btn.innerHTML = '⏳ Enviando Registros...'; 
-            btn.disabled = true;
+            const btn = document.getElementById('btnEnviarPlanilha'); const txt = btn.innerHTML; 
+            btn.innerHTML = '⏳ Enviando...'; btn.disabled = true;
 
             const payload = {
-                // Informações do Lote
                 dataEmissao: document.getElementById('dataAtual').textContent,
                 semana: document.getElementById('semanaAtual').textContent,
-                bloco: getSelect('bloco', 'blocoOutro'),
-                cultura: getSelect('cultura', 'culturaOutro'),
-                variedade: getSelect('variedade', 'variedadeOutro'),
-                statusPlantio: document.getElementById('statusPlantio').value,
+                bloco: getSelect('bloco', 'blocoOutro'), cultura: getSelect('cultura', 'culturaOutro'),
+                variedade: getSelect('variedade', 'variedadeOutro'), statusPlantio: document.getElementById('statusPlantio').value,
                 
-                // Escoamento de Campo (Un)
-                transplantadoUn: totalTranspGlob,
-                colhidoUn: totalColhidoGlob,
-                perdaUn: totalPerdaCampoGlob,
+                transplantadoUn: totalTranspGlob, colhidoUn: totalColhidoGlob, perdaUn: totalPerdaCampoGlob,
                 percColhidoCampo: document.getElementById('percColhido').textContent + '%',
                 causasCampoLista: causasCampoList.map(c => ({ nome: c.nome, qtd: c.qtd })),
                 
-                // Escoamento de Packing House (Kg)
-                producaoTotalKg: totalProdKgGlob,
-                totalAproveitadoKg: totalAprovKgGlob,
-                totalDescarteKg: totalDescarteKgGlob,
+                producaoTotalKg: totalProdKgGlob, totalAproveitadoKg: totalAprovKgGlob, totalDescarteKg: totalDescarteKgGlob,
+                causasAproveitamentoLista: aprovPackingList.map(c => ({ nome: c.nome, qtd: c.qtd })), // NOVO
                 causasPackingLista: causasPackingList.map(c => ({ data: c.data, nome: c.nome, qtd: c.qtd })),
                 
-                // Resultados de Loop Fechado Consolidado
                 perdaCampoConsolidada: document.getElementById('txtPerdaCampoRef').textContent,
                 perdaPackingConsolidada: document.getElementById('txtPerdaPackingRef').textContent,
                 perdaTotalGlobal: document.getElementById('txtPerdaGlobal').textContent,
@@ -1176,21 +1233,10 @@
             };
 
             try {
-                await fetch(url, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                    body: JSON.stringify(payload) 
-                });
-                alert('✅ Lançamento enviado com sucesso! Dados consolidados na planilha.');
-                limparFormularioTotal();
-            } catch (err) {
-                console.error(err); 
-                alert('⚠️ Ocorreu uma inconsistência de rede ao sincronizar. Verifique as configurações.');
-            } finally {
-                btn.innerHTML = txt; 
-                btn.disabled = false;
-            }
+                await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+                alert('✅ Enviado com sucesso!'); limparFormularioTotal();
+            } catch (err) { alert('⚠️ Inconsistência de rede.'); } 
+            finally { btn.innerHTML = txt; btn.disabled = false; }
         }
     </script>
 </body>
