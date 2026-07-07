@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Percentual de Perdas - Fazenda Oásis</title>
+    <title>Registo Percentual de Perdas - Fazenda Oásis</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,23 +17,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Melhorando o visual dos campos de input e select */
+        /* Melhorando o visual e centralização vertical dos campos de input e select */
         .input-melhorado {
             border-width: 2px;
             border-color: #cbd5e1;
             transition: all 0.2s ease-in-out;
+            height: 46px; /* Altura fixa para controle preciso de alinhamento */
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
         }
         .input-melhorado:focus {
             border-color: #10b981;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
             outline: none;
         }
+
+        /* Ajuste específico para garantir texto de inputs e selects centralizado verticalmente */
+        input.input-melhorado, select.input-melhorado {
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            vertical-align: middle;
+        }
         
-        /* Logo sem contornos */
+        /* Logo sem contornos ou bordas indesejadas */
         .logo-img {
-            border: none;
-            outline: none;
-            background: transparent;
+            border: 0 !important;
+            border-style: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
             mix-blend-mode: multiply; 
         }
 
@@ -64,14 +77,15 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Versão Executiva) */
+        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Versão Executiva Melhorada) */
         #relatorioExportacao {
             position: absolute;
-            left: -9999px; /* Oculto na tela normal */
+            left: -9999px; /* Oculto na vista normal */
             top: 0;
-            width: 1050px; /* Largura para acomodar a densidade executiva */
+            width: 1000px; /* Largura fixa otimizada para A4 */
             background-color: white;
             padding: 40px;
+            box-sizing: border-box;
         }
 
         @media print {
@@ -91,10 +105,10 @@
 </head>
 <body class="bg-gray-100 min-h-screen p-4 md:p-8 font-sans text-gray-800 pb-36">
 
-    <!-- Container do Sistema de Toasts (Notificações) -->
+    <!-- Contentor do Sistema de Toasts (Notificações) -->
     <div id="toastContainer"></div>
 
-    <!-- ÁREA DE PREENCHIMENTO (UI do Usuário) -->
+    <!-- ÁREA DE PREENCHIMENTO (UI do Utilizador) -->
     <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 relative">
         
         <!-- Cabeçalho -->
@@ -103,7 +117,7 @@
                 <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-28 h-28 object-contain logo-img" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
             </div>
             <div class="text-center md:text-left flex-grow flex flex-col justify-center h-full pt-2">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Registro Percentual de Perdas</h1>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Registo Percentual de Perdas</h1>
                 <h2 class="text-xl md:text-2xl font-bold text-emerald-700 mt-1">Fazenda Oásis</h2>
             </div>
             
@@ -124,14 +138,14 @@
             <!-- Dados Gerais -->
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-emerald-600 w-2 h-6 rounded mr-2"></span> Informações do Plantio
+                    <span class="bg-emerald-600 w-2 h-6 rounded mr-2"></span> Informações da Plantação
                 </h3>
                 
                 <!-- Linha 1: Bloco, Cultura, Variedade -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-1">
                         <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1">Bloco da Plantação *</label>
-                        <select id="bloco" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800" required>
+                        <select id="bloco" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
                             <option value="" disabled selected>Selecione um bloco</option>
                             <option value="01">Bloco 01</option>
                             <option value="02">Bloco 02</option>
@@ -145,38 +159,38 @@
                             <option value="10">Bloco 10</option>
                             <option value="outros">Outros...</option>
                         </select>
-                        <input type="text" id="blocoOutro" placeholder="Digite o bloco" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 py-2 bg-white">
+                        <input type="text" id="blocoOutro" placeholder="Digite o bloco" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
                     </div>
 
                     <div class="col-span-1">
                         <label for="cultura" class="block text-sm font-semibold text-gray-700 mb-1">Cultura *</label>
-                        <select id="cultura" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800" required>
+                        <select id="cultura" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
                             <option value="" disabled selected>Selecione a cultura</option>
                             <option value="Brocolis">Brócolis</option>
                             <option value="Couve flor">Couve flor</option>
                             <option value="outros">Outros...</option>
                         </select>
-                        <input type="text" id="culturaOutro" placeholder="Digite a cultura" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 py-2 bg-white">
+                        <input type="text" id="culturaOutro" placeholder="Digite a cultura" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
                     </div>
 
                     <div class="col-span-1">
                         <label for="variedade" class="block text-sm font-semibold text-gray-700 mb-1">Variedade *</label>
-                        <select id="variedade" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800" required>
+                        <select id="variedade" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
                             <option value="" disabled selected>Selecione a variedade</option>
                             <option value="Syngenta BRO 68">Syngenta BRO 68</option>
                             <option value="TSV Master">TSV Master</option>
                             <option value="Pharlap">Pharlap</option>
                             <option value="outros">Outros...</option>
                         </select>
-                        <input type="text" id="variedadeOutro" placeholder="Digite a variedade" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 py-2 bg-white">
+                        <input type="text" id="variedadeOutro" placeholder="Digite a variedade" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
                     </div>
                 </div>
 
                 <!-- Linha 2: Status, Data Finalização, Dias de Produção -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-gray-200">
                     <div class="col-span-1">
-                        <label for="statusPlantio" class="block text-sm font-semibold text-gray-700 mb-1">Status da Safra *</label>
-                        <select id="statusPlantio" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800" required onchange="toggleDataFim()">
+                        <label for="statusPlantio" class="block text-sm font-semibold text-gray-700 mb-1">Estado da Safra *</label>
+                        <select id="statusPlantio" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required onchange="toggleDataFim()">
                             <option value="Em Andamento" selected>Em Andamento</option>
                             <option value="Finalizado">Finalizado</option>
                         </select>
@@ -184,12 +198,12 @@
 
                     <div class="col-span-1 hidden transition-all duration-300" id="boxDataFim">
                         <label for="dataFinalizacao" class="block text-sm font-semibold text-gray-700 mb-1">Data de Finalização *</label>
-                        <input type="date" id="dataFinalizacao" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800">
+                        <input type="date" id="dataFinalizacao" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                     </div>
 
                     <div class="col-span-1">
                         <label for="diasProducao" class="block text-sm font-semibold text-gray-700 mb-1">Dias de Produção</label>
-                        <input type="number" min="0" id="diasProducao" placeholder="Ex: 90" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white">
+                        <input type="number" min="0" id="diasProducao" placeholder="Ex: 90" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                     </div>
                 </div>
 
@@ -197,12 +211,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-gray-200">
                     <div class="col-span-1 relative">
                         <label for="totalTransplantado" class="block text-sm font-semibold text-gray-700 mb-1">Total Transplantado (Unidades) *</label>
-                        <input type="number" min="1" id="totalTransplantado" placeholder="Ex: 5000" class="w-full rounded-lg input-melhorado px-4 py-3 text-lg font-bold text-gray-800" required>
+                        <input type="number" min="1" id="totalTransplantado" placeholder="Ex: 5000" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-gray-800" required>
                     </div>
 
                     <div class="col-span-1 relative">
                         <label for="totalColhido" class="block text-sm font-semibold text-gray-700 mb-1">Total Unidades Colhidas *</label>
-                        <input type="number" min="0" id="totalColhido" placeholder="Ex: 4500" class="w-full rounded-lg input-melhorado px-4 py-3 text-lg font-bold text-emerald-700" required>
+                        <input type="number" min="0" id="totalColhido" placeholder="Ex: 4500" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-700" required>
                     </div>
                 </div>
             </div>
@@ -228,11 +242,11 @@
                 </div>
             </div>
 
-            <!-- Registro de Causas -->
+            <!-- Registo de Causas -->
             <div class="bg-white border-2 border-amber-200 rounded-xl shadow-sm overflow-hidden">
                 <div class="bg-amber-50 p-4 border-b border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <h3 class="text-lg font-bold text-amber-900 flex items-center">
-                        <span class="bg-amber-500 w-2 h-6 rounded mr-2"></span> Detalhamento das Causas de Perda
+                        <span class="bg-amber-500 w-2 h-6 rounded mr-2"></span> Detalhe das Causas de Perda
                     </h3>
                     <div class="flex flex-wrap gap-2 text-xs font-bold text-amber-800">
                         <span class="bg-amber-100 px-3 py-1 rounded-full whitespace-nowrap">
@@ -252,21 +266,21 @@
                     <div class="flex flex-col md:flex-row gap-4 items-end">
                         <div class="w-full md:w-5/12">
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Causa da Perda</label>
-                            <select id="causaLista" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white text-gray-800">
+                            <select id="causaLista" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                                 <option value="" disabled selected>Selecione a causa</option>
                                 <option value="Esquiara">Esquiara</option>
                                 <option value="Mal desenvolvidas">Mal desenvolvidas</option>
                                 <option value="Fungos">Fungos</option>
                                 <option value="outros">Outros...</option>
                             </select>
-                            <input type="text" id="causaOutro" placeholder="Especifique a causa" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 py-2 bg-white">
+                            <input type="text" id="causaOutro" placeholder="Especifique a causa" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
                         </div>
                         <div class="w-full md:w-4/12">
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Quantidade Perdida</label>
-                            <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 py-2 bg-white">
+                            <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                         </div>
                         <div class="w-full md:w-3/12">
-                            <button type="button" onclick="adicionarCausa()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-md no-print">
+                            <button type="button" onclick="adicionarCausa()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold h-[46px] rounded-lg transition-colors shadow-md no-print">
                                 Adicionar
                             </button>
                         </div>
@@ -279,7 +293,7 @@
                                 <tr>
                                     <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase">Causa</th>
                                     <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase">Quantidade</th>
-                                    <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase">Percentual da Perda</th>
+                                    <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase">Percentagem da Perda</th>
                                     <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase no-print">Ação</th>
                                 </tr>
                             </thead>
@@ -305,157 +319,147 @@
         </form>
     </div>
 
-    <!-- ÁREA DE EXPORTAÇÃO (Oculta na tela, renderiza como Relatório Oficial Executivo) -->
-    <div id="relatorioExportacao" class="font-sans text-gray-900 mx-auto relative overflow-hidden">
-
-        <!-- Cabeçalho Executivo -->
-        <div class="bg-[#0b3c20] text-white p-8 -mx-10 -mt-10 mb-8 flex justify-between items-center border-b-8 border-emerald-500 shadow-sm">
+    <!-- ÁREA DE EXPORTAÇÃO (Oculta, renderiza como Relatório Oficial Executivo Melhorado) -->
+    <div id="relatorioExportacao" class="font-sans">
+        
+        <!-- Cabeçalho Executivo Verde Escuro de Alto Impacto -->
+        <div class="bg-[#052e16] text-white p-8 -mx-10 -mt-10 mb-8 flex justify-between items-center border-b-8 border-emerald-500 shadow-sm">
             <div class="flex items-center gap-6">
-                <div>
-                    <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain filter brightness-0 invert opacity-95" onerror="this.onerror=null; this.style.display='none';">
-                </div>
+                <!-- Logótipo tratado com filtro para vetor branco perfeito, sem contornos nem fundos -->
+                <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain logo-img filter brightness-0 invert" alt="Logo Fazenda Oásis" style="border:none !important; outline:none !important;">
                 <div>
                     <h1 class="text-3xl font-black uppercase tracking-widest text-emerald-400 mb-1">Desempenho de Safra</h1>
-                    <h2 class="text-lg font-medium text-gray-300 tracking-wide">Fazenda Oásis • Relatório Oficial de Produção e Perdas</h2>
+                    <h2 class="text-lg font-semibold text-gray-200 tracking-wide">Fazenda Oásis • Relatório Oficial de Produção e Perdas</h2>
                 </div>
             </div>
-            <div class="text-right border-l-2 border-emerald-800/50 pl-8 py-2">
+            <div class="text-right border-l-2 border-emerald-800 pl-6">
                 <p class="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-1">Semana Produtiva</p>
-                <p class="text-4xl font-black text-white leading-none mb-2" id="relSemana">--</p>
-                <p class="text-xs text-gray-400 font-medium tracking-wider" id="relData">--/--/----</p>
+                <p class="text-3xl font-black text-white leading-none mb-2" id="relSemana">--</p>
+                <p class="text-sm text-gray-300 font-bold" id="relData">--/--/----</p>
             </div>
         </div>
 
-        <!-- Seção 1: Parâmetros -->
+        <!-- Secção 1: Parâmetros -->
         <div class="mb-8">
-            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-4 h-4 bg-emerald-700 rounded-sm inline-block"></span> 1. Parâmetros da Área de Cultivo
+            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
+                1. Parâmetros da Área de Cultivo
             </h3>
             <div class="grid grid-cols-3 gap-4">
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Bloco / Setor</span>
-                    <span class="block text-2xl font-black text-gray-900" id="relBloco">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Bloco / Setor</span>
+                    <span class="block text-xl font-black text-gray-900 mt-1" id="relBloco">-</span>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Cultura Cultivada</span>
-                    <span class="block text-2xl font-black text-gray-900" id="relCultura">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Cultura Cultivada</span>
+                    <span class="block text-xl font-black text-gray-900 mt-1" id="relCultura">-</span>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Variedade Genética</span>
-                    <span class="block text-2xl font-black text-gray-900" id="relVariedade">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Variedade Genética</span>
+                    <span class="block text-xl font-black text-gray-900 mt-1" id="relVariedade">-</span>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Status da Safra</span>
-                    <span class="block text-xl font-bold text-emerald-700" id="relStatus">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Estado da Safra</span>
+                    <span class="block text-lg font-bold text-emerald-700 mt-1" id="relStatus">-</span>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Data de Finalização</span>
-                    <span class="block text-xl font-bold text-gray-900" id="relDataFim">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Data de Finalização</span>
+                    <span class="block text-lg font-bold text-gray-900 mt-1" id="relDataFim">-</span>
                 </div>
-                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Ciclo Produtivo (Dias)</span>
-                    <span class="block text-xl font-bold text-gray-900" id="relDiasProd">-</span>
+                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
+                    <span class="block text-xs font-bold text-gray-500 uppercase">Ciclo Produtivo (Dias)</span>
+                    <span class="block text-lg font-bold text-gray-900 mt-1" id="relDiasProd">-</span>
                 </div>
             </div>
         </div>
 
-        <!-- Seção 2: KPIs -->
+        <!-- Secção 2: KPIs -->
         <div class="mb-8">
-            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-4 h-4 bg-emerald-700 rounded-sm inline-block"></span> 2. Síntese de Volume e Aproveitamento
+            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
+                2. Síntese de Volume e Aproveitamento
             </h3>
             <div class="grid grid-cols-3 gap-6">
                 <!-- Box Total Transplantado -->
-                <div class="bg-white border border-gray-200 border-l-4 border-l-slate-600 p-6 rounded-r-xl shadow-sm">
-                    <span class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Total Transplantado (Base)</span>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="text-4xl font-black text-slate-800" id="relTransp">0</span>
-                        <span class="text-xs font-bold text-gray-400 uppercase mt-2">UN</span>
+                <div class="border-2 border-slate-400 p-5 rounded-lg bg-white shadow-sm">
+                    <span class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Total Transplantado (Base)</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-slate-900" id="relTransp">0</span>
+                        <span class="text-xs font-bold text-slate-500 uppercase">UN</span>
                     </div>
                 </div>
                 
                 <!-- Box Aproveitamento -->
-                <div class="bg-emerald-50/40 border border-emerald-100 border-l-4 border-l-emerald-500 p-6 rounded-r-xl shadow-sm">
-                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3">Volume Colhido (Aproveitamento)</span>
+                <div class="border-2 border-emerald-500 p-5 rounded-lg bg-emerald-50 shadow-sm">
+                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Volume Colhido (Aproveitamento)</span>
                     <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-4xl font-black text-emerald-700" id="relColhido">0</span>
-                            <span class="text-xs font-bold text-emerald-400 uppercase mt-2">UN</span>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-black text-emerald-700" id="relColhido">0</span>
+                            <span class="text-xs font-bold text-emerald-600 uppercase">UN</span>
                         </div>
-                        <div class="bg-emerald-100/80 px-4 py-1.5 rounded-lg border border-emerald-200 shadow-sm">
-                            <span class="text-xl font-black text-emerald-700" id="relPercColhido">0%</span>
-                        </div>
+                        <span class="text-2xl font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded" id="relPercColhido">0%</span>
                     </div>
                 </div>
 
                 <!-- Box Quebra de Safra -->
-                <div class="bg-red-50/40 border border-red-100 border-l-4 border-l-red-500 p-6 rounded-r-xl shadow-sm">
-                    <span class="block text-xs font-bold text-red-800 uppercase tracking-wider mb-3">Quebra de Safra (Perda)</span>
+                <div class="border-2 border-red-500 p-5 rounded-lg bg-red-50 shadow-sm">
+                    <span class="block text-xs font-bold text-red-800 uppercase tracking-wider mb-2">Quebra de Safra (Perda)</span>
                     <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-4xl font-black text-red-700" id="relPendente">0</span>
-                            <span class="text-xs font-bold text-red-400 uppercase mt-2">UN</span>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-black text-red-700" id="relPendente">0</span>
+                            <span class="text-xs font-bold text-red-600 uppercase">UN</span>
                         </div>
-                        <div class="bg-red-100/80 px-4 py-1.5 rounded-lg border border-red-200 shadow-sm">
-                            <span class="text-xl font-black text-red-700" id="relPercPendente">0%</span>
-                        </div>
+                        <span class="text-2xl font-black text-red-700 bg-red-100 px-3 py-1 rounded" id="relPercPendente">0%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seção 3: Tabela de Causas -->
+        <!-- LAYOUT EMPILHADO (Tabela Acima, Gráfico Abaixo) -->
+        <!-- Secção 3: Tabela de Causas (Largura Completa) -->
         <div class="mb-8">
-            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-4 h-4 bg-emerald-700 rounded-sm inline-block"></span> 3. Análise Qualitativa de Perdas (Detalhamento)
+            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
+                3. Análise Qualitativa de Perdas
             </h3>
-            <div class="rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-                <table class="w-full text-left border-collapse bg-white">
-                    <thead class="bg-slate-800 text-white">
-                        <tr>
-                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest w-1/2">Fator Causal Registrado</th>
-                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest text-right">Volume Perdido (Un)</th>
-                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest text-right">Impacto Relativo (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="relTableBody" class="divide-y divide-gray-100 text-gray-800">
-                        <!-- Preenchido via JS -->
-                    </tbody>
-                    <tfoot class="bg-gray-50 border-t border-gray-200">
-                        <tr id="relRowNaoDetalhado" class="hidden text-sm">
-                            <td class="py-4 px-6 text-gray-500 italic font-medium">Perdas sistêmicas não detalhadas (Diferença)</td>
-                            <td class="py-4 px-6 text-right text-gray-600 font-bold" id="relNaoDetalhadoQtd">0</td>
-                            <td class="py-4 px-6 text-right text-gray-600 font-bold" id="relNaoDetalhadoPerc">0%</td>
-                        </tr>
-                        <tr class="bg-slate-100 text-slate-900 border-t-2 border-slate-300">
-                            <td class="py-5 px-6 font-black uppercase text-right text-sm tracking-widest">Soma Total das Perdas Computadas</td>
-                            <td class="py-5 px-6 text-right font-black text-2xl text-slate-800" id="relTotalQtd">0</td>
-                            <td class="py-5 px-6 text-right font-black text-2xl text-red-600" id="relTotalPerc">0%</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            <table class="w-full text-left border-collapse border border-gray-300 bg-white shadow-sm rounded-lg overflow-hidden">
+                <thead class="bg-slate-100 border-b-2 border-gray-300">
+                    <tr>
+                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800">Fator Causal Registado</th>
+                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800 text-right">Perda (Un)</th>
+                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800 text-right">Impacto (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="relTableBody" class="divide-y divide-gray-200 text-sm">
+                    <!-- Preenchido via JS -->
+                </tbody>
+                <tfoot class="bg-gray-50 border-t-2 border-gray-300 text-sm">
+                    <tr id="relRowNaoDetalhado" class="hidden">
+                        <td class="py-3 px-4 text-gray-600 italic">Perdas não detalhadas (Diferença)</td>
+                        <td class="py-3 px-4 text-right text-gray-700 font-bold" id="relNaoDetalhadoQtd">0</td>
+                        <td class="py-3 px-4 text-right text-gray-700 font-bold" id="relNaoDetalhadoPerc">0%</td>
+                    </tr>
+                    <tr class="bg-slate-800 text-white">
+                        <td class="py-4 px-4 font-black uppercase text-right tracking-wider">Soma das Perdas</td>
+                        <td class="py-4 px-4 text-right font-black text-xl" id="relTotalQtd">0</td>
+                        <td class="py-4 px-4 text-right font-black text-xl text-red-400" id="relTotalPerc">0%</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
 
-        <!-- Seção 4: Gráfico -->
+        <!-- Secção 4: Gráfico (Largura Completa Abaixo da Tabela) -->
         <div class="mb-6">
-            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-4 h-4 bg-emerald-700 rounded-sm inline-block"></span> 4. Projeção Gráfica de Anomalias
+            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
+                4. Projeção Gráfica de Anomalias
             </h3>
-            <div class="bg-white border border-gray-200 rounded-xl p-6 flex justify-center shadow-sm">
-                <img id="relImgBarras" src="" alt="Gráfico Barras" class="w-full object-contain h-[350px]" onerror="this.onerror=null; this.src='https://placehold.co/800x350/f8fafc/64748b?text=Grafico+não+disponível';">
+            <div class="border border-gray-300 rounded-lg p-6 bg-white flex justify-center items-center h-[380px] shadow-sm">
+                <img id="relImgBarras" src="" alt="Gráfico não disponível" class="w-full h-full object-contain">
             </div>
         </div>
         
         <!-- Rodapé Executivo -->
-        <div class="mt-8 border-t-2 border-slate-800 pt-6 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-widest pb-4">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                Documento de Uso Restrito • Diretoria Executiva
-            </div>
+        <div class="mt-8 border-t-2 border-gray-300 pt-4 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+            <div>Documento Oficial de Uso Restrito • Diretoria Executiva</div>
             <div class="text-right">
-                Fazenda Oásis © <span id="anoFooter">2026</span> <br>
-                <span class="text-gray-400 font-semibold">Emitido via Sistema Integrado de Gestão</span>
+                Fazenda Oásis © <span id="anoFooter">2026</span> - Emitido via Sistema de Gestão
             </div>
         </div>
     </div>
@@ -484,7 +488,20 @@
     </div>
 
     <script>
-        Chart.register(ChartDataLabels);
+        // Plugin personalizado para forçar fundo branco na exportação do Chart.js
+        const whiteBackgroundPlugin = {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+                const {ctx} = chart;
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-over';
+                ctx.fillStyle = options.color || '#ffffff';
+                ctx.fillRect(0, 0, chart.width, chart.height);
+                ctx.restore();
+            }
+        };
+
+        Chart.register(ChartDataLabels, whiteBackgroundPlugin);
 
         let causasList = [];
         let totalTransplantadoGlob = 0;
@@ -496,7 +513,6 @@
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             
-            // Definição de estilos por tipo
             let bgClass = 'bg-slate-800';
             let icon = 'ℹ️';
             
@@ -522,11 +538,7 @@
             `;
 
             container.appendChild(toast);
-
-            // Remove após a animação de fadeOut terminar (4 segundos)
-            setTimeout(() => {
-                if (toast.parentElement) toast.remove();
-            }, 4000);
+            setTimeout(() => { if (toast.parentElement) toast.remove(); }, 4000);
         }
 
         function getWeekNumber(d) {
@@ -674,7 +686,7 @@
             document.getElementById('causaOutro').classList.add('hidden'); 
             document.getElementById('causaQtd').value = '';
             
-            showToast("Causa de perda registrada com sucesso!");
+            showToast("Causa de perda registada com sucesso!");
             atualizarStatusCausas();
         }
 
@@ -747,7 +759,10 @@
                         y1: { type: 'linear', position: 'right', max: 100, ticks: { font: { size: 12 } } } 
                     }, 
                     animation: { duration: 0 },
-                    plugins: { legend: { labels: { font: { size: 12 } } } }
+                    plugins: { 
+                        legend: { labels: { font: { size: 12 } } },
+                        customCanvasBackgroundColor: { color: 'white' }
+                    }
                 }
             });
         }
@@ -791,7 +806,6 @@
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
             document.getElementById('relVariedade').textContent = getSelectValue('variedade', 'variedadeOutro');
             
-            // Novos Campos
             const status = document.getElementById('statusPlantio').value;
             document.getElementById('relStatus').textContent = status;
             
@@ -821,16 +835,16 @@
             let somaQtdJustificada = 0;
 
             if(causasList.length === 0 && totalPendenteGlob === 0) {
-                relBody.innerHTML = `<tr><td colspan="3" class="py-6 px-6 text-center text-gray-500 italic">Nenhuma perda registrada neste ciclo.</td></tr>`;
+                relBody.innerHTML = `<tr><td colspan="3" class="py-4 px-4 text-center text-gray-500 italic">Nenhuma perda registada.</td></tr>`;
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                     relBody.innerHTML += `
-                        <tr class="hover:bg-slate-50 border-b border-gray-100 last:border-0 transition-colors">
-                            <td class="py-4 px-6 font-bold text-gray-800">${c.nome}</td>
-                            <td class="py-4 px-6 text-right font-semibold text-gray-700">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-4 px-6 text-right font-black text-slate-700">${pCausa}%</td>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="py-3 px-4 font-bold text-gray-800">${c.nome}</td>
+                            <td class="py-3 px-4 text-right text-gray-700">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-3 px-4 text-right font-black text-slate-700">${pCausa}%</td>
                         </tr>
                     `;
                 });
@@ -850,19 +864,46 @@
             document.getElementById('relTotalQtd').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${pPen}%`;
 
-            const cBarras = document.getElementById('graficoBarras');
-            document.getElementById('relImgBarras').src = cBarras.toDataURL("image/png");
+            // ATUALIZAÇÃO SEGURA DO GRÁFICO (Garante o Fundo Branco)
+            if(graficoBarrasObj) {
+                const base64Img = graficoBarrasObj.toBase64Image();
+                document.getElementById('relImgBarras').src = base64Img || '';
+            }
         }
 
-        const captureOptions = { scale: 3, useCORS: true, backgroundColor: '#ffffff' };
+        const captureOptions = { scale: 2, useCORS: true, backgroundColor: '#ffffff' };
 
         function prepararEImprimir() {
             if (totalTransplantadoGlob <= 0) {
-                showToast("Preencha as informações do plantio para gerar o relatório.", "warning");
+                showToast("Preencha as informações da plantação para gerar o relatório.", "warning");
                 return;
             }
             preencherRelatorioOculto();
             window.print();
+        }
+
+        // Função auxiliar para exibir o relatório temporariamente e capturar com segurança
+        async function renderHtml2CanvasSeguro() {
+            const nodeRel = document.getElementById('relatorioExportacao');
+            
+            // Coloca o layout no ecrã para permitir renderização adequada de imagens e fontes,
+            // mas debaixo do conteúdo principal usando z-index negativo
+            nodeRel.style.position = 'fixed';
+            nodeRel.style.left = '0px';
+            nodeRel.style.top = '0px';
+            nodeRel.style.zIndex = '-9999';
+
+            // TEMPO DE ESPERA CRÍTICO: 300ms permite ao browser descodificar o base64 do gráfico na tag <img>
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            const canvas = await html2canvas(nodeRel, captureOptions);
+            
+            // Devolve à posição oculta padrão
+            nodeRel.style.position = 'absolute';
+            nodeRel.style.left = '-9999px';
+            nodeRel.style.zIndex = 'auto';
+
+            return canvas;
         }
 
         async function exportarJPEG(btn) {
@@ -875,10 +916,8 @@
             btn.disabled = true;
             try {
                 preencherRelatorioOculto();
-                const nodeRel = document.getElementById('relatorioExportacao');
-                nodeRel.style.left = '0px'; 
-                const canvas = await html2canvas(nodeRel, captureOptions);
-                nodeRel.style.left = '-9999px'; 
+                
+                const canvas = await renderHtml2CanvasSeguro();
 
                 const link = document.createElement('a');
                 link.download = `Relatorio_FazendaOasis_Sem${document.getElementById('semanaAtual').textContent}.jpg`;
@@ -903,10 +942,8 @@
             btn.disabled = true;
             try {
                 preencherRelatorioOculto();
-                const nodeRel = document.getElementById('relatorioExportacao');
-                nodeRel.style.left = '0px';
-                const canvas = await html2canvas(nodeRel, captureOptions);
-                nodeRel.style.left = '-9999px';
+                
+                const canvas = await renderHtml2CanvasSeguro();
                 
                 const imgData = canvas.toDataURL('image/jpeg', 0.98);
                 const { jsPDF } = window.jspdf;
@@ -940,13 +977,13 @@
             const url = 'https://script.google.com/macros/s/AKfycbxk9o4yF_J4MNH0lTUVP2cxY0yKm7IScREmxW9bY0Vn5bBshCkLF3d0VZFD8HNLeIVw/exec';
 
             if(totalTransplantadoGlob <= 0) {
-                showToast("Preencha as informações do plantio antes de enviar.", "warning");
+                showToast("Preencha as informações antes de enviar.", "warning");
                 return;
             }
 
             const btn = document.getElementById('btnEnviarPlanilha');
             const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '⏳ Enviando...';
+            btn.innerHTML = '⏳ A enviar...';
             btn.disabled = true;
 
             let listaEnvioCausas = causasList.map(c => {
@@ -997,7 +1034,7 @@
                     body: JSON.stringify(payload)
                 });
 
-                showToast('✅ Dados enviados para planilha com sucesso!');
+                showToast('✅ Dados enviados para a folha de cálculo!');
                 limparFormulario();
             } catch (error) {
                 console.error('Erro ao enviar:', error);
@@ -1017,10 +1054,10 @@
                     form.submit();
                     document.body.removeChild(form);
                     
-                    showToast('⚠️ Modo de contingência utilizado. Dados despachados.', 'warning');
+                    showToast('⚠️ Modo de contingência utilizado.', 'warning');
                     limparFormulario();
                 } catch (fallbackError) {
-                    showToast('❌ Falha completa de conexão com o servidor.', 'error');
+                    showToast('❌ Falha completa de ligação com o servidor.', 'error');
                 }
             } finally {
                 btn.innerHTML = textoOriginal;
