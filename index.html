@@ -12,18 +12,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     
-    <!-- Bibliotecas para exportar PDF e Imagem -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Nova Biblioteca html-to-image (substitui html2canvas) e jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Melhorando o visual e centralização vertical dos campos de input e select */
+        /* Melhorando o visual e centralização vertical dos campos de input e select na UI */
         .input-melhorado {
             border-width: 2px;
             border-color: #cbd5e1;
             transition: all 0.2s ease-in-out;
-            height: 46px; /* Altura fixa para controle preciso de alinhamento */
-            line-height: 1.2;
+            height: 48px;
             display: flex;
             align-items: center;
         }
@@ -33,11 +32,11 @@
             outline: none;
         }
 
-        /* Ajuste específico para garantir texto de inputs e selects centralizado verticalmente */
         input.input-melhorado, select.input-melhorado {
             padding-top: 0px !important;
             padding-bottom: 0px !important;
             vertical-align: middle;
+            line-height: 1.5;
         }
         
         /* Logo sem contornos ou bordas indesejadas */
@@ -77,15 +76,22 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Versão Executiva Melhorada) */
+        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Super Elegante e Alinhado) */
         #relatorioExportacao {
             position: absolute;
             left: -9999px; /* Oculto na vista normal */
             top: 0;
             width: 1000px; /* Largura fixa otimizada para A4 */
-            background-color: white;
+            background-color: #f8fafc; /* Fundo subtil elegante (slate-50) */
             padding: 40px;
             box-sizing: border-box;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #1e293b;
+        }
+
+        /* Garante que tudo no relatório tem line-height estrito para html-to-image renderizar bem centrado */
+        #relatorioExportacao * {
+            line-height: normal;
         }
 
         @media print {
@@ -99,6 +105,7 @@
                 width: 100% !important;
                 padding: 20px !important;
                 display: block !important;
+                background-color: white !important;
             }
         }
     </style>
@@ -226,8 +233,8 @@
                 <div class="bg-emerald-50 border-2 border-emerald-200 p-5 rounded-xl shadow-sm">
                     <p class="text-sm font-bold text-emerald-800 uppercase tracking-wide">Percentual Colhido</p>
                     <div class="flex items-end mt-2">
-                        <span id="percColhido" class="text-5xl font-black text-emerald-600">0</span>
-                        <span class="text-2xl font-bold text-emerald-600 ml-1 mb-1">%</span>
+                        <span id="percColhido" class="text-5xl font-black text-emerald-600 leading-none">0</span>
+                        <span class="text-2xl font-bold text-emerald-600 ml-1 leading-none">%</span>
                     </div>
                     <p id="unidadesColhidasDesc" class="text-sm font-medium text-emerald-700 mt-2">Preencha os totais acima.</p>
                 </div>
@@ -235,8 +242,8 @@
                 <div class="bg-red-50 border-2 border-red-200 p-5 rounded-xl shadow-sm">
                     <p class="text-sm font-bold text-red-800 uppercase tracking-wide">Percentual Pendente / Perda Total</p>
                     <div class="flex items-end mt-2">
-                        <span id="percPendente" class="text-5xl font-black text-red-600">0</span>
-                        <span class="text-2xl font-bold text-red-600 ml-1 mb-1">%</span>
+                        <span id="percPendente" class="text-5xl font-black text-red-600 leading-none">0</span>
+                        <span class="text-2xl font-bold text-red-600 ml-1 leading-none">%</span>
                     </div>
                     <p id="unidadesPerdidasDesc" class="text-sm font-medium text-red-700 mt-2">Preencha os totais acima.</p>
                 </div>
@@ -280,7 +287,7 @@
                             <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                         </div>
                         <div class="w-full md:w-3/12">
-                            <button type="button" onclick="adicionarCausa()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold h-[46px] rounded-lg transition-colors shadow-md no-print">
+                            <button type="button" onclick="adicionarCausa()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold h-[48px] rounded-lg transition-colors shadow-md no-print flex items-center justify-center">
                                 Adicionar
                             </button>
                         </div>
@@ -319,147 +326,156 @@
         </form>
     </div>
 
-    <!-- ÁREA DE EXPORTAÇÃO (Oculta, renderiza como Relatório Oficial Executivo Melhorado) -->
-    <div id="relatorioExportacao" class="font-sans">
+    <!-- ÁREA DE EXPORTAÇÃO (Oculta, renderiza como Relatório Oficial Executivo Elegante) -->
+    <div id="relatorioExportacao">
         
-        <!-- Cabeçalho Executivo Verde Escuro de Alto Impacto -->
-        <div class="bg-[#052e16] text-white p-8 -mx-10 -mt-10 mb-8 flex justify-between items-center border-b-8 border-emerald-500 shadow-sm">
+        <!-- Cabeçalho Executivo Verde Escuro com Gradiente Premium -->
+        <div class="bg-gradient-to-r from-[#064e3b] to-[#0f766e] text-white p-8 -mx-10 -mt-10 mb-8 flex justify-between items-center shadow-lg rounded-b-xl border-b-[6px] border-[#047857]">
             <div class="flex items-center gap-6">
-                <!-- Logótipo tratado com filtro para vetor branco perfeito, sem contornos nem fundos -->
-                <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain logo-img filter brightness-0 invert" alt="Logo Fazenda Oásis" style="border:none !important; outline:none !important;">
-                <div>
-                    <h1 class="text-3xl font-black uppercase tracking-widest text-emerald-400 mb-1">Desempenho de Safra</h1>
-                    <h2 class="text-lg font-semibold text-gray-200 tracking-wide">Fazenda Oásis • Relatório Oficial de Produção e Perdas</h2>
+                <!-- Logótipo original sem contorno -->
+                <div class="flex items-center justify-center">
+                    <img src="https://i.imgur.com/wEozr34.png" class="w-24 h-24 object-contain" alt="Logo Fazenda Oásis">
+                </div>
+                <div class="flex flex-col justify-center">
+                    <h1 class="text-[28px] leading-none font-black uppercase tracking-widest text-emerald-300 mb-2">Desempenho de Safra</h1>
+                    <h2 class="text-base leading-none font-medium text-emerald-50 tracking-wider">Fazenda Oásis • Relatório Oficial de Produção e Perdas</h2>
                 </div>
             </div>
-            <div class="text-right border-l-2 border-emerald-800 pl-6">
-                <p class="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-1">Semana Produtiva</p>
-                <p class="text-3xl font-black text-white leading-none mb-2" id="relSemana">--</p>
-                <p class="text-sm text-gray-300 font-bold" id="relData">--/--/----</p>
+            <div class="text-right border-l border-emerald-500/50 pl-6 flex flex-col justify-center">
+                <p class="text-[11px] text-emerald-200 font-bold uppercase tracking-widest mb-1 leading-none">Semana Produtiva</p>
+                <p class="text-[40px] font-black text-white leading-none mb-1 drop-shadow-md" id="relSemana">--</p>
+                <p class="text-sm text-emerald-100 font-semibold leading-none tracking-wide" id="relData">--/--/----</p>
             </div>
         </div>
 
         <!-- Secção 1: Parâmetros -->
-        <div class="mb-8">
-            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
-                1. Parâmetros da Área de Cultivo
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-[13px] font-black text-slate-700 uppercase tracking-widest mb-5 flex items-center gap-2">
+                <span class="w-2 h-4 bg-emerald-600 rounded-full inline-block"></span> 1. Parâmetros da Área de Cultivo
             </h3>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Bloco / Setor</span>
-                    <span class="block text-xl font-black text-gray-900 mt-1" id="relBloco">-</span>
+            <div class="grid grid-cols-3 gap-5">
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Bloco / Setor</span>
+                    <span class="block text-xl font-black text-slate-800 leading-none" id="relBloco">-</span>
                 </div>
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Cultura Cultivada</span>
-                    <span class="block text-xl font-black text-gray-900 mt-1" id="relCultura">-</span>
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Cultura Cultivada</span>
+                    <span class="block text-xl font-black text-slate-800 leading-none" id="relCultura">-</span>
                 </div>
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Variedade Genética</span>
-                    <span class="block text-xl font-black text-gray-900 mt-1" id="relVariedade">-</span>
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Variedade Genética</span>
+                    <span class="block text-xl font-black text-slate-800 leading-none" id="relVariedade">-</span>
                 </div>
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Estado da Safra</span>
-                    <span class="block text-lg font-bold text-emerald-700 mt-1" id="relStatus">-</span>
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Estado da Safra</span>
+                    <span class="block text-lg font-bold text-emerald-700 leading-none" id="relStatus">-</span>
                 </div>
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Data de Finalização</span>
-                    <span class="block text-lg font-bold text-gray-900 mt-1" id="relDataFim">-</span>
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Data de Finalização</span>
+                    <span class="block text-lg font-bold text-slate-800 leading-none" id="relDataFim">-</span>
                 </div>
-                <div class="border border-gray-300 p-4 rounded-lg bg-gray-50">
-                    <span class="block text-xs font-bold text-gray-500 uppercase">Ciclo Produtivo (Dias)</span>
-                    <span class="block text-lg font-bold text-gray-900 mt-1" id="relDiasProd">-</span>
+                <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center shadow-sm">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-2">Ciclo Produtivo (Dias)</span>
+                    <span class="block text-lg font-bold text-slate-800 leading-none" id="relDiasProd">-</span>
                 </div>
             </div>
         </div>
 
         <!-- Secção 2: KPIs -->
         <div class="mb-8">
-            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
-                2. Síntese de Volume e Aproveitamento
+            <h3 class="text-[13px] font-black text-slate-700 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="w-2 h-4 bg-emerald-600 rounded-full inline-block"></span> 2. Síntese de Volume e Aproveitamento
             </h3>
             <div class="grid grid-cols-3 gap-6">
                 <!-- Box Total Transplantado -->
-                <div class="border-2 border-slate-400 p-5 rounded-lg bg-white shadow-sm">
-                    <span class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Total Transplantado (Base)</span>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-slate-900" id="relTransp">0</span>
-                        <span class="text-xs font-bold text-slate-500 uppercase">UN</span>
+                <div class="border border-slate-200 p-5 rounded-xl bg-white shadow-sm flex flex-col items-center justify-center text-center">
+                    <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-none mb-3">Total Transplantado (Base)</span>
+                    <div class="flex items-end justify-center gap-2">
+                        <span class="text-3xl font-black text-slate-800 leading-none" id="relTransp">0</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase leading-none pb-1">UN</span>
                     </div>
                 </div>
                 
                 <!-- Box Aproveitamento -->
-                <div class="border-2 border-emerald-500 p-5 rounded-lg bg-emerald-50 shadow-sm">
-                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Volume Colhido (Aproveitamento)</span>
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-3xl font-black text-emerald-700" id="relColhido">0</span>
-                            <span class="text-xs font-bold text-emerald-600 uppercase">UN</span>
+                <div class="border border-emerald-200 p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-white shadow-sm flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-2 h-full bg-emerald-400"></div>
+                    <span class="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider leading-none mb-3">Volume Colhido (Aprov.)</span>
+                    <div class="flex flex-col items-center justify-center gap-2">
+                        <div class="flex items-end justify-center gap-2">
+                            <span class="text-3xl font-black text-emerald-700 leading-none" id="relColhido">0</span>
+                            <span class="text-[10px] font-bold text-emerald-600 uppercase leading-none pb-1">UN</span>
                         </div>
-                        <span class="text-2xl font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded" id="relPercColhido">0%</span>
+                        <span class="text-xl font-black text-emerald-700 bg-white border border-emerald-100 shadow-sm px-3 py-1 rounded-lg leading-none flex items-center mt-1" id="relPercColhido">0%</span>
                     </div>
                 </div>
 
                 <!-- Box Quebra de Safra -->
-                <div class="border-2 border-red-500 p-5 rounded-lg bg-red-50 shadow-sm">
-                    <span class="block text-xs font-bold text-red-800 uppercase tracking-wider mb-2">Quebra de Safra (Perda)</span>
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-3xl font-black text-red-700" id="relPendente">0</span>
-                            <span class="text-xs font-bold text-red-600 uppercase">UN</span>
+                <div class="border border-red-200 p-5 rounded-xl bg-gradient-to-br from-red-50 to-white shadow-sm flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-2 h-full bg-red-400"></div>
+                    <span class="block text-[11px] font-bold text-red-800 uppercase tracking-wider leading-none mb-3">Quebra de Safra (Perda)</span>
+                    <div class="flex flex-col items-center justify-center gap-2">
+                        <div class="flex items-end justify-center gap-2">
+                            <span class="text-3xl font-black text-red-700 leading-none" id="relPendente">0</span>
+                            <span class="text-[10px] font-bold text-red-600 uppercase leading-none pb-1">UN</span>
                         </div>
-                        <span class="text-2xl font-black text-red-700 bg-red-100 px-3 py-1 rounded" id="relPercPendente">0%</span>
+                        <span class="text-xl font-black text-red-700 bg-white border border-red-100 shadow-sm px-3 py-1 rounded-lg leading-none flex items-center mt-1" id="relPercPendente">0%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- LAYOUT EMPILHADO (Tabela Acima, Gráfico Abaixo) -->
-        <!-- Secção 3: Tabela de Causas (Largura Completa) -->
-        <div class="mb-8">
-            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
-                3. Análise Qualitativa de Perdas
+        <!-- LAYOUT EMPILHADO -->
+        <!-- Secção 3: Tabela de Causas -->
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-[13px] font-black text-slate-700 uppercase tracking-widest mb-5 flex items-center gap-2">
+                <span class="w-2 h-4 bg-emerald-600 rounded-full inline-block"></span> 3. Análise Qualitativa de Perdas
             </h3>
-            <table class="w-full text-left border-collapse border border-gray-300 bg-white shadow-sm rounded-lg overflow-hidden">
-                <thead class="bg-slate-100 border-b-2 border-gray-300">
+            <table class="w-full text-left border-collapse border border-slate-200 bg-white rounded-lg overflow-hidden">
+                <thead class="bg-slate-50 border-b border-slate-200">
                     <tr>
-                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800">Fator Causal Registado</th>
-                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800 text-right">Perda (Un)</th>
-                        <th class="py-3 px-4 font-bold text-xs uppercase text-slate-800 text-right">Impacto (%)</th>
+                        <th class="py-3 px-5 font-bold text-[11px] uppercase text-slate-600 tracking-wider">Fator Causal Registado</th>
+                        <th class="py-3 px-5 font-bold text-[11px] uppercase text-slate-600 tracking-wider text-right">Perda (Un)</th>
+                        <th class="py-3 px-5 font-bold text-[11px] uppercase text-slate-600 tracking-wider text-right">Impacto (%)</th>
                     </tr>
                 </thead>
-                <tbody id="relTableBody" class="divide-y divide-gray-200 text-sm">
+                <tbody id="relTableBody" class="divide-y divide-slate-100 text-sm">
                     <!-- Preenchido via JS -->
                 </tbody>
-                <tfoot class="bg-gray-50 border-t-2 border-gray-300 text-sm">
+                <tfoot class="bg-slate-50 border-t-2 border-slate-200 text-sm">
                     <tr id="relRowNaoDetalhado" class="hidden">
-                        <td class="py-3 px-4 text-gray-600 italic">Perdas não detalhadas (Diferença)</td>
-                        <td class="py-3 px-4 text-right text-gray-700 font-bold" id="relNaoDetalhadoQtd">0</td>
-                        <td class="py-3 px-4 text-right text-gray-700 font-bold" id="relNaoDetalhadoPerc">0%</td>
+                        <td class="py-3 px-5 text-slate-500 italic font-medium">Perdas não detalhadas (Diferença)</td>
+                        <td class="py-3 px-5 text-right text-slate-700 font-bold" id="relNaoDetalhadoQtd">0</td>
+                        <td class="py-3 px-5 text-right text-slate-700 font-bold" id="relNaoDetalhadoPerc">0%</td>
                     </tr>
                     <tr class="bg-slate-800 text-white">
-                        <td class="py-4 px-4 font-black uppercase text-right tracking-wider">Soma das Perdas</td>
-                        <td class="py-4 px-4 text-right font-black text-xl" id="relTotalQtd">0</td>
-                        <td class="py-4 px-4 text-right font-black text-xl text-red-400" id="relTotalPerc">0%</td>
+                        <td class="py-4 px-5 font-black uppercase text-right tracking-widest text-[12px] flex items-center justify-end h-full">Soma das Perdas</td>
+                        <td class="py-4 px-5 text-right font-black text-xl leading-none" id="relTotalQtd">0</td>
+                        <td class="py-4 px-5 text-right font-black text-xl text-red-400 leading-none" id="relTotalPerc">0%</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
-        <!-- Secção 4: Gráfico (Largura Completa Abaixo da Tabela) -->
-        <div class="mb-6">
-            <h3 class="text-sm font-black text-gray-800 uppercase tracking-widest mb-4 border-b-2 border-gray-200 pb-2">
-                4. Projeção Gráfica de Anomalias
+        <!-- Secção 4: Gráfico -->
+        <div class="mb-4 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-[13px] font-black text-slate-700 uppercase tracking-widest mb-5 flex items-center gap-2">
+                <span class="w-2 h-4 bg-emerald-600 rounded-full inline-block"></span> 4. Projeção Gráfica de Anomalias
             </h3>
-            <div class="border border-gray-300 rounded-lg p-6 bg-white flex justify-center items-center h-[380px] shadow-sm">
+            <div class="rounded-lg p-2 flex justify-center items-center h-[360px]">
                 <img id="relImgBarras" src="" alt="Gráfico não disponível" class="w-full h-full object-contain">
             </div>
         </div>
         
         <!-- Rodapé Executivo -->
-        <div class="mt-8 border-t-2 border-gray-300 pt-4 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-            <div>Documento Oficial de Uso Restrito • Diretoria Executiva</div>
-            <div class="text-right">
-                Fazenda Oásis © <span id="anoFooter">2026</span> - Emitido via Sistema de Gestão
+        <div class="mt-8 border-t border-slate-300 pt-5 flex justify-between items-center text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                Documento Oficial Restrito
+            </div>
+            <div class="text-right flex items-center gap-2">
+                <span>Fazenda Oásis © <span id="anoFooter">2026</span></span>
+                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                <span class="text-slate-400">Sistema Integrado de Gestão</span>
             </div>
         </div>
     </div>
@@ -530,7 +546,7 @@
             const toast = document.createElement('div');
             toast.className = `${bgClass} text-white font-semibold px-4 py-3 rounded-lg shadow-xl flex items-center justify-between gap-3 toast-item border border-white/10`;
             toast.innerHTML = `
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 leading-none">
                     <span>${icon}</span>
                     <span class="text-sm">${message}</span>
                 </div>
@@ -710,11 +726,11 @@
                     totalJustificado += causa.qtd;
                     let percRelativoTransp = totalTransplantadoGlob > 0 ? (causa.qtd / totalTransplantadoGlob) * 100 : 0;
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-gray-50 transition-colors";
+                    tr.className = "hover:bg-slate-100 transition-colors border-b border-slate-100";
                     tr.innerHTML = `
-                        <td class="px-4 py-3 font-semibold text-gray-800">${causa.nome}</td>
-                        <td class="px-4 py-3 text-center text-gray-700 font-medium">${causa.qtd.toLocaleString('pt-BR')}</td>
-                        <td class="px-4 py-3 text-center font-bold text-red-600">${Math.round(percRelativoTransp)}%</td>
+                        <td class="px-5 py-3 font-semibold text-slate-800 leading-none h-[40px] align-middle">${causa.nome}</td>
+                        <td class="px-5 py-3 text-right text-slate-700 font-medium leading-none h-[40px] align-middle">${causa.qtd.toLocaleString('pt-BR')}</td>
+                        <td class="px-5 py-3 text-right font-black text-red-600 leading-none h-[40px] align-middle">${Math.round(percRelativoTransp)}%</td>
                         <td class="px-4 py-3 text-center no-print">
                             <button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 px-3 py-1 rounded transition-colors">✕</button>
                         </td>
@@ -835,16 +851,16 @@
             let somaQtdJustificada = 0;
 
             if(causasList.length === 0 && totalPendenteGlob === 0) {
-                relBody.innerHTML = `<tr><td colspan="3" class="py-4 px-4 text-center text-gray-500 italic">Nenhuma perda registada.</td></tr>`;
+                relBody.innerHTML = `<tr><td colspan="3" class="py-4 px-5 text-center text-slate-500 italic">Nenhuma perda registada.</td></tr>`;
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                     relBody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="py-3 px-4 font-bold text-gray-800">${c.nome}</td>
-                            <td class="py-3 px-4 text-right text-gray-700">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-3 px-4 text-right font-black text-slate-700">${pCausa}%</td>
+                        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+                            <td class="py-3 px-5 font-bold text-slate-800 leading-none h-[40px] align-middle">${c.nome}</td>
+                            <td class="py-3 px-5 text-right text-slate-700 leading-none h-[40px] align-middle">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-3 px-5 text-right font-black text-slate-800 leading-none h-[40px] align-middle">${pCausa}%</td>
                         </tr>
                     `;
                 });
@@ -864,14 +880,40 @@
             document.getElementById('relTotalQtd').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${pPen}%`;
 
-            // ATUALIZAÇÃO SEGURA DO GRÁFICO (Garante o Fundo Branco)
             if(graficoBarrasObj) {
                 const base64Img = graficoBarrasObj.toBase64Image();
                 document.getElementById('relImgBarras').src = base64Img || '';
             }
         }
 
-        const captureOptions = { scale: 2, useCORS: true, backgroundColor: '#ffffff' };
+        // Nova função usando html-to-image para gerar com perfeita qualidade e alinhamento
+        async function renderHtmlToImageSeguro() {
+            const nodeRel = document.getElementById('relatorioExportacao');
+            
+            // Coloca em posição visível temporária para cálculo perfeito do flexbox
+            nodeRel.style.position = 'fixed';
+            nodeRel.style.left = '0px';
+            nodeRel.style.top = '0px';
+            nodeRel.style.zIndex = '-9999';
+            nodeRel.style.display = 'block';
+
+            // Tempo extra garantido para rendering da imagem do gráfico 
+            await new Promise(resolve => setTimeout(resolve, 400));
+            
+            // Usando htmlToImage em vez de html2canvas
+            const dataUrl = await htmlToImage.toJpeg(nodeRel, {
+                quality: 0.98,
+                backgroundColor: '#f8fafc',
+                pixelRatio: 2 // Alta resolução para PDF e impressão
+            });
+            
+            // Restaura
+            nodeRel.style.position = 'absolute';
+            nodeRel.style.left = '-9999px';
+            nodeRel.style.zIndex = 'auto';
+
+            return dataUrl;
+        }
 
         function prepararEImprimir() {
             if (totalTransplantadoGlob <= 0) {
@@ -882,50 +924,27 @@
             window.print();
         }
 
-        // Função auxiliar para exibir o relatório temporariamente e capturar com segurança
-        async function renderHtml2CanvasSeguro() {
-            const nodeRel = document.getElementById('relatorioExportacao');
-            
-            // Coloca o layout no ecrã para permitir renderização adequada de imagens e fontes,
-            // mas debaixo do conteúdo principal usando z-index negativo
-            nodeRel.style.position = 'fixed';
-            nodeRel.style.left = '0px';
-            nodeRel.style.top = '0px';
-            nodeRel.style.zIndex = '-9999';
-
-            // TEMPO DE ESPERA CRÍTICO: 300ms permite ao browser descodificar o base64 do gráfico na tag <img>
-            await new Promise(resolve => setTimeout(resolve, 300));
-            
-            const canvas = await html2canvas(nodeRel, captureOptions);
-            
-            // Devolve à posição oculta padrão
-            nodeRel.style.position = 'absolute';
-            nodeRel.style.left = '-9999px';
-            nodeRel.style.zIndex = 'auto';
-
-            return canvas;
-        }
-
         async function exportarJPEG(btn) {
             if (totalTransplantadoGlob <= 0) {
                 showToast("Insira dados de cultivo para exportação.", "warning");
                 return;
             }
             const textOrig = btn.innerHTML; 
-            btn.innerHTML = '⏳ Processando...';
+            btn.innerHTML = '⏳ A processar...';
             btn.disabled = true;
             try {
                 preencherRelatorioOculto();
                 
-                const canvas = await renderHtml2CanvasSeguro();
+                const dataUrl = await renderHtmlToImageSeguro();
 
                 const link = document.createElement('a');
                 link.download = `Relatorio_FazendaOasis_Sem${document.getElementById('semanaAtual').textContent}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.98); 
+                link.href = dataUrl;
                 link.click();
-                showToast("JPEG exportado com sucesso!");
+                showToast("JPEG exportado com sucesso! (Perfeitamente alinhado)");
             } catch (err) { 
                 showToast('Erro ao exportar JPEG: ' + err.message, 'error'); 
+                console.error(err);
             } finally { 
                 btn.innerHTML = textOrig; 
                 btn.disabled = false;
@@ -938,19 +957,23 @@
                 return;
             }
             const textOrig = btn.innerHTML; 
-            btn.innerHTML = '⏳ Processando...';
+            btn.innerHTML = '⏳ A processar...';
             btn.disabled = true;
             try {
                 preencherRelatorioOculto();
                 
-                const canvas = await renderHtml2CanvasSeguro();
+                const dataUrl = await renderHtmlToImageSeguro();
                 
-                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                // Inicializa a imagem no dom para ler dimensões
+                const img = new Image();
+                img.src = dataUrl;
+                await new Promise(r => img.onload = r);
+
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
                 const pdfWidth = doc.internal.pageSize.getWidth();
-                let pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                let pdfHeight = (img.height * pdfWidth) / img.width;
                 const pageHeightLimit = doc.internal.pageSize.getHeight();
 
                 if (pdfHeight > pageHeightLimit) {
@@ -958,9 +981,9 @@
                     pdfHeight = pageHeightLimit; 
                     const novaLargura = pdfWidth * proporcao; 
                     const margemX = (pdfWidth - novaLargura) / 2;
-                    doc.addImage(imgData, 'JPEG', margemX, 0, novaLargura, pdfHeight);
+                    doc.addImage(dataUrl, 'JPEG', margemX, 0, novaLargura, pdfHeight);
                 } else {
-                    doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                    doc.addImage(dataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 }
                 
                 doc.save(`Relatorio_FazendaOasis_Sem${document.getElementById('semanaAtual').textContent}.pdf`);
