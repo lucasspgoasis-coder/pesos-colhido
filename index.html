@@ -125,7 +125,7 @@
                 </div>
                 <div class="w-px h-10 bg-emerald-300"></div>
                 <div class="text-center">
-                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1 whitespace-nowrap">Semana Nº</span>
+                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1 whitespace-nowrap">Ciclo Nº</span>
                     <span id="semanaAtual" class="block text-base md:text-lg font-bold text-gray-800 whitespace-nowrap">--</span>
                 </div>
             </div>
@@ -138,9 +138,14 @@
                     <span class="bg-emerald-600 w-2 h-6 rounded mr-2"></span> Informações da Plantação
                 </h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="col-span-1">
-                        <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1">Bloco da Plantação *</label>
+                        <label for="cicloProducao" class="block text-sm font-semibold text-gray-700 mb-1">Ciclo Nº *</label>
+                        <input type="number" id="cicloProducao" placeholder="Ex: 12" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required oninput="document.getElementById('semanaAtual').textContent = this.value || '--'; document.getElementById('relSemana').textContent = this.value || '--';">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1">Setor (Bloco) *</label>
                         <select id="bloco" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
                             <option value="" disabled selected>Selecione um bloco</option>
                             <option value="01">Bloco 01</option>
@@ -334,7 +339,7 @@
                 </div>
             </div>
             <div class="text-right border-l-2 border-slate-200 pl-6 flex flex-col justify-center">
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Semana Produtiva</p>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Ciclo Produtivo</p>
                 <p class="text-5xl font-black text-emerald-700 leading-none mb-2" id="relSemana">--</p>
                 <p class="text-lg text-slate-700 font-bold leading-none" id="relData">--/--/----</p>
             </div>
@@ -518,13 +523,6 @@
             setTimeout(() => { if (toast.parentElement) toast.remove(); }, 4000);
         }
 
-        function getWeekNumber(d) {
-            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            return Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        }
-
         function formatarData(data) {
             const dia = String(data.getDate()).padStart(2, '0');
             const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -541,9 +539,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const hoje = new Date();
             document.getElementById('dataAtual').textContent = formatarData(hoje);
-            document.getElementById('semanaAtual').textContent = getWeekNumber(hoje);
             document.getElementById('relData').textContent = formatarData(hoje);
-            document.getElementById('relSemana').textContent = getWeekNumber(hoje);
             document.getElementById('anoFooter').textContent = hoje.getFullYear();
 
             configurarCamposOutros();
@@ -682,6 +678,8 @@
         function limparFormulario() {
             document.getElementById('registroForm').reset();
             ['blocoOutro', 'culturaOutro', 'variedadeOutro', 'causaOutro', 'boxDataFim'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById('semanaAtual').textContent = '--';
+            document.getElementById('relSemana').textContent = '--';
             causasList = []; recalcularTudo();
         }
 
@@ -784,7 +782,7 @@
                 preencherRelatorioOculto();
                 const dataUrl = await renderHtmlToImageSeguro();
                 const link = document.createElement('a');
-                link.download = `Relatorio_Oasis_Sem${document.getElementById('semanaAtual').textContent}.jpg`;
+                link.download = `Relatorio_Oasis_Ciclo${document.getElementById('semanaAtual').textContent}.jpg`;
                 link.href = dataUrl; link.click();
                 showToast("JPEG exportado com sucesso!");
             } catch (err) { showToast('Erro JPEG: ' + err.message, 'error'); 
@@ -814,7 +812,7 @@
                 });
 
                 doc.addImage(dataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                doc.save(`Relatorio_Oasis_Sem${document.getElementById('semanaAtual').textContent}.pdf`);
+                doc.save(`Relatorio_Oasis_Ciclo${document.getElementById('semanaAtual').textContent}.pdf`);
                 
                 showToast("PDF gerado com sucesso!");
             } catch (err) { showToast('Erro PDF: ' + err.message, 'error'); 
@@ -822,7 +820,7 @@
         }
 
         async function enviarParaPlanilha() {
-            const url = 'https://script.google.com/macros/s/AKfycbxk9o4yF_J4MNH0lTUVP2cxY0yKm7IScREmxW9bY0Vn5bBshCkLF3d0VZFD8HNLeIVw/exec';
+            const url = 'https://script.google.com/macros/s/AKfycby_VOdNUdcz59dBsh4iqTuZvZ2MHtFGuA_SKRi-lcHEggTKlR8EaHVY_YEYfCTaHnu0/exec';
             if(totalTransplantadoGlob <= 0) return showToast("Preencha as informações antes de enviar.", "warning");
 
             const btn = document.getElementById('btnEnviarPlanilha');
@@ -840,16 +838,14 @@
 
             const payload = {
                 data: document.getElementById('dataAtual').textContent,
+                ciclo: document.getElementById('cicloProducao').value || '-',
                 bloco: getSelectValue('bloco', 'blocoOutro'),
-                variedade: `${getSelectValue('cultura', 'culturaOutro')} (${getSelectValue('variedade', 'variedadeOutro')})`,
-                Ciclo: document.getElementById('semanaAtual').textContent,
-                status: document.getElementById('statusPlantio').value,
-                dataFinalizacao: document.getElementById('statusPlantio').value === 'Finalizado' ? document.getElementById('dataFinalizacao').value : '',
-                diasProducao: document.getElementById('diasProducao').value,
+                cultura: getSelectValue('cultura', 'culturaOutro'),
+                variedade: getSelectValue('variedade', 'variedadeOutro'),
                 transplantado: totalTransplantadoGlob,
                 colhido: totalColhidoGlob,
-                totalKg: totalKgGlob,                // Novo campo enviado
-                mediaG: mediaGGlob,                  // Novo campo enviado
+                totalKg: totalKgGlob,
+                mediaG: mediaGGlob,
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
