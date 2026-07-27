@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registo Percentual de Perdas - Fazenda Oásis</title>
+    <title>Registo de Produção e Perdas - Fazenda Oásis</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js para os gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     
     <!-- Biblioteca html-to-image e jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
@@ -72,24 +68,6 @@
         @keyframes fadeOut {
             from { transform: translateX(0); opacity: 1; }
             to { transform: translateX(100%); opacity: 0; }
-        }
-
-        /* Barra de rolagem customizada para o gráfico */
-        .custom-scrollbar::-webkit-scrollbar {
-            height: 12px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 8px;
-            border: 3px solid #f1f5f9;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
         }
 
         /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO */
@@ -235,6 +213,24 @@
                         <input type="number" min="0" id="totalColhido" placeholder="Ex: 4500" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-700" required>
                     </div>
                 </div>
+                
+                <!-- Novos campos exclusivos para KG e Média -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 p-5 rounded-xl border border-emerald-200 bg-emerald-50/50 shadow-inner">
+                    <div class="col-span-1 relative">
+                        <label for="totalKgColhido" class="block text-sm font-semibold text-emerald-900 mb-1 flex items-center">
+                            <span class="mr-1">⚖️</span> Total KG Colhido
+                        </label>
+                        <input type="number" step="0.01" min="0" id="totalKgColhido" placeholder="Ex: 1350.50" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-800 bg-white border-emerald-300 focus:border-emerald-500">
+                    </div>
+
+                    <div class="col-span-1 relative">
+                        <label class="block text-sm font-semibold text-emerald-900 mb-1">Média (g) por Unidade</label>
+                        <div class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-900 bg-emerald-100 border-emerald-300 flex items-center justify-between shadow-sm cursor-not-allowed opacity-90">
+                            <span id="mediaGramasDisplay">0,00</span>
+                            <span class="text-sm font-bold text-emerald-700 uppercase tracking-widest">g/un</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Resumo Percentual -->
@@ -265,16 +261,16 @@
                         <span class="bg-amber-500 w-2 h-6 rounded mr-2"></span> Detalhe das Causas de Perda
                     </h3>
                     <div class="flex flex-wrap gap-2 text-xs font-bold text-amber-800">
-                        <span class="bg-amber-100 px-3 py-1 rounded-full whitespace-nowrap">
+                        <span class="bg-amber-100 px-3 py-1 rounded-full whitespace-nowrap border border-amber-300">
                             Pendentes a justificar: <span id="pendentesLivres">0</span> unid.
                         </span>
-                        <span class="bg-amber-200 px-3 py-1 rounded-full whitespace-nowrap">
+                        <span class="bg-amber-200 px-3 py-1 rounded-full whitespace-nowrap border border-amber-400">
                             Justificado: <span id="percJustificadoSoma">0</span>% de <span id="percPendenteMax">0</span>%
                         </span>
                     </div>
                 </div>
                 
-                <div class="w-full bg-gray-100 h-2">
+                <div class="w-full bg-amber-100 h-2 border-b border-amber-200">
                     <div id="barraProgressoJustificativa" class="bg-amber-500 h-full transition-all duration-300 shadow-[0_0_8px_rgba(245,158,11,0.5)]" style="width: 0%"></div>
                 </div>
                 
@@ -302,36 +298,21 @@
                         </div>
                     </div>
                     
-                    <div class="mt-6 border border-gray-200 rounded-lg overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200 text-sm">
-                            <thead class="bg-gray-50">
+                    <div class="mt-6 border-2 border-emerald-600 rounded-lg overflow-hidden shadow-sm">
+                        <table class="min-w-full border-collapse text-sm bg-white">
+                            <thead class="bg-emerald-600 text-white">
                                 <tr>
-                                    <th class="px-4 py-3 text-left font-bold text-gray-600 uppercase">Causa</th>
-                                    <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase">Quantidade</th>
-                                    <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase">Percentagem da Perda</th>
-                                    <th class="px-4 py-3 text-center font-bold text-gray-600 uppercase no-print">Ação</th>
+                                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider border-r border-emerald-500">Causa</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider no-print">Ação</th>
                                 </tr>
                             </thead>
-                            <tbody id="tabelaCausasBody" class="bg-white divide-y divide-gray-200">
+                            <tbody id="tabelaCausasBody" class="bg-white">
                             </tbody>
                         </table>
-                        <div id="tabelaCausasVazia" class="p-6 text-center text-gray-500 font-medium bg-white">
+                        <div id="tabelaCausasVazia" class="p-6 text-center text-emerald-800 font-medium bg-emerald-50 border-t border-emerald-200">
                             Nenhuma causa adicionada ainda.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gráfico com Barra de Rolagem Horizontal Inteligente -->
-            <div class="pt-6 border-t border-gray-200">
-                <div class="bg-white p-6 border rounded-xl shadow-sm w-full">
-                    <h4 class="text-center font-bold text-gray-700 mb-4 text-sm uppercase">Análise de Causas (Qtd e %)</h4>
-                    
-                    <!-- Container com rolagem horizontal que esconde a rolagem vertical -->
-                    <div class="relative w-full overflow-x-auto overflow-y-hidden custom-scrollbar pb-2" id="graficoScrollContainer">
-                        <!-- Wrapper interno do chart que aumenta de tamanho dependendo da qtd de registros -->
-                        <div id="chartWrapper" class="relative h-[400px]" style="min-width: 100%;">
-                            <canvas id="graficoBarras"></canvas>
                         </div>
                     </div>
                 </div>
@@ -365,116 +346,121 @@
                 <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 1. Parâmetros da Plantação
             </h3>
             <div class="grid grid-cols-3 gap-4">
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Bloco / Setor</span>
                     <span class="block text-xl font-black text-slate-800" id="relBloco">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Cultura</span>
                     <span class="block text-xl font-black text-slate-800" id="relCultura">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade</span>
                     <span class="block text-xl font-black text-slate-800" id="relVariedade">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Estado</span>
                     <span class="block text-lg font-bold text-emerald-700" id="relStatus">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Data Finalização</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDataFim">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Ciclo Produtivo</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDiasProd">-</span>
                 </div>
             </div>
         </div>
 
-        <!-- Secção 2: Síntese de Volumes -->
+        <!-- Secção 2: Síntese de Volumes e Pesos -->
         <div class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2. Síntese de Produção
+                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2. Síntese de Produção & Rendimento
             </h3>
+            
             <div class="grid grid-cols-3 gap-6">
-                <div class="border border-slate-300 p-5 rounded-xl bg-white text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-2">Transplantado (Base)</span>
+                <!-- Coluna 1: Transplantado -->
+                <div class="border-2 border-slate-300 p-5 rounded-xl bg-white text-center shadow-sm flex flex-col justify-center">
+                    <span class="block text-xs font-bold text-slate-600 uppercase mb-2">Transplantado (Base)</span>
                     <div class="flex items-end justify-center gap-1">
                         <span class="text-4xl font-black text-slate-800 leading-none" id="relTransp">0</span>
                         <span class="text-xs font-bold text-slate-400 pb-1">UN</span>
                     </div>
                 </div>
                 
-                <div class="border-2 border-emerald-300 p-5 rounded-xl bg-emerald-50 text-center shadow-sm">
+                <!-- Coluna 2: Colhido (Unidades e Peso) -->
+                <div class="border-2 border-emerald-600 p-5 rounded-xl bg-emerald-50 text-center shadow-sm relative overflow-hidden flex flex-col justify-center">
                     <span class="block text-xs font-bold text-emerald-800 uppercase mb-2">Volume Colhido</span>
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-end justify-center gap-1">
-                            <span class="text-4xl font-black text-emerald-700 leading-none" id="relColhido">0</span>
-                            <span class="text-xs font-bold text-emerald-600 pb-1">UN</span>
+                    <div class="flex items-end justify-center gap-1 mb-2">
+                        <span class="text-4xl font-black text-emerald-700 leading-none" id="relColhido">0</span>
+                        <span class="text-xs font-bold text-emerald-600 pb-1">UN</span>
+                    </div>
+                    <span class="text-sm font-bold text-white bg-emerald-600 px-3 py-0.5 rounded-full shadow-sm mb-4 inline-block" id="relPercColhido">0%</span>
+                    
+                    <!-- Novo bloco para KG e Media dentro da exportação -->
+                    <div class="border-t border-emerald-200 pt-3 grid grid-cols-2 gap-2 text-left">
+                        <div>
+                            <span class="block text-[10px] font-bold text-emerald-600 uppercase">Peso Total</span>
+                            <span class="text-lg font-black text-emerald-900" id="relTotalKg">0,00 <span class="text-xs">KG</span></span>
                         </div>
-                        <span class="text-lg font-bold text-white bg-emerald-600 px-3 py-1 rounded-full mt-2" id="relPercColhido">0%</span>
+                        <div>
+                            <span class="block text-[10px] font-bold text-emerald-600 uppercase">Média / Unid.</span>
+                            <span class="text-lg font-black text-emerald-900" id="relMediaG">0,00 <span class="text-xs">g</span></span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="border-2 border-red-300 p-5 rounded-xl bg-red-50 text-center shadow-sm">
+                <!-- Coluna 3: Pendente / Perda -->
+                <div class="border-2 border-red-600 p-5 rounded-xl bg-red-50 text-center shadow-sm flex flex-col justify-center">
                     <span class="block text-xs font-bold text-red-800 uppercase mb-2">Perda / Quebra</span>
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-end justify-center gap-1">
-                            <span class="text-4xl font-black text-red-700 leading-none" id="relPendente">0</span>
-                            <span class="text-xs font-bold text-red-600 pb-1">UN</span>
-                        </div>
-                        <span class="text-lg font-bold text-white bg-red-600 px-3 py-1 rounded-full mt-2" id="relPercPendente">0%</span>
+                    <div class="flex items-end justify-center gap-1">
+                        <span class="text-4xl font-black text-red-700 leading-none" id="relPendente">0</span>
+                        <span class="text-xs font-bold text-red-600 pb-1">UN</span>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <span class="text-lg font-bold text-white bg-red-600 px-4 py-1 rounded-full shadow-sm inline-block" id="relPercPendente">0%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Secção 3 e 4 combinadas para otimizar espaço -->
-        <div class="mb-8">
+        <!-- Secção 3: Tabela de Perdas (Foco Único) -->
+        <div class="mb-10">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 3. Detalhamento de Perdas
+                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 3. Tabela Detalhada de Perdas
             </h3>
             
-            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-white border-2 border-emerald-800 rounded-xl overflow-hidden shadow-sm">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-100 border-b-2 border-slate-200">
+                    <thead class="bg-emerald-800 text-white">
                         <tr>
-                            <th class="py-3 px-5 font-bold text-xs uppercase text-slate-600 tracking-wider">Causa Reportada</th>
-                            <th class="py-3 px-5 font-bold text-xs uppercase text-slate-600 tracking-wider text-right">Quantidade (UN)</th>
-                            <th class="py-3 px-5 font-bold text-xs uppercase text-slate-600 tracking-wider text-right">Impacto Total (%)</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider border-r border-emerald-700 w-1/2">Causa Reportada</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-right border-r border-emerald-700 w-1/4">Quantidade (UN)</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-right w-1/4">Impacto Total (%)</th>
                         </tr>
                     </thead>
-                    <tbody id="relTableBody" class="divide-y divide-slate-100 text-sm">
+                    <tbody id="relTableBody" class="text-sm bg-white">
+                        <!-- O conteúdo será injetado pelo JavaScript com bordos internos -->
                     </tbody>
-                    <tfoot class="bg-slate-50 border-t-2 border-slate-200 text-sm">
-                        <tr id="relRowNaoDetalhado" class="hidden">
-                            <td class="py-3 px-5 text-slate-500 italic font-medium">Perdas não detalhadas</td>
-                            <td class="py-3 px-5 text-right text-slate-600 font-bold" id="relNaoDetalhadoQtd">0</td>
-                            <td class="py-3 px-5 text-right text-slate-600 font-bold" id="relNaoDetalhadoPerc">0%</td>
+                    <tfoot class="bg-emerald-50 border-t-2 border-emerald-800 text-sm">
+                        <tr id="relRowNaoDetalhado" class="hidden border-b border-emerald-200">
+                            <td class="py-3 px-5 text-emerald-800 italic font-medium border-r border-emerald-200">Perdas não detalhadas</td>
+                            <td class="py-3 px-5 text-right text-emerald-900 font-bold border-r border-emerald-200" id="relNaoDetalhadoQtd">0</td>
+                            <td class="py-3 px-5 text-right text-emerald-900 font-bold" id="relNaoDetalhadoPerc">0%</td>
                         </tr>
-                        <tr class="bg-slate-200">
-                            <td class="py-4 px-5 font-black uppercase text-right tracking-widest text-xs text-slate-700">Total de Perdas</td>
-                            <td class="py-4 px-5 text-right font-black text-xl text-slate-800 leading-none" id="relTotalQtd">0</td>
+                        <tr class="bg-emerald-100">
+                            <td class="py-4 px-5 font-black uppercase text-right tracking-widest text-xs text-emerald-900 border-r border-emerald-300">Total de Perdas</td>
+                            <td class="py-4 px-5 text-right font-black text-xl text-emerald-900 leading-none border-r border-emerald-300" id="relTotalQtd">0</td>
                             <td class="py-4 px-5 text-right font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
-
-        <div class="mb-4">
-            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 4. Projeção Gráfica
-            </h3>
-            <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 w-full flex justify-center">
-                <!-- A imagem vai conter-se na largura, evitando achatar text e barras -->
-                <img id="relImgBarras" src="" alt="Gráfico" class="w-full h-auto max-h-[500px] object-contain mix-blend-multiply">
-            </div>
-        </div>
         
         <!-- Rodapé Oficial -->
-        <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
+        <div class="mt-10 border-t-2 border-slate-300 pt-6 flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 Documento Oficial de Registo
@@ -505,24 +491,12 @@
     </div>
 
     <script>
-        const whiteBackgroundPlugin = {
-            id: 'customCanvasBackgroundColor',
-            beforeDraw: (chart, args, options) => {
-                const {ctx} = chart;
-                ctx.save();
-                ctx.globalCompositeOperation = 'destination-over';
-                ctx.fillStyle = options.color || '#ffffff';
-                ctx.fillRect(0, 0, chart.width, chart.height);
-                ctx.restore();
-            }
-        };
-        Chart.register(ChartDataLabels, whiteBackgroundPlugin);
-
         let causasList = [];
         let totalTransplantadoGlob = 0;
         let totalColhidoGlob = 0;
         let totalPendenteGlob = 0;
-        let graficoBarrasObj = null;
+        let totalKgGlob = 0;       // Novo estado para KG
+        let mediaGGlob = 0;        // Novo estado para Média (g)
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -573,10 +547,11 @@
             document.getElementById('anoFooter').textContent = hoje.getFullYear();
 
             configurarCamposOutros();
-            inicializarGraficos();
 
+            // Listeners para recálculos
             document.getElementById('totalTransplantado').addEventListener('input', recalcularTudo);
             document.getElementById('totalColhido').addEventListener('input', recalcularTudo);
+            document.getElementById('totalKgColhido').addEventListener('input', recalcularTudo);
         });
 
         function toggleDataFim() {
@@ -612,9 +587,23 @@
         function recalcularTudo() {
             const transp = parseInt(document.getElementById('totalTransplantado').value) || 0;
             const colhido = parseInt(document.getElementById('totalColhido').value) || 0;
+            const totalKg = parseFloat(document.getElementById('totalKgColhido').value) || 0;
+            
             const elPercColhido = document.getElementById('percColhido');
             const elPercPendente = document.getElementById('percPendente');
+            const elMediaGramas = document.getElementById('mediaGramasDisplay');
             
+            // Calculo da Média e Atualização Globais
+            totalKgGlob = totalKg;
+            if (colhido > 0 && totalKg > 0) {
+                mediaGGlob = (totalKg * 1000) / colhido;
+                // Exibe formatado, ex: "300,12"
+                elMediaGramas.textContent = mediaGGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                mediaGGlob = 0;
+                elMediaGramas.textContent = "0,00";
+            }
+
             if (transp > 0) {
                 if (colhido > transp) {
                     elPercColhido.textContent = "0"; elPercPendente.textContent = "0";
@@ -670,12 +659,13 @@
                 causasList.forEach((causa, index) => {
                     totalJustificado += causa.qtd;
                     let perc = totalTransplantadoGlob > 0 ? (causa.qtd / totalTransplantadoGlob) * 100 : 0;
+                    // Linhas da tabela estilizadas com contornos e cores
                     tbody.innerHTML += `
-                        <tr class="hover:bg-slate-100 transition-colors border-b border-slate-100">
-                            <td class="px-5 py-3 font-semibold text-slate-800">${causa.nome}</td>
-                            <td class="px-5 py-3 text-right font-medium">${causa.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="px-5 py-3 text-right font-black text-red-600">${Math.round(perc)}%</td>
-                            <td class="px-4 py-3 text-center no-print"><button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 px-3 py-1 rounded">✕</button></td>
+                        <tr class="hover:bg-emerald-50 transition-colors border-b border-emerald-200">
+                            <td class="px-5 py-3 font-semibold text-slate-800 border-r border-emerald-100">${causa.nome}</td>
+                            <td class="px-5 py-3 text-right font-medium text-slate-700 border-r border-emerald-100">${causa.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="px-5 py-3 text-right font-black text-red-600 border-r border-emerald-100">${Math.round(perc)}%</td>
+                            <td class="px-4 py-3 text-center no-print"><button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded shadow-sm">✕</button></td>
                         </tr>
                     `;
                 });
@@ -687,53 +677,6 @@
             
             const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${Math.min(progressoFracao, 100)}%`;
-
-            atualizarGraficos();
-        }
-
-        function inicializarGraficos() {
-            const ctxBar = document.getElementById('graficoBarras').getContext('2d');
-            
-            graficoBarrasObj = new Chart(ctxBar, {
-                type: 'bar',
-                data: { labels: [], datasets: [
-                        { type: 'line', label: '% de Perda', data: [], borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderWidth: 3, fill: true, tension: 0.4, yAxisID: 'y1', datalabels: { align: 'top', formatter: v => Math.round(v) + '%', color: '#b91c1c', font: { weight: 'bold', size: 14 } }},
-                        { type: 'bar', label: 'Qtd Perdas', data: [], backgroundColor: '#f59e0b', borderRadius: 6, yAxisID: 'y', datalabels: { align: 'bottom', anchor: 'end', formatter: v => v + ' un', color: '#ffffff', font: { weight: 'bold', size: 12 } }}
-                ]},
-                options: { 
-                    responsive: true, maintainAspectRatio: false, 
-                    scales: { 
-                        x: { ticks: { font: { size: 12, weight: 'bold' } } }, 
-                        y: { type: 'linear', position: 'left', ticks: { font: { size: 12 } } },
-                        y1: { type: 'linear', position: 'right', max: 100, ticks: { font: { size: 12 } } } 
-                    }, 
-                    animation: { duration: 0 },
-                    plugins: { customCanvasBackgroundColor: { color: 'white' } }
-                }
-            });
-        }
-
-        function atualizarGraficos() {
-            const labels = causasList.map(c => c.nome);
-            const qtds = causasList.map(c => c.qtd);
-            const percs = causasList.map(c => (c.qtd / (totalTransplantadoGlob||1)) * 100);
-
-            // Calcula a largura dinâmica para ativar a barra de rolagem horizontal se necessário
-            const wrapper = document.getElementById('chartWrapper');
-            const containerWidth = document.getElementById('graficoScrollContainer').clientWidth;
-            
-            // Cada barra ocupará pelo menos 160px para não ficar apertada
-            const requiredWidth = causasList.length * 160; 
-            const finalWidth = Math.max(containerWidth, requiredWidth);
-            wrapper.style.width = finalWidth + 'px';
-
-            graficoBarrasObj.data.labels = labels;
-            graficoBarrasObj.data.datasets[0].data = percs;
-            graficoBarrasObj.data.datasets[1].data = qtds;
-            const maxPerc = Math.max(...percs, 10);
-            graficoBarrasObj.options.scales.y1.max = Math.min(Math.ceil(maxPerc + 10), 100);
-            
-            graficoBarrasObj.update('none'); // Update sem animação para evitar piscadelas com o resize
         }
 
         function limparFormulario() {
@@ -766,10 +709,14 @@
                 document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
             } else { document.getElementById('relDataFim').textContent = '-'; }
 
-            // Resumo Produção
+            // Resumo Produção e Volumes
             document.getElementById('relTransp').textContent = totalTransplantadoGlob.toLocaleString('pt-BR');
             document.getElementById('relColhido').textContent = totalColhidoGlob.toLocaleString('pt-BR');
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
+            
+            // Novos campos no relatório (KG e Média)
+            document.getElementById('relTotalKg').textContent = totalKgGlob > 0 ? totalKgGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0,00";
+            document.getElementById('relMediaG').textContent = mediaGGlob > 0 ? mediaGGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0,00";
             
             let pCol = totalTransplantadoGlob > 0 ? Math.round((totalColhidoGlob/totalTransplantadoGlob)*100) : 0;
             let pPen = totalTransplantadoGlob > 0 ? Math.round((totalPendenteGlob/totalTransplantadoGlob)*100) : 0;
@@ -782,15 +729,16 @@
             let somaQtdJustificada = 0;
 
             if(causasList.length === 0 && totalPendenteGlob === 0) {
-                relBody.innerHTML = `<tr><td colspan="3" class="py-4 px-5 text-center text-slate-500 italic">Nenhuma perda registada.</td></tr>`;
+                relBody.innerHTML = `<tr><td colspan="3" class="py-5 px-5 text-center text-slate-500 italic bg-slate-50">Nenhuma perda registada.</td></tr>`;
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
+                    // Tabela de exportação estilizada com bordos visíveis simulando relatório clássico
                     relBody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
-                            <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle">${c.nome}</td>
-                            <td class="py-3 px-5 text-right text-slate-700 h-[40px] align-middle">${c.qtd.toLocaleString('pt-BR')}</td>
+                        <tr class="bg-white border-b border-slate-300">
+                            <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle border-r border-slate-300">${c.nome}</td>
+                            <td class="py-3 px-5 text-right text-slate-700 h-[40px] align-middle border-r border-slate-300">${c.qtd.toLocaleString('pt-BR')}</td>
                             <td class="py-3 px-5 text-right font-black text-slate-800 h-[40px] align-middle">${pCausa}%</td>
                         </tr>
                     `;
@@ -809,12 +757,6 @@
 
             document.getElementById('relTotalQtd').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${pPen}%`;
-
-            if(graficoBarrasObj) {
-                // O gráfico já está super largo se houver muitas causas, o toBase64Image capta-o nessa alta qualidade!
-                const base64Img = graficoBarrasObj.toBase64Image();
-                document.getElementById('relImgBarras').src = base64Img || '';
-            }
         }
 
         async function renderHtmlToImageSeguro() {
@@ -844,7 +786,7 @@
                 const link = document.createElement('a');
                 link.download = `Relatorio_Oasis_Sem${document.getElementById('semanaAtual').textContent}.jpg`;
                 link.href = dataUrl; link.click();
-                showToast("JPEG exportado com layout otimizado!");
+                showToast("JPEG exportado com sucesso!");
             } catch (err) { showToast('Erro JPEG: ' + err.message, 'error'); 
             } finally { btn.innerHTML = textOrig; btn.disabled = false; }
         }
@@ -862,8 +804,6 @@
 
                 const { jsPDF } = window.jspdf;
                 
-                // Mapeia os pixels físicos da imagem gerada (pixelRatio: 2) para os pixels virtuais do PDF
-                // Isto assegura que o PDF abra com as dimensões exatas da folha gerada e nunca se esmague ou achate
                 const pdfWidth = img.width / 2;
                 const pdfHeight = img.height / 2;
                 
@@ -876,7 +816,7 @@
                 doc.addImage(dataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 doc.save(`Relatorio_Oasis_Sem${document.getElementById('semanaAtual').textContent}.pdf`);
                 
-                showToast("PDF gerado em alta resolução sem distorções!");
+                showToast("PDF gerado com sucesso!");
             } catch (err) { showToast('Erro PDF: ' + err.message, 'error'); 
             } finally { btn.innerHTML = textOrig; btn.disabled = false; }
         }
@@ -908,6 +848,8 @@
                 diasProducao: document.getElementById('diasProducao').value,
                 transplantado: totalTransplantadoGlob,
                 colhido: totalColhidoGlob,
+                totalKg: totalKgGlob,                // Novo campo enviado
+                mediaG: mediaGGlob,                  // Novo campo enviado
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
