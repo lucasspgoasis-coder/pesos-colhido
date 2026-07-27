@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Melhorando o visual e centralização vertical dos campos */
+        /* Estilos melhorados para inputs */
         .input-melhorado {
             border-width: 2px;
             border-color: #cbd5e1;
@@ -108,6 +108,7 @@
     <div id="toastContainer"></div>
 
     <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 relative">
+        
         <!-- Cabeçalho -->
         <header class="flex flex-col md:flex-row items-center md:items-start border-b-2 border-emerald-200 pb-6 mb-8 gap-4">
             <div class="flex-shrink-0 mb-2 md:mb-0 md:mr-6">
@@ -132,6 +133,7 @@
         </header>
 
         <form id="registroForm" class="space-y-8" onsubmit="event.preventDefault();">
+            
             <!-- Dados Gerais -->
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
@@ -175,15 +177,8 @@
                     </div>
 
                     <div class="col-span-1">
-                        <label for="variedade" class="block text-sm font-semibold text-gray-700 mb-1">Variedade *</label>
-                        <select id="variedade" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
-                            <option value="" disabled selected>Selecione a variedade</option>
-                            <option value="Syngenta BRO 68">Syngenta BRO 68</option>
-                            <option value="TSV Master">TSV Master</option>
-                            <option value="Pharlap">Pharlap</option>
-                            <option value="outros">Outros...</option>
-                        </select>
-                        <input type="text" id="variedadeOutro" placeholder="Digite a variedade" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
+                        <label for="totalTransplantado" class="block text-sm font-semibold text-gray-700 mb-1">Total Transplantado (UN) *</label>
+                        <input type="number" id="totalTransplantado" placeholder="Cálculo auto." class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-gray-500 bg-gray-100 cursor-not-allowed" readonly tabindex="-1">
                     </div>
                 </div>
 
@@ -206,33 +201,45 @@
                         <input type="number" min="0" id="diasProducao" placeholder="Ex: 90" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-gray-200">
-                    <div class="col-span-1 relative">
-                        <label for="totalTransplantado" class="block text-sm font-semibold text-gray-700 mb-1">Total Transplantado (Unidades) *</label>
-                        <input type="number" min="1" id="totalTransplantado" placeholder="Ex: 5000" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-gray-800" required>
-                    </div>
-
-                    <div class="col-span-1 relative">
-                        <label for="totalColhido" class="block text-sm font-semibold text-gray-700 mb-1">Total Unidades Colhidas *</label>
-                        <input type="number" min="0" id="totalColhido" placeholder="Ex: 4500" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-700" required>
-                    </div>
+            <!-- SECÇÃO: Variedades e Colheita -->
+            <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-200 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-emerald-200 pb-4">
+                    <h3 class="text-lg font-bold text-emerald-900 flex items-center">
+                        <span class="bg-emerald-600 w-2 h-6 rounded mr-2"></span> Detalhe de Variedades e Colheita
+                    </h3>
+                    <button type="button" onclick="adicionarVariedade()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold shadow-sm transition-all text-sm flex items-center gap-2 w-full md:w-auto justify-center">
+                        <span>+</span> Adicionar Variedade
+                    </button>
                 </div>
-                
-                <!-- Novos campos exclusivos para KG e Média -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 p-5 rounded-xl border border-emerald-200 bg-emerald-50/50 shadow-inner">
-                    <div class="col-span-1 relative">
-                        <label for="totalKgColhido" class="block text-sm font-semibold text-emerald-900 mb-1 flex items-center">
-                            <span class="mr-1">⚖️</span> Total KG Colhido
-                        </label>
-                        <input type="number" step="0.01" min="0" id="totalKgColhido" placeholder="Ex: 1350.50" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-800 bg-white border-emerald-300 focus:border-emerald-500">
-                    </div>
 
-                    <div class="col-span-1 relative">
-                        <label class="block text-sm font-semibold text-emerald-900 mb-1">Média (g) por Unidade</label>
-                        <div class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-900 bg-emerald-100 border-emerald-300 flex items-center justify-between shadow-sm cursor-not-allowed opacity-90">
-                            <span id="mediaGramasDisplay">0,00</span>
-                            <span class="text-sm font-bold text-emerald-700 uppercase tracking-widest">g/un</span>
+                <!-- Lista Dinâmica de Variedades -->
+                <div id="variedadesList" class="space-y-4">
+                    <!-- Linhas adicionadas via JS -->
+                </div>
+
+                <!-- Totais Globais Calculados -->
+                <div class="mt-6 p-5 rounded-xl border border-emerald-200 bg-white shadow-inner grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Total Colhido (Global)</label>
+                        <div class="flex items-end gap-1">
+                            <span id="totalColhidoGlobDisplay" class="text-3xl font-black text-emerald-700 leading-none">0</span>
+                            <span class="text-sm font-bold text-emerald-600 pb-1">UN</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 flex items-center gap-1">⚖️ Peso Total (Global)</label>
+                        <div class="flex items-end gap-1">
+                            <span id="totalKgGlobDisplay" class="text-3xl font-black text-emerald-700 leading-none">0</span>
+                            <span class="text-sm font-bold text-emerald-600 pb-1">KG</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Média Global / Unid.</label>
+                        <div class="flex items-end gap-1">
+                            <span id="mediaGlobDisplay" class="text-3xl font-black text-emerald-700 leading-none">0</span>
+                            <span class="text-sm font-bold text-emerald-600 pb-1">g</span>
                         </div>
                     </div>
                 </div>
@@ -240,22 +247,20 @@
 
             <!-- Resumo Percentual -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-emerald-50 border-2 border-emerald-200 p-5 rounded-xl shadow-sm">
+                <div class="bg-emerald-50 border-2 border-emerald-200 p-5 rounded-xl shadow-sm flex flex-col justify-center items-center md:items-start text-center md:text-left">
                     <p class="text-sm font-bold text-emerald-800 uppercase tracking-wide">Percentual Colhido</p>
-                    <div class="flex items-end mt-2">
+                    <div class="flex items-end mt-2 justify-center md:justify-start">
                         <span id="percColhido" class="text-5xl font-black text-emerald-600 leading-none">0</span>
                         <span class="text-2xl font-bold text-emerald-600 ml-1 leading-none">%</span>
                     </div>
-                    <p id="unidadesColhidasDesc" class="text-sm font-medium text-emerald-700 mt-2">Preencha os totais acima.</p>
                 </div>
 
-                <div class="bg-red-50 border-2 border-red-200 p-5 rounded-xl shadow-sm">
+                <div class="bg-red-50 border-2 border-red-200 p-5 rounded-xl shadow-sm flex flex-col justify-center items-center md:items-start text-center md:text-left">
                     <p class="text-sm font-bold text-red-800 uppercase tracking-wide">Percentual Pendente / Perda Total</p>
-                    <div class="flex items-end mt-2">
+                    <div class="flex items-end mt-2 justify-center md:justify-start">
                         <span id="percPendente" class="text-5xl font-black text-red-600 leading-none">0</span>
                         <span class="text-2xl font-bold text-red-600 ml-1 leading-none">%</span>
                     </div>
-                    <p id="unidadesPerdidasDesc" class="text-sm font-medium text-red-700 mt-2">Preencha os totais acima.</p>
                 </div>
             </div>
 
@@ -308,9 +313,9 @@
                             <thead class="bg-emerald-600 text-white">
                                 <tr>
                                     <th class="px-4 py-3 text-left font-bold uppercase tracking-wider border-r border-emerald-500">Causa</th>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider no-print">Ação</th>
+                                    <th class="px-4 py-3 text-right font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
+                                    <th class="px-4 py-3 text-right font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider no-print w-20">Ação</th>
                                 </tr>
                             </thead>
                             <tbody id="tabelaCausasBody" class="bg-white">
@@ -328,7 +333,7 @@
     <!-- ÁREA DE EXPORTAÇÃO (Layout Fixo Premium) -->
     <div id="relatorioExportacao">
         
-        <!-- Cabeçalho Limpo e Corporativo -->
+        <!-- Cabeçalho Relatório -->
         <div class="flex justify-between items-center border-b-4 border-emerald-700 pb-6 mb-8">
             <div class="flex items-center gap-6">
                 <!-- Logótipo -->
@@ -360,7 +365,7 @@
                     <span class="block text-xl font-black text-slate-800" id="relCultura">-</span>
                 </div>
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade</span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade(s)</span>
                     <span class="block text-xl font-black text-slate-800" id="relVariedade">-</span>
                 </div>
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
@@ -379,9 +384,9 @@
         </div>
 
         <!-- Secção 2: Síntese de Volumes e Pesos -->
-        <div class="mb-8">
+        <div class="mb-6">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2. Síntese de Produção & Rendimento
+                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2. Síntese Global de Produção
             </h3>
             
             <div class="grid grid-cols-3 gap-6">
@@ -394,7 +399,7 @@
                     </div>
                 </div>
                 
-                <!-- Coluna 2: Colhido (Unidades e Peso) -->
+                <!-- Coluna 2: Colhido -->
                 <div class="border-2 border-emerald-600 p-5 rounded-xl bg-emerald-50 text-center shadow-sm relative overflow-hidden flex flex-col justify-center">
                     <span class="block text-xs font-bold text-emerald-800 uppercase mb-2">Volume Colhido</span>
                     <div class="flex items-end justify-center gap-1 mb-2">
@@ -403,15 +408,14 @@
                     </div>
                     <span class="text-sm font-bold text-white bg-emerald-600 px-3 py-0.5 rounded-full shadow-sm mb-4 inline-block" id="relPercColhido">0%</span>
                     
-                    <!-- Novo bloco para KG e Media dentro da exportação -->
                     <div class="border-t border-emerald-200 pt-3 grid grid-cols-2 gap-2 text-left">
                         <div>
                             <span class="block text-[10px] font-bold text-emerald-600 uppercase">Peso Total</span>
-                            <span class="text-lg font-black text-emerald-900" id="relTotalKg">0,00 <span class="text-xs">KG</span></span>
+                            <span class="text-lg font-black text-emerald-900" id="relTotalKg">0 <span class="text-xs">KG</span></span>
                         </div>
                         <div>
-                            <span class="block text-[10px] font-bold text-emerald-600 uppercase">Média / Unid.</span>
-                            <span class="text-lg font-black text-emerald-900" id="relMediaG">0,00 <span class="text-xs">g</span></span>
+                            <span class="block text-[10px] font-bold text-emerald-600 uppercase">Média Global</span>
+                            <span class="text-lg font-black text-emerald-900" id="relMediaG">0 <span class="text-xs">g</span></span>
                         </div>
                     </div>
                 </div>
@@ -430,7 +434,30 @@
             </div>
         </div>
 
-        <!-- Secção 3: Tabela de Perdas (Foco Único) -->
+        <!-- Nova Secção: Detalhe das Variedades -->
+        <div id="relBlocoVariedades" class="mb-8 hidden">
+            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2.1 Detalhe por Variedade
+            </h3>
+            <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-100 text-slate-700 border-b border-slate-300">
+                        <tr>
+                            <th class="py-3 px-4 text-xs font-bold uppercase">Variedade</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Transp. (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Colhido (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Total (KG)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Média (g/un)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="relTableVariedades" class="text-sm">
+                        <!-- Injetado via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Secção 3: Tabela de Perdas -->
         <div class="mb-10">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 3. Tabela Detalhada de Perdas
@@ -446,7 +473,6 @@
                         </tr>
                     </thead>
                     <tbody id="relTableBody" class="text-sm bg-white">
-                        <!-- O conteúdo será injetado pelo JavaScript com bordos internos -->
                     </tbody>
                     <tfoot class="bg-emerald-50 border-t-2 border-emerald-800 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-emerald-200">
@@ -464,7 +490,6 @@
             </div>
         </div>
         
-        <!-- Rodapé Oficial -->
         <div class="mt-10 border-t-2 border-slate-300 pt-6 flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -500,8 +525,9 @@
         let totalTransplantadoGlob = 0;
         let totalColhidoGlob = 0;
         let totalPendenteGlob = 0;
-        let totalKgGlob = 0;       // Novo estado para KG
-        let mediaGGlob = 0;        // Novo estado para Média (g)
+        let totalKgGlob = 0;       
+        let mediaGGlob = 0;        
+        let variedadeIdCount = 0;
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -543,11 +569,9 @@
             document.getElementById('anoFooter').textContent = hoje.getFullYear();
 
             configurarCamposOutros();
-
-            // Listeners para recálculos
-            document.getElementById('totalTransplantado').addEventListener('input', recalcularTudo);
-            document.getElementById('totalColhido').addEventListener('input', recalcularTudo);
-            document.getElementById('totalKgColhido').addEventListener('input', recalcularTudo);
+            
+            // Inicia com uma linha de variedade
+            adicionarVariedade();
         });
 
         function toggleDataFim() {
@@ -564,7 +588,6 @@
             const campos = [
                 { select: 'bloco', input: 'blocoOutro' },
                 { select: 'cultura', input: 'culturaOutro' },
-                { select: 'variedade', input: 'variedadeOutro' },
                 { select: 'causaLista', input: 'causaOutro'}
             ];
             campos.forEach(campo => {
@@ -580,39 +603,149 @@
             });
         }
 
+        function getVariedadeTemplate(id) {
+            // Se for o primeiro ID, não mostra o botão de remover
+            const showRemove = id > 1;
+            
+            return `
+            <div class="variety-item bg-white p-4 rounded-xl border border-emerald-100 shadow-sm flex flex-wrap md:flex-nowrap gap-4 items-start relative transition-all hover:border-emerald-300" id="var_row_${id}">
+                ${showRemove ? `<button type="button" onclick="removerVariedade(${id})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold shadow hover:bg-red-600 text-xs transition-colors z-10">✕</button>` : ''}
+                
+                <div class="w-full md:flex-grow min-w-[140px]">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Variedade *</label>
+                    <select class="var-select w-full rounded-lg input-melhorado px-3 bg-white text-gray-800 text-sm" onchange="toggleVarOutro(this)">
+                        <option value="" disabled selected>Selecione a variedade</option>
+                        <option value="Syngenta BRO 68">Syngenta BRO 68</option>
+                        <option value="TSV Master">TSV Master</option>
+                        <option value="Syngenta BRO/TSV Master">Syngenta BRO / TSV Master</option>
+                        <option value="Pharlap">Pharlap</option>
+                        <option value="outros">Outros...</option>
+                    </select>
+                    <input type="text" class="var-outro mt-2 w-full hidden rounded-lg input-melhorado px-3 bg-white text-sm" placeholder="Especifique">
+                </div>
+
+                <div class="w-[48%] md:w-[105px] shrink-0">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Transp. (UN)</label>
+                    <input type="number" min="0" placeholder="0" class="var-transp w-full rounded-lg input-melhorado px-3 text-slate-700 font-bold text-center" oninput="recalcularTudo()">
+                </div>
+
+                <div class="w-[48%] md:w-[105px] shrink-0">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Colhido (UN)</label>
+                    <input type="number" min="0" placeholder="0" class="var-colhido w-full rounded-lg input-melhorado px-3 text-emerald-700 font-bold text-center" oninput="recalcularTudo()">
+                </div>
+
+                <div class="w-[48%] md:w-[105px] shrink-0">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Total (KG)</label>
+                    <input type="number" min="0" step="1" placeholder="0" class="var-kg w-full rounded-lg input-melhorado px-3 text-emerald-700 font-bold text-center" oninput="recalcularTudo()">
+                </div>
+
+                <div class="w-[48%] md:w-[105px] shrink-0 mt-2 md:mt-0">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Média (g)</label>
+                    <div class="var-media w-full h-[48px] rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-500 font-bold text-sm transition-colors">
+                        0
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function adicionarVariedade() {
+            variedadeIdCount++;
+            const container = document.getElementById('variedadesList');
+            container.insertAdjacentHTML('beforeend', getVariedadeTemplate(variedadeIdCount));
+        }
+
+        function removerVariedade(id) {
+            const row = document.getElementById(`var_row_${id}`);
+            if (row) {
+                row.remove();
+                recalcularTudo();
+            }
+        }
+
+        function toggleVarOutro(selectEl) {
+            const outroInput = selectEl.nextElementSibling;
+            if (selectEl.value === 'outros') {
+                outroInput.classList.remove('hidden'); outroInput.focus();
+            } else {
+                outroInput.classList.add('hidden'); outroInput.value = '';
+            }
+        }
+
         function recalcularTudo() {
-            const transp = parseInt(document.getElementById('totalTransplantado').value) || 0;
-            const colhido = parseInt(document.getElementById('totalColhido').value) || 0;
-            const totalKg = parseFloat(document.getElementById('totalKgColhido').value) || 0;
-            
-            const elPercColhido = document.getElementById('percColhido');
-            const elPercPendente = document.getElementById('percPendente');
-            const elMediaGramas = document.getElementById('mediaGramasDisplay');
-            
-            // Calculo da Média e Atualização Globais
-            totalKgGlob = totalKg;
-            if (colhido > 0 && totalKg > 0) {
-                mediaGGlob = (totalKg * 1000) / colhido;
-                // Exibe formatado, ex: "300,12"
-                elMediaGramas.textContent = mediaGGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            let sumTransp = 0;
+            let sumColhido = 0;
+            let sumKg = 0;
+
+            // Recalcula as linhas individuais
+            document.querySelectorAll('.variety-item').forEach(row => {
+                const transpInp = row.querySelector('.var-transp');
+                const colhidoInp = row.querySelector('.var-colhido');
+                const kgInp = row.querySelector('.var-kg');
+                const mediaDiv = row.querySelector('.var-media');
+
+                const t = parseInt(transpInp.value) || 0;
+                const c = parseInt(colhidoInp.value) || 0;
+                const k = parseFloat(kgInp.value) || 0;
+
+                sumTransp += t;
+                sumColhido += c;
+                sumKg += k;
+
+                if (c > 0 && k > 0) {
+                    let mediaRow = (k * 1000) / c;
+                    mediaRow = Math.round(mediaRow); // Arredondamento exato para inteiro (sem decimais)
+                    mediaDiv.textContent = mediaRow.toLocaleString('pt-BR');
+                    mediaDiv.classList.add('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
+                    mediaDiv.classList.remove('bg-gray-50', 'text-gray-500', 'border-gray-200');
+                } else {
+                    mediaDiv.textContent = "0";
+                    mediaDiv.classList.remove('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
+                    mediaDiv.classList.add('bg-gray-50', 'text-gray-500', 'border-gray-200');
+                }
+            });
+
+            // Atualiza input de Transplantado Global
+            document.getElementById('totalTransplantado').value = sumTransp > 0 ? sumTransp : '';
+
+            // Atualiza os Globais com arredondamento preciso para número inteiro
+            totalTransplantadoGlob = sumTransp;
+            totalColhidoGlob = sumColhido;
+            totalKgGlob = Math.round(sumKg); // Arredonda o Peso Total (remove vírgulas)
+
+            if (totalColhidoGlob > 0 && totalKgGlob > 0) {
+                mediaGGlob = (totalKgGlob * 1000) / totalColhidoGlob;
+                mediaGGlob = Math.round(mediaGGlob); // Arredonda a Média Global
             } else {
                 mediaGGlob = 0;
-                elMediaGramas.textContent = "0,00";
             }
 
-            if (transp > 0) {
-                if (colhido > transp) {
-                    elPercColhido.textContent = "0"; elPercPendente.textContent = "0";
-                    totalTransplantadoGlob = transp; totalColhidoGlob = 0; totalPendenteGlob = transp;
-                    showToast("O volume colhido não pode exceder o transplantado.", "warning");
+            document.getElementById('totalColhidoGlobDisplay').textContent = totalColhidoGlob.toLocaleString('pt-BR');
+            document.getElementById('totalKgGlobDisplay').textContent = totalKgGlob.toLocaleString('pt-BR');
+            document.getElementById('mediaGlobDisplay').textContent = mediaGGlob.toLocaleString('pt-BR');
+
+            const elPercColhido = document.getElementById('percColhido');
+            const elPercPendente = document.getElementById('percPendente');
+
+            if (totalTransplantadoGlob > 0) {
+                if (totalColhidoGlob > totalTransplantadoGlob) {
+                    elPercColhido.textContent = "100+"; 
+                    elPercPendente.textContent = "0";
+                    totalPendenteGlob = 0;
+                    showToast("O volume colhido excede o total transplantado.", "warning");
                 } else {
-                    totalTransplantadoGlob = transp; totalColhidoGlob = colhido; totalPendenteGlob = transp - colhido;
-                    elPercColhido.textContent = Math.round((colhido / transp) * 100);
-                    elPercPendente.textContent = Math.round((totalPendenteGlob / transp) * 100);
+                    totalPendenteGlob = totalTransplantadoGlob - totalColhidoGlob;
+                    
+                    // Garante matematicamente que a soma (Colhido + Pendente) dê exatamente 100%
+                    let pctColhido = Math.round((totalColhidoGlob / totalTransplantadoGlob) * 100);
+                    let pctPendente = 100 - pctColhido;
+                    
+                    elPercColhido.textContent = pctColhido;
+                    elPercPendente.textContent = pctPendente;
                 }
             } else {
                 elPercColhido.textContent = "0"; elPercPendente.textContent = "0";
-                totalTransplantadoGlob = 0; totalPendenteGlob = 0;
+                totalPendenteGlob = 0;
             }
             atualizarStatusCausas();
         }
@@ -655,7 +788,6 @@
                 causasList.forEach((causa, index) => {
                     totalJustificado += causa.qtd;
                     let perc = totalTransplantadoGlob > 0 ? (causa.qtd / totalTransplantadoGlob) * 100 : 0;
-                    // Linhas da tabela estilizadas com contornos e cores
                     tbody.innerHTML += `
                         <tr class="hover:bg-emerald-50 transition-colors border-b border-emerald-200">
                             <td class="px-5 py-3 font-semibold text-slate-800 border-r border-emerald-100">${causa.nome}</td>
@@ -669,7 +801,10 @@
 
             document.getElementById('pendentesLivres').textContent = Math.max(0, totalPendenteGlob - totalJustificado).toLocaleString('pt-BR');
             document.getElementById('percJustificadoSoma').textContent = Math.round(totalTransplantadoGlob > 0 ? (totalJustificado / totalTransplantadoGlob) * 100 : 0);
-            document.getElementById('percPendenteMax').textContent = Math.round(totalTransplantadoGlob > 0 ? (totalPendenteGlob / totalTransplantadoGlob) * 100 : 0);
+            
+            // Lê o percentual máximo pendente diretamente da interface para manter consistência absoluta
+            let percPendenteAtual = parseInt(document.getElementById('percPendente').textContent) || 0;
+            document.getElementById('percPendenteMax').textContent = percPendenteAtual;
             
             const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${Math.min(progressoFracao, 100)}%`;
@@ -677,10 +812,17 @@
 
         function limparFormulario() {
             document.getElementById('registroForm').reset();
-            ['blocoOutro', 'culturaOutro', 'variedadeOutro', 'causaOutro', 'boxDataFim'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['blocoOutro', 'culturaOutro', 'causaOutro', 'boxDataFim'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
-            causasList = []; recalcularTudo();
+            
+            // Reinicia a secção de variedades
+            document.getElementById('variedadesList').innerHTML = '';
+            variedadeIdCount = 0;
+            adicionarVariedade();
+            
+            causasList = []; 
+            recalcularTudo();
         }
 
         function getSelectValue(idSelect, idOutro) {
@@ -691,13 +833,48 @@
         }
 
         function preencherRelatorioOculto() {
-            const relatorio = document.getElementById('relatorioExportacao');
-            
             // Dados da Área
             document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
-            document.getElementById('relVariedade').textContent = getSelectValue('variedade', 'variedadeOutro');
             
+            // Tratamento das Múltiplas Variedades no Relatório
+            const rowsVar = document.querySelectorAll('.variety-item');
+            const relVarTable = document.getElementById('relTableVariedades');
+            relVarTable.innerHTML = '';
+            
+            let nomesVariedades = [];
+            
+            rowsVar.forEach(row => {
+                const sel = row.querySelector('.var-select');
+                const out = row.querySelector('.var-outro');
+                let nome = sel.value === 'outros' ? (out.value || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
+                nomesVariedades.push(nome);
+                
+                const t = parseInt(row.querySelector('.var-transp').value) || 0;
+                const c = parseInt(row.querySelector('.var-colhido').value) || 0;
+                const k = Math.round(parseFloat(row.querySelector('.var-kg').value) || 0); // Arredonda para inteiro
+                const m = row.querySelector('.var-media').textContent;
+                
+                relVarTable.innerHTML += `
+                    <tr class="border-b border-slate-200">
+                        <td class="py-2 px-4 font-semibold text-slate-800 border-r border-slate-200">${nome}</td>
+                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${t.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${c.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${k.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-right font-bold text-emerald-700">${m}</td>
+                    </tr>
+                `;
+            });
+            
+            if (rowsVar.length > 1) {
+                document.getElementById('relVariedade').textContent = "Múltiplas (Ver detalhe)";
+                document.getElementById('relBlocoVariedades').classList.remove('hidden');
+            } else {
+                document.getElementById('relVariedade').textContent = nomesVariedades[0] || 'Não inf.';
+                // Esconde a tabela de detalhe se houver apenas 1 (a informação está no resumo global)
+                document.getElementById('relBlocoVariedades').classList.add('hidden'); 
+            }
+
             const status = document.getElementById('statusPlantio').value;
             document.getElementById('relStatus').textContent = status;
             document.getElementById('relDiasProd').textContent = document.getElementById('diasProducao').value ? `${document.getElementById('diasProducao').value} dias` : 'Não inf.';
@@ -707,19 +884,18 @@
                 document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
             } else { document.getElementById('relDataFim').textContent = '-'; }
 
-            // Resumo Produção e Volumes
+            // Resumo Produção Global
             document.getElementById('relTransp').textContent = totalTransplantadoGlob.toLocaleString('pt-BR');
             document.getElementById('relColhido').textContent = totalColhidoGlob.toLocaleString('pt-BR');
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             
-            // Novos campos no relatório (KG e Média)
-            document.getElementById('relTotalKg').textContent = totalKgGlob > 0 ? totalKgGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0,00";
-            document.getElementById('relMediaG').textContent = mediaGGlob > 0 ? mediaGGlob.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0,00";
+            document.getElementById('relTotalKg').textContent = totalKgGlob > 0 ? totalKgGlob.toLocaleString('pt-BR') : "0";
+            document.getElementById('relMediaG').textContent = mediaGGlob > 0 ? mediaGGlob.toLocaleString('pt-BR') : "0";
             
-            let pCol = totalTransplantadoGlob > 0 ? Math.round((totalColhidoGlob/totalTransplantadoGlob)*100) : 0;
-            let pPen = totalTransplantadoGlob > 0 ? Math.round((totalPendenteGlob/totalTransplantadoGlob)*100) : 0;
+            let pCol = document.getElementById('percColhido').textContent;
+            let pPen = document.getElementById('percPendente').textContent;
             
-            document.getElementById('relPercColhido').textContent = `${pCol}%`;
+            document.getElementById('relPercColhido').textContent = `${pCol}${pCol !== '100+' ? '%' : ''}`;
             document.getElementById('relPercPendente').textContent = `${pPen}%`;
 
             const relBody = document.getElementById('relTableBody');
@@ -732,7 +908,6 @@
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
-                    // Tabela de exportação estilizada com bordos visíveis simulando relatório clássico
                     relBody.innerHTML += `
                         <tr class="bg-white border-b border-slate-300">
                             <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle border-r border-slate-300">${c.nome}</td>
@@ -763,9 +938,7 @@
             nodeRel.style.left = '0px'; nodeRel.style.top = '0px'; nodeRel.style.zIndex = '-9999'; nodeRel.style.display = 'block';
 
             await new Promise(resolve => setTimeout(resolve, 400));
-            
-            const dataUrl = await htmlToImage.toJpeg(nodeRel, { quality: 0.98, backgroundColor: '#f8fafc', pixelRatio: 2 });
-            
+            const dataUrl = await htmlToImage.toJpeg(nodeRel, { quality: 0.98, backgroundColor: '#ffffff', pixelRatio: 2 });
             nodeRel.style.position = 'absolute'; nodeRel.style.left = '-9999px'; nodeRel.style.zIndex = 'auto';
             return dataUrl;
         }
@@ -802,8 +975,9 @@
 
                 const { jsPDF } = window.jspdf;
                 
-                const pdfWidth = img.width / 2;
-                const pdfHeight = img.height / 2;
+                // Ajusta proporção para o PDF
+                const pdfWidth = img.width / 2.2;
+                const pdfHeight = img.height / 2.2;
                 
                 const doc = new jsPDF({ 
                     orientation: pdfWidth > pdfHeight ? 'l' : 'p', 
@@ -826,6 +1000,21 @@
             const btn = document.getElementById('btnEnviarPlanilha');
             const textoOriginal = btn.innerHTML; btn.innerHTML = '⏳ A enviar...'; btn.disabled = true;
 
+            const rowsVar = document.querySelectorAll('.variety-item');
+            
+            // Lógica Específica: Deteta se foram selecionadas exatamente as duas variedades ("Syngenta BRO 68" e "TSV Master")
+            let isSyngentaTSVMix = false;
+            if (rowsVar.length === 2) {
+                const nomes = Array.from(rowsVar).map(row => {
+                    const sel = row.querySelector('.var-select');
+                    return sel.value;
+                });
+                if (nomes.includes('Syngenta BRO 68') && nomes.includes('TSV Master')) {
+                    isSyngentaTSVMix = true;
+                }
+            }
+
+            // Prepara a lista de causas (que será enviada igualmente em todas as linhas caso existam múltiplas)
             let listaEnvioCausas = causasList.map(c => {
                 let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                 return { nome: c.nome, qtd: c.qtd, perc: pCausa + '%' };
@@ -836,29 +1025,94 @@
             if (naoDetalhado > 0) listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: (totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0) + '%' });
             if (listaEnvioCausas.length === 0) listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
 
-            const payload = {
+            // Dados partilhados entre todas as possíveis linhas do mesmo registo
+            const commonData = {
                 data: document.getElementById('dataAtual').textContent,
                 ciclo: document.getElementById('cicloProducao').value || '-',
                 bloco: getSelectValue('bloco', 'blocoOutro'),
                 cultura: getSelectValue('cultura', 'culturaOutro'),
-                variedade: getSelectValue('variedade', 'variedadeOutro'),
-                transplantado: totalTransplantadoGlob,
-                colhido: totalColhidoGlob,
-                totalKg: totalKgGlob,
-                mediaG: mediaGGlob,
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
                 causasLista: listaEnvioCausas 
             };
 
+            let payloads = [];
+
+            // Constrói um payload (linha) para CADA variedade registada
+            rowsVar.forEach(row => {
+                const sel = row.querySelector('.var-select');
+                const out = row.querySelector('.var-outro');
+                let nome = sel.value === 'outros' ? (out.value || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
+                
+                // Aplica a sobreposição de nome solicitada caso a mistura específica tenha sido detetada
+                if (isSyngentaTSVMix) {
+                    nome = "Syngenta BRO/TSV Master";
+                }
+
+                const t = parseInt(row.querySelector('.var-transp').value) || 0;
+                const c = parseInt(row.querySelector('.var-colhido').value) || 0;
+                const k = Math.round(parseFloat(row.querySelector('.var-kg').value) || 0); // Arredonda para envio
+                const m = row.querySelector('.var-media').textContent;
+                
+                payloads.push({
+                    ...commonData,
+                    variedade: nome,
+                    transplantado: t,
+                    colhido: c,
+                    totalKg: k.toLocaleString('pt-BR'),
+                    mediaG: m
+                });
+            });
+
             try {
-                await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-                showToast('✅ Dados enviados para a folha de cálculo!'); limparFormulario();
+                // Para que o Google Sheets registe em linhas separadas (uma em baixo da outra, na linha seguinte da folha)
+                // enviamos cada variedade num pedido (fetch) diferente sequencialmente.
+                for (const payload of payloads) {
+                    await fetch(url, { 
+                        method: 'POST', 
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                        body: JSON.stringify(payload) 
+                    });
+                    
+                    // Adiciona um pequeno intervalo caso haja múltiplas linhas, para garantir que o Google Apps Script
+                    // não processe os pedidos em simultâneo e os coloque na ordem correta na folha.
+                    if (payloads.length > 1) {
+                        await new Promise(resolve => setTimeout(resolve, 600)); 
+                    }
+                }
+                
+                showToast('✅ Dados enviados para a folha de cálculo!'); 
+                limparFormulario();
+                
             } catch (error) {
+                // Mecanismo de fallback caso o fetch falhe (bloqueio de rede, etc.)
                 try {
                     const form = document.createElement('form'); form.method = 'POST'; form.action = url; form.target = '_blank'; 
-                    const input = document.createElement('input'); input.type = 'hidden'; input.name = 'postData'; input.value = JSON.stringify(payload);
+                    const input = document.createElement('input'); input.type = 'hidden'; input.name = 'postData'; 
+                    
+                    // Em caso de fallback (abre num novo separador), usamos o método antigo concatenado 
+                    // para não abrir múltiplos separadores no browser do utilizador.
+                    let arrVar = []; let arrTransp = []; let arrColhido = []; let arrKg = []; let arrMedia = [];
+                    payloads.forEach(p => {
+                        arrVar.push(p.variedade);
+                        arrTransp.push(p.transplantado);
+                        arrColhido.push(p.colhido);
+                        arrKg.push(p.totalKg);
+                        arrMedia.push(p.mediaG);
+                    });
+                    
+                    const fallbackPayload = {
+                        ...commonData,
+                        variedade: arrVar.join('\n'),
+                        transplantado: arrTransp.join('\n'),
+                        colhido: arrColhido.join('\n'),
+                        totalKg: arrKg.join('\n'),
+                        mediaG: arrMedia.join('\n')
+                    };
+                    
+                    input.value = JSON.stringify(fallbackPayload);
                     form.appendChild(input); document.body.appendChild(form); form.submit(); document.body.removeChild(form);
                     showToast('⚠️ Modo de contingência utilizado.', 'warning'); limparFormulario();
                 } catch (fallbackError) { showToast('❌ Falha de ligação.', 'error'); }
