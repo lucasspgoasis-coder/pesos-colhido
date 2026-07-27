@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registo de Produção e Perdas - Fazenda Oásis</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Biblioteca html-to-image e jsPDF -->
@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Estilos melhorados para inputs */
+        /* Estilos personalizados para os inputs */
         .input-melhorado {
             border-width: 2px;
             border-color: #cbd5e1;
@@ -75,7 +75,7 @@
             position: absolute;
             left: -9999px; /* Oculto na vista normal */
             top: 0;
-            width: 1024px; /* Largura FIXA para garantir proporção perfeita (evita o achatamento) */
+            width: 1024px; /* Largura FIXA para garantir proporção perfeita */
             background-color: #ffffff;
             padding: 48px;
             box-sizing: border-box;
@@ -109,7 +109,7 @@
 
     <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 relative">
         
-        <!-- Cabeçalho -->
+        <!-- Cabeçalho Principal -->
         <header class="flex flex-col md:flex-row items-center md:items-start border-b-2 border-emerald-200 pb-6 mb-8 gap-4">
             <div class="flex-shrink-0 mb-2 md:mb-0 md:mr-6">
                 <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-28 h-28 object-contain logo-img" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
@@ -203,7 +203,6 @@
                 </div>
             </div>
 
-            <!-- SECÇÃO: Variedades e Colheita -->
             <div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-200 shadow-sm">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-emerald-200 pb-4">
                     <h3 class="text-lg font-bold text-emerald-900 flex items-center">
@@ -245,7 +244,6 @@
                 </div>
             </div>
 
-            <!-- Resumo Percentual -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-emerald-50 border-2 border-emerald-200 p-5 rounded-xl shadow-sm flex flex-col justify-center items-center md:items-start text-center md:text-left">
                     <p class="text-sm font-bold text-emerald-800 uppercase tracking-wide">Percentual Colhido</p>
@@ -309,12 +307,12 @@
                     </div>
                     
                     <div class="mt-6 border-2 border-emerald-600 rounded-lg overflow-hidden shadow-sm">
-                        <table class="min-w-full border-collapse text-sm bg-white">
+                        <table class="min-w-full border-collapse text-sm bg-white text-center">
                             <thead class="bg-emerald-600 text-white">
                                 <tr>
-                                    <th class="px-4 py-3 text-left font-bold uppercase tracking-wider border-r border-emerald-500">Causa</th>
-                                    <th class="px-4 py-3 text-right font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
-                                    <th class="px-4 py-3 text-right font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Causa</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
                                     <th class="px-4 py-3 text-center font-bold uppercase tracking-wider no-print w-20">Ação</th>
                                 </tr>
                             </thead>
@@ -336,7 +334,6 @@
         <!-- Cabeçalho Relatório -->
         <div class="flex justify-between items-center border-b-4 border-emerald-700 pb-6 mb-8">
             <div class="flex items-center gap-6">
-                <!-- Logótipo -->
                 <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain" alt="Logo Fazenda Oásis">
                 <div class="flex flex-col justify-center">
                     <h1 class="text-[32px] font-black uppercase tracking-wider text-slate-800 mb-1">Resumo de Produção</h1>
@@ -364,9 +361,10 @@
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Cultura</span>
                     <span class="block text-xl font-black text-slate-800" id="relCultura">-</span>
                 </div>
-                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
+                <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade(s)</span>
-                    <span class="block text-xl font-black text-slate-800" id="relVariedade">-</span>
+                    <!-- Exibe cada variedade numa linha individual separada -->
+                    <span class="block text-base font-bold text-slate-800 leading-snug" id="relVariedade">-</span>
                 </div>
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Estado</span>
@@ -434,24 +432,24 @@
             </div>
         </div>
 
-        <!-- Nova Secção: Detalhe das Variedades -->
-        <div id="relBlocoVariedades" class="mb-8 hidden">
+        <!-- Secção: Detalhe Individual das Variedades -->
+        <div id="relBlocoVariedades" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2.1 Detalhe por Variedade
+                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2.1 Detalhe Específico por Variedade
             </h3>
             <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-center border-collapse">
                     <thead class="bg-slate-100 text-slate-700 border-b border-slate-300">
                         <tr>
-                            <th class="py-3 px-4 text-xs font-bold uppercase">Variedade</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Transp. (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Colhido (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Total (KG)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-right">Média (g/un)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Variedade</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Transp. (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Colhido (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Total (KG)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Média (g/un)</th>
                         </tr>
                     </thead>
                     <tbody id="relTableVariedades" class="text-sm">
-                        <!-- Injetado via JS -->
+                        <!-- Injetado via JS com dados separados -->
                     </tbody>
                 </table>
             </div>
@@ -464,26 +462,26 @@
             </h3>
             
             <div class="bg-white border-2 border-emerald-800 rounded-xl overflow-hidden shadow-sm">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-center border-collapse">
                     <thead class="bg-emerald-800 text-white">
                         <tr>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider border-r border-emerald-700 w-1/2">Causa Reportada</th>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-right border-r border-emerald-700 w-1/4">Quantidade (UN)</th>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-right w-1/4">Impacto Total (%)</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-700 w-1/2">Causa Reportada</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-700 w-1/4">Quantidade (UN)</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">Impacto Total (%)</th>
                         </tr>
                     </thead>
                     <tbody id="relTableBody" class="text-sm bg-white">
                     </tbody>
                     <tfoot class="bg-emerald-50 border-t-2 border-emerald-800 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-emerald-200">
-                            <td class="py-3 px-5 text-emerald-800 italic font-medium border-r border-emerald-200">Perdas não detalhadas</td>
-                            <td class="py-3 px-5 text-right text-emerald-900 font-bold border-r border-emerald-200" id="relNaoDetalhadoQtd">0</td>
-                            <td class="py-3 px-5 text-right text-emerald-900 font-bold" id="relNaoDetalhadoPerc">0%</td>
+                            <td class="py-3 px-5 text-emerald-800 italic font-medium text-center border-r border-emerald-200">Perdas não detalhadas</td>
+                            <td class="py-3 px-5 text-center text-emerald-900 font-bold border-r border-emerald-200" id="relNaoDetalhadoQtd">0</td>
+                            <td class="py-3 px-5 text-center text-emerald-900 font-bold" id="relNaoDetalhadoPerc">0%</td>
                         </tr>
                         <tr class="bg-emerald-100">
-                            <td class="py-4 px-5 font-black uppercase text-right tracking-widest text-xs text-emerald-900 border-r border-emerald-300">Total de Perdas</td>
-                            <td class="py-4 px-5 text-right font-black text-xl text-emerald-900 leading-none border-r border-emerald-300" id="relTotalQtd">0</td>
-                            <td class="py-4 px-5 text-right font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
+                            <td class="py-4 px-5 font-black uppercase text-center tracking-widest text-xs text-emerald-900 border-r border-emerald-300">Total de Perdas</td>
+                            <td class="py-4 px-5 text-center font-black text-xl text-emerald-900 leading-none border-r border-emerald-300" id="relTotalQtd">0</td>
+                            <td class="py-4 px-5 text-center font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -570,7 +568,7 @@
 
             configurarCamposOutros();
             
-            // Inicia com uma linha de variedade
+            // Inicia com a primeira variedade
             adicionarVariedade();
         });
 
@@ -604,7 +602,6 @@
         }
 
         function getVariedadeTemplate(id) {
-            // Se for o primeiro ID, não mostra o botão de remover
             const showRemove = id > 1;
             
             return `
@@ -613,15 +610,14 @@
                 
                 <div class="w-full md:flex-grow min-w-[140px]">
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Variedade *</label>
-                    <select class="var-select w-full rounded-lg input-melhorado px-3 bg-white text-gray-800 text-sm" onchange="toggleVarOutro(this)">
+                    <select class="var-select w-full rounded-lg input-melhorado px-3 bg-white text-gray-800 text-sm" onchange="toggleVarOutro(this); recalcularTudo();">
                         <option value="" disabled selected>Selecione a variedade</option>
                         <option value="Syngenta BRO 68">Syngenta BRO 68</option>
                         <option value="TSV Master">TSV Master</option>
-                        <option value="Syngenta BRO/TSV Master">Syngenta BRO / TSV Master</option>
                         <option value="Pharlap">Pharlap</option>
                         <option value="outros">Outros...</option>
                     </select>
-                    <input type="text" class="var-outro mt-2 w-full hidden rounded-lg input-melhorado px-3 bg-white text-sm" placeholder="Especifique">
+                    <input type="text" class="var-outro mt-2 w-full hidden rounded-lg input-melhorado px-3 bg-white text-sm" placeholder="Especifique a variedade" oninput="recalcularTudo()">
                 </div>
 
                 <div class="w-[48%] md:w-[105px] shrink-0">
@@ -677,7 +673,7 @@
             let sumColhido = 0;
             let sumKg = 0;
 
-            // Recalcula as linhas individuais
+            // Recalcula as linhas individuais de cada variedade
             document.querySelectorAll('.variety-item').forEach(row => {
                 const transpInp = row.querySelector('.var-transp');
                 const colhidoInp = row.querySelector('.var-colhido');
@@ -693,8 +689,7 @@
                 sumKg += k;
 
                 if (c > 0 && k > 0) {
-                    let mediaRow = (k * 1000) / c;
-                    mediaRow = Math.round(mediaRow); // Arredondamento exato para inteiro (sem decimais)
+                    let mediaRow = Math.round((k * 1000) / c); // Arredondamento para gramas por unidade
                     mediaDiv.textContent = mediaRow.toLocaleString('pt-BR');
                     mediaDiv.classList.add('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
                     mediaDiv.classList.remove('bg-gray-50', 'text-gray-500', 'border-gray-200');
@@ -705,17 +700,16 @@
                 }
             });
 
-            // Atualiza input de Transplantado Global
+            // Atualiza input de Total Transplantado Global
             document.getElementById('totalTransplantado').value = sumTransp > 0 ? sumTransp : '';
 
-            // Atualiza os Globais com arredondamento preciso para número inteiro
+            // Atualiza os Globais com arredondamento preciso
             totalTransplantadoGlob = sumTransp;
             totalColhidoGlob = sumColhido;
-            totalKgGlob = Math.round(sumKg); // Arredonda o Peso Total (remove vírgulas)
+            totalKgGlob = Math.round(sumKg);
 
             if (totalColhidoGlob > 0 && totalKgGlob > 0) {
-                mediaGGlob = (totalKgGlob * 1000) / totalColhidoGlob;
-                mediaGGlob = Math.round(mediaGGlob); // Arredonda a Média Global
+                mediaGGlob = Math.round((totalKgGlob * 1000) / totalColhidoGlob);
             } else {
                 mediaGGlob = 0;
             }
@@ -735,8 +729,6 @@
                     showToast("O volume colhido excede o total transplantado.", "warning");
                 } else {
                     totalPendenteGlob = totalTransplantadoGlob - totalColhidoGlob;
-                    
-                    // Garante matematicamente que a soma (Colhido + Pendente) dê exatamente 100%
                     let pctColhido = Math.round((totalColhidoGlob / totalTransplantadoGlob) * 100);
                     let pctPendente = 100 - pctColhido;
                     
@@ -790,9 +782,9 @@
                     let perc = totalTransplantadoGlob > 0 ? (causa.qtd / totalTransplantadoGlob) * 100 : 0;
                     tbody.innerHTML += `
                         <tr class="hover:bg-emerald-50 transition-colors border-b border-emerald-200">
-                            <td class="px-5 py-3 font-semibold text-slate-800 border-r border-emerald-100">${causa.nome}</td>
-                            <td class="px-5 py-3 text-right font-medium text-slate-700 border-r border-emerald-100">${causa.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="px-5 py-3 text-right font-black text-red-600 border-r border-emerald-100">${Math.round(perc)}%</td>
+                            <td class="px-5 py-3 font-semibold text-slate-800 text-center border-r border-emerald-100">${causa.nome}</td>
+                            <td class="px-5 py-3 text-center font-medium text-slate-700 border-r border-emerald-100">${causa.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="px-5 py-3 text-center font-black text-red-600 border-r border-emerald-100">${Math.round(perc)}%</td>
                             <td class="px-4 py-3 text-center no-print"><button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded shadow-sm">✕</button></td>
                         </tr>
                     `;
@@ -802,7 +794,6 @@
             document.getElementById('pendentesLivres').textContent = Math.max(0, totalPendenteGlob - totalJustificado).toLocaleString('pt-BR');
             document.getElementById('percJustificadoSoma').textContent = Math.round(totalTransplantadoGlob > 0 ? (totalJustificado / totalTransplantadoGlob) * 100 : 0);
             
-            // Lê o percentual máximo pendente diretamente da interface para manter consistência absoluta
             let percPendenteAtual = parseInt(document.getElementById('percPendente').textContent) || 0;
             document.getElementById('percPendenteMax').textContent = percPendenteAtual;
             
@@ -816,7 +807,7 @@
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
             
-            // Reinicia a secção de variedades
+            // Reinicia as variedades
             document.getElementById('variedadesList').innerHTML = '';
             variedadeIdCount = 0;
             adicionarVariedade();
@@ -832,48 +823,55 @@
             return el.options[el.selectedIndex].text;
         }
 
-        function preencherRelatorioOculto() {
-            // Dados da Área
-            document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
-            document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
-            
-            // Tratamento das Múltiplas Variedades no Relatório
-            const rowsVar = document.querySelectorAll('.variety-item');
-            const relVarTable = document.getElementById('relTableVariedades');
-            relVarTable.innerHTML = '';
-            
-            let nomesVariedades = [];
-            
-            rowsVar.forEach(row => {
+        function getVariedadesData() {
+            const items = [];
+            document.querySelectorAll('.variety-item').forEach(row => {
                 const sel = row.querySelector('.var-select');
                 const out = row.querySelector('.var-outro');
-                let nome = sel.value === 'outros' ? (out.value || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
-                nomesVariedades.push(nome);
+                let nome = sel.value === 'outros' ? (out.value.trim() || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
                 
                 const t = parseInt(row.querySelector('.var-transp').value) || 0;
                 const c = parseInt(row.querySelector('.var-colhido').value) || 0;
-                const k = Math.round(parseFloat(row.querySelector('.var-kg').value) || 0); // Arredonda para inteiro
-                const m = row.querySelector('.var-media').textContent;
-                
+                const k = Math.round(parseFloat(row.querySelector('.var-kg').value) || 0);
+                const mediaDiv = row.querySelector('.var-media');
+                const m = mediaDiv ? mediaDiv.textContent.trim() : "0";
+
+                items.push({
+                    variedade: nome,
+                    transplantado: t,
+                    colhido: c,
+                    totalKg: k,
+                    mediaG: m
+                });
+            });
+            return items;
+        }
+
+        function preencherRelatorioOculto() {
+            // Dados Gerais
+            document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
+            document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
+            
+            const variedades = getVariedadesData();
+            const relVarTable = document.getElementById('relTableVariedades');
+            relVarTable.innerHTML = '';
+            
+            // Exibe cada nome de variedade numa linha separada no resumo
+            const nomesLista = variedades.map(v => v.variedade);
+            document.getElementById('relVariedade').innerHTML = nomesLista.length > 0 ? nomesLista.join('<br>') : 'Não inf.';
+
+            // Preenche a tabela detalhada por variedade
+            variedades.forEach(v => {
                 relVarTable.innerHTML += `
                     <tr class="border-b border-slate-200">
-                        <td class="py-2 px-4 font-semibold text-slate-800 border-r border-slate-200">${nome}</td>
-                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${t.toLocaleString('pt-BR')}</td>
-                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${c.toLocaleString('pt-BR')}</td>
-                        <td class="py-2 px-4 text-right text-slate-700 border-r border-slate-200">${k.toLocaleString('pt-BR')}</td>
-                        <td class="py-2 px-4 text-right font-bold text-emerald-700">${m}</td>
+                        <td class="py-2 px-4 font-semibold text-slate-800 text-center border-r border-slate-200">${v.variedade}</td>
+                        <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.transplantado.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.colhido.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.totalKg.toLocaleString('pt-BR')}</td>
+                        <td class="py-2 px-4 text-center font-bold text-emerald-700">${v.mediaG}</td>
                     </tr>
                 `;
             });
-            
-            if (rowsVar.length > 1) {
-                document.getElementById('relVariedade').textContent = "Múltiplas (Ver detalhe)";
-                document.getElementById('relBlocoVariedades').classList.remove('hidden');
-            } else {
-                document.getElementById('relVariedade').textContent = nomesVariedades[0] || 'Não inf.';
-                // Esconde a tabela de detalhe se houver apenas 1 (a informação está no resumo global)
-                document.getElementById('relBlocoVariedades').classList.add('hidden'); 
-            }
 
             const status = document.getElementById('statusPlantio').value;
             document.getElementById('relStatus').textContent = status;
@@ -910,9 +908,9 @@
                     let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                     relBody.innerHTML += `
                         <tr class="bg-white border-b border-slate-300">
-                            <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle border-r border-slate-300">${c.nome}</td>
-                            <td class="py-3 px-5 text-right text-slate-700 h-[40px] align-middle border-r border-slate-300">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-3 px-5 text-right font-black text-slate-800 h-[40px] align-middle">${pCausa}%</td>
+                            <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle text-center border-r border-slate-300">${c.nome}</td>
+                            <td class="py-3 px-5 text-center text-slate-700 h-[40px] align-middle border-r border-slate-300">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-3 px-5 text-center font-black text-slate-800 h-[40px] align-middle">${pCausa}%</td>
                         </tr>
                     `;
                 });
@@ -974,8 +972,6 @@
                 await new Promise(r => img.onload = r);
 
                 const { jsPDF } = window.jspdf;
-                
-                // Ajusta proporção para o PDF
                 const pdfWidth = img.width / 2.2;
                 const pdfHeight = img.height / 2.2;
                 
@@ -1000,21 +996,14 @@
             const btn = document.getElementById('btnEnviarPlanilha');
             const textoOriginal = btn.innerHTML; btn.innerHTML = '⏳ A enviar...'; btn.disabled = true;
 
-            const rowsVar = document.querySelectorAll('.variety-item');
-            
-            // Lógica Específica: Deteta se foram selecionadas exatamente as duas variedades ("Syngenta BRO 68" e "TSV Master")
-            let isSyngentaTSVMix = false;
-            if (rowsVar.length === 2) {
-                const nomes = Array.from(rowsVar).map(row => {
-                    const sel = row.querySelector('.var-select');
-                    return sel.value;
-                });
-                if (nomes.includes('Syngenta BRO 68') && nomes.includes('TSV Master')) {
-                    isSyngentaTSVMix = true;
-                }
+            const variedades = getVariedadesData();
+            if (variedades.length === 0) {
+                showToast("Adicione pelo menos uma variedade.", "warning");
+                btn.innerHTML = textoOriginal; btn.disabled = false;
+                return;
             }
 
-            // Prepara a lista de causas (que será enviada igualmente em todas as linhas caso existam múltiplas)
+            // Monta as causas justificadas
             let listaEnvioCausas = causasList.map(c => {
                 let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
                 return { nome: c.nome, qtd: c.qtd, perc: pCausa + '%' };
@@ -1025,7 +1014,7 @@
             if (naoDetalhado > 0) listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: (totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0) + '%' });
             if (listaEnvioCausas.length === 0) listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
 
-            // Dados partilhados entre todas as possíveis linhas do mesmo registo
+            // Dados partilhados do Bloco / Ciclo
             const commonData = {
                 data: document.getElementById('dataAtual').textContent,
                 ciclo: document.getElementById('cicloProducao').value || '-',
@@ -1034,88 +1023,80 @@
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
                 percPendente: document.getElementById('percPendente').textContent + '%',
-                causasLista: listaEnvioCausas 
+                causasLista: listaEnvioCausas,
+                // Totais globais do bloco para referência complementar
+                totalTransplantadoBloco: totalTransplantadoGlob,
+                totalColhidoBloco: totalColhidoGlob,
+                totalKgBloco: totalKgGlob
             };
 
-            let payloads = [];
-
-            // Constrói um payload (linha) para CADA variedade registada
-            rowsVar.forEach(row => {
-                const sel = row.querySelector('.var-select');
-                const out = row.querySelector('.var-outro');
-                let nome = sel.value === 'outros' ? (out.value || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
-                
-                // Aplica a sobreposição de nome solicitada caso a mistura específica tenha sido detetada
-                if (isSyngentaTSVMix) {
-                    nome = "Syngenta BRO/TSV Master";
+            // Constrói um payload específico e individual para CADA variedade
+            let payloads = variedades.map((v, index) => {
+                if (index === 0) {
+                    // A primeira variedade leva TUDO (incluindo as causas de perdas e totais globais)
+                    return {
+                        ...commonData,
+                        variedade: v.variedade,
+                        transplantado: v.transplantado,
+                        colhido: v.colhido,
+                        totalKg: v.totalKg.toLocaleString('pt-BR'),
+                        mediaG: v.mediaG
+                    };
+                } else {
+                    // As variedades extra repetem apenas a identificação principal, deixando perdas vazias
+                    return {
+                        data: commonData.data,
+                        ciclo: commonData.ciclo,
+                        bloco: commonData.bloco,
+                        cultura: commonData.cultura,
+                        percColhido: '-',
+                        pendente: '',
+                        percPendente: '-',
+                        causasLista: [{ nome: "-", qtd: "", perc: "-" }], // Causas vazias para não repetir
+                        totalTransplantadoBloco: '',
+                        totalColhidoBloco: '',
+                        totalKgBloco: '',
+                        variedade: v.variedade,
+                        transplantado: v.transplantado,
+                        colhido: v.colhido,
+                        totalKg: v.totalKg.toLocaleString('pt-BR'),
+                        mediaG: v.mediaG
+                    };
                 }
-
-                const t = parseInt(row.querySelector('.var-transp').value) || 0;
-                const c = parseInt(row.querySelector('.var-colhido').value) || 0;
-                const k = Math.round(parseFloat(row.querySelector('.var-kg').value) || 0); // Arredonda para envio
-                const m = row.querySelector('.var-media').textContent;
-                
-                payloads.push({
-                    ...commonData,
-                    variedade: nome,
-                    transplantado: t,
-                    colhido: c,
-                    totalKg: k.toLocaleString('pt-BR'),
-                    mediaG: m
-                });
             });
 
             try {
-                // Para que o Google Sheets registe em linhas separadas (uma em baixo da outra, na linha seguinte da folha)
-                // enviamos cada variedade num pedido (fetch) diferente sequencialmente.
-                for (const payload of payloads) {
+                // Envia cada variedade sequencialmente em requisições individuais
+                // para garantir que a planilha insira uma nova linha por variedade do mesmo bloco.
+                for (let i = 0; i < payloads.length; i++) {
+                    const payloadItem = payloads[i];
                     await fetch(url, { 
                         method: 'POST', 
                         mode: 'no-cors', 
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                        body: JSON.stringify(payload) 
+                        body: JSON.stringify(payloadItem) 
                     });
-                    
-                    // Adiciona um pequeno intervalo caso haja múltiplas linhas, para garantir que o Google Apps Script
-                    // não processe os pedidos em simultâneo e os coloque na ordem correta na folha.
-                    if (payloads.length > 1) {
-                        await new Promise(resolve => setTimeout(resolve, 600)); 
+
+                    // Intervalo de 1 segundo para evitar conflito concorrente no Google Apps Script
+                    if (payloads.length > 1 && i < payloads.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
                     }
                 }
-                
-                showToast('✅ Dados enviados para a folha de cálculo!'); 
+
+                showToast('✅ Dados de todas as variedades enviados com sucesso!'); 
                 limparFormulario();
                 
             } catch (error) {
-                // Mecanismo de fallback caso o fetch falhe (bloqueio de rede, etc.)
+                // Contingência para caso de falha no envio
                 try {
                     const form = document.createElement('form'); form.method = 'POST'; form.action = url; form.target = '_blank'; 
                     const input = document.createElement('input'); input.type = 'hidden'; input.name = 'postData'; 
                     
-                    // Em caso de fallback (abre num novo separador), usamos o método antigo concatenado 
-                    // para não abrir múltiplos separadores no browser do utilizador.
-                    let arrVar = []; let arrTransp = []; let arrColhido = []; let arrKg = []; let arrMedia = [];
-                    payloads.forEach(p => {
-                        arrVar.push(p.variedade);
-                        arrTransp.push(p.transplantado);
-                        arrColhido.push(p.colhido);
-                        arrKg.push(p.totalKg);
-                        arrMedia.push(p.mediaG);
-                    });
-                    
-                    const fallbackPayload = {
-                        ...commonData,
-                        variedade: arrVar.join('\n'),
-                        transplantado: arrTransp.join('\n'),
-                        colhido: arrColhido.join('\n'),
-                        totalKg: arrKg.join('\n'),
-                        mediaG: arrMedia.join('\n')
-                    };
-                    
-                    input.value = JSON.stringify(fallbackPayload);
+                    // Na contingência submete apenas a primeira para não gerar a linha mesclada errada
+                    input.value = JSON.stringify(payloads[0]);
                     form.appendChild(input); document.body.appendChild(form); form.submit(); document.body.removeChild(form);
                     showToast('⚠️ Modo de contingência utilizado.', 'warning'); limparFormulario();
-                } catch (fallbackError) { showToast('❌ Falha de ligação.', 'error'); }
+                } catch (fallbackError) { showToast('❌ Falha de ligação ao enviar para a planilha.', 'error'); }
             } finally { btn.innerHTML = textoOriginal; btn.disabled = false; }
         }
     </script>
