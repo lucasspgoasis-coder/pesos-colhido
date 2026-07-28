@@ -526,6 +526,10 @@
         let totalKgGlob = 0;       
         let mediaGGlob = 0;        
         let variedadeIdCount = 0;
+        
+        // Novas variáveis globais para assegurar exatidão matemática nas perdas
+        let pctPendenteGlobal = 0;
+        let percNaoDetalhadoGlobal = 0;
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -689,7 +693,7 @@
                 sumKg += k;
 
                 if (c > 0 && k > 0) {
-                    let mediaRow = Math.round((k * 1000) / c); // Arredondamento para gramas por unidade
+                    let mediaRow = Math.round((k * 1000) / c); 
                     mediaDiv.textContent = mediaRow.toLocaleString('pt-BR');
                     mediaDiv.classList.add('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
                     mediaDiv.classList.remove('bg-gray-50', 'text-gray-500', 'border-gray-200');
@@ -703,7 +707,7 @@
             // Atualiza input de Total Transplantado Global
             document.getElementById('totalTransplantado').value = sumTransp > 0 ? sumTransp : '';
 
-            // Atualiza os Globais com arredondamento preciso
+            // Atualiza os Globais 
             totalTransplantadoGlob = sumTransp;
             totalColhidoGlob = sumColhido;
             totalKgGlob = Math.round(sumKg);
@@ -726,20 +730,105 @@
                     elPercColhido.textContent = "100+"; 
                     elPercPendente.textContent = "0";
                     totalPendenteGlob = 0;
+                    pctPendenteGlobal = 0;
                     showToast("O volume colhido excede o total transplantado.", "warning");
                 } else {
                     totalPendenteGlob = totalTransplantadoGlob - totalColhidoGlob;
                     let pctColhido = Math.round((totalColhidoGlob / totalTransplantadoGlob) * 100);
-                    let pctPendente = 100 - pctColhido;
+                    
+                    // pctPendenteGlobal representa fielmente o peso global da perda total
+                    pctPendenteGlobal = 100 - pctColhido;
                     
                     elPercColhido.textContent = pctColhido;
-                    elPercPendente.textContent = pctPendente;
+                    elPercPendente.textContent = pctPendenteGlobal;
                 }
             } else {
                 elPercColhido.textContent = "0"; elPercPendente.textContent = "0";
                 totalPendenteGlob = 0;
+                pctPendenteGlobal = 0;
             }
+            
+            // Reflete as alterações nas causas registadas
             atualizarStatusCausas();
+        }
+
+        // Função responsável por calcular as percentagens das causas individuais
+        // garantindo que o somatório corresponde EXATAMENTE ao 'pctPendenteGlobal' 
+        // sem discrepâncias de arredondamento através do "Largest Remainder Method"
+        function calcularPercentuaisCausas() {
+            if (totalPendenteGlob <= 0) {
+                causasList.forEach(c => c.percDisplay = 0);
+                percNaoDetalhadoGlobal = 0;
+                return;
+            }
+            
+            let totalJustificado = causasList.reduce((acc, c) => acc + c.qtd, 0);
+            let naoDetalhado = totalPendenteGlob - totalJustificado;
+            
+            let items = causasList.map(c => c.qtd);
+            if (naoDetalhado > 0) { items.push(naoDetalhado); }
+            
+            // 1. Calcular quota fracionária exata para cada item
+            let exactPercs = items.map(q => (q / totalPendenteGlob) * pctPendenteGlobal);
+            
+            // 2. Extrair o piso (inteiro inferior) de cada cálculo
+            let roundedPercs = exactPercs.map(p => Math.floor(p));
+            
+            // 3. Forçar um mínimo de 1% para todos os itens que tenham quantidade (qtd > 0)
+            items.forEach((q, i) => {
+                if (q > 0 && roundedPercs[i] === 0) {
+                    roundedPercs[i] = 1;
+                }
+            });
+            
+            // 4. Ajustar discrepâncias para bater exatamente com pctPendenteGlobal
+            let sumRounded = roundedPercs.reduce((a, b) => a + b, 0);
+            
+            if (sumRounded < pctPendenteGlobal) {
+                // Faltam percentuais (distribuir para os maiores restos como no método tradicional)
+                let diff = pctPendenteGlobal - sumRounded;
+                let remainders = exactPercs.map((p, i) => ({ index: i, rem: p - roundedPercs[i] }));
+                
+                remainders.sort((a, b) => b.rem - a.rem);
+                
+                for (let i = 0; i < diff; i++) {
+                    roundedPercs[remainders[i % remainders.length].index]++;
+                }
+            } else if (sumRounded > pctPendenteGlobal) {
+                // Passou do limite global porque forçámos alguns a 1%
+                // Retirar o excesso, priorizando quem tem mais % ou as menores frações se todos tiverem apenas 1%
+                let diff = sumRounded - pctPendenteGlobal;
+                
+                for (let i = 0; i < diff; i++) {
+                    let bestIdx = -1;
+                    let bestScore = -Infinity;
+                    
+                    for (let j = 0; j < roundedPercs.length; j++) {
+                        if (roundedPercs[j] > 0) {
+                            // Se tiver > 1%, é o melhor candidato para reduzir. Se não, perde quem tinha a menor fração real.
+                            let score = roundedPercs[j] > 1 ? 1000 + roundedPercs[j] : -exactPercs[j];
+                            if (score > bestScore) {
+                                bestScore = score;
+                                bestIdx = j;
+                            }
+                        }
+                    }
+                    if (bestIdx !== -1) {
+                        roundedPercs[bestIdx]--;
+                    }
+                }
+            }
+            
+            // 5. Atribuir valores de volta às causas correspondentes para exibição visual (sem erros de soma)
+            causasList.forEach((c, i) => {
+                c.percDisplay = roundedPercs[i];
+            });
+            
+            if (naoDetalhado > 0) {
+                percNaoDetalhadoGlobal = roundedPercs[roundedPercs.length - 1];
+            } else {
+                percNaoDetalhadoGlobal = 0;
+            }
         }
 
         function adicionarCausa() {
@@ -757,7 +846,7 @@
 
             const idxExistente = causasList.findIndex(c => c.nome.toLowerCase() === nomeCausa.toLowerCase());
             if (idxExistente >= 0) { causasList[idxExistente].qtd += qtd; } 
-            else { causasList.push({ nome: nomeCausa, qtd: qtd }); }
+            else { causasList.push({ nome: nomeCausa, qtd: qtd, percDisplay: 0 }); }
 
             sel.value = ''; 
             document.getElementById('causaOutro').value = ''; document.getElementById('causaOutro').classList.add('hidden'); 
@@ -770,21 +859,26 @@
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
         function atualizarStatusCausas() {
+            calcularPercentuaisCausas(); // Recalcula magicamente sem diferenças de arredondamento
+
             const tbody = document.getElementById('tabelaCausasBody');
             const placeholder = document.getElementById('tabelaCausasVazia');
-            tbody.innerHTML = ''; let totalJustificado = 0;
+            tbody.innerHTML = ''; 
+            let totalJustificado = 0;
+            let percJustificadoSoma = 0; // Armazena a soma visível perfeitamente unificada
 
             if (causasList.length === 0) { placeholder.classList.remove('hidden'); } 
             else {
                 placeholder.classList.add('hidden');
                 causasList.forEach((causa, index) => {
                     totalJustificado += causa.qtd;
-                    let perc = totalTransplantadoGlob > 0 ? (causa.qtd / totalTransplantadoGlob) * 100 : 0;
+                    percJustificadoSoma += causa.percDisplay;
+                    
                     tbody.innerHTML += `
                         <tr class="hover:bg-emerald-50 transition-colors border-b border-emerald-200">
                             <td class="px-5 py-3 font-semibold text-slate-800 text-center border-r border-emerald-100">${causa.nome}</td>
                             <td class="px-5 py-3 text-center font-medium text-slate-700 border-r border-emerald-100">${causa.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="px-5 py-3 text-center font-black text-red-600 border-r border-emerald-100">${Math.round(perc)}%</td>
+                            <td class="px-5 py-3 text-center font-black text-red-600 border-r border-emerald-100">${causa.percDisplay}%</td>
                             <td class="px-4 py-3 text-center no-print"><button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded shadow-sm">✕</button></td>
                         </tr>
                     `;
@@ -792,10 +886,9 @@
             }
 
             document.getElementById('pendentesLivres').textContent = Math.max(0, totalPendenteGlob - totalJustificado).toLocaleString('pt-BR');
-            document.getElementById('percJustificadoSoma').textContent = Math.round(totalTransplantadoGlob > 0 ? (totalJustificado / totalTransplantadoGlob) * 100 : 0);
+            document.getElementById('percJustificadoSoma').textContent = percJustificadoSoma;
             
-            let percPendenteAtual = parseInt(document.getElementById('percPendente').textContent) || 0;
-            document.getElementById('percPendenteMax').textContent = percPendenteAtual;
+            document.getElementById('percPendenteMax').textContent = pctPendenteGlobal;
             
             const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${Math.min(progressoFracao, 100)}%`;
@@ -856,11 +949,9 @@
             const relVarTable = document.getElementById('relTableVariedades');
             relVarTable.innerHTML = '';
             
-            // Exibe cada nome de variedade numa linha separada no resumo
             const nomesLista = variedades.map(v => v.variedade);
             document.getElementById('relVariedade').innerHTML = nomesLista.length > 0 ? nomesLista.join('<br>') : 'Não inf.';
 
-            // Preenche a tabela detalhada por variedade
             variedades.forEach(v => {
                 relVarTable.innerHTML += `
                     <tr class="border-b border-slate-200">
@@ -891,10 +982,9 @@
             document.getElementById('relMediaG').textContent = mediaGGlob > 0 ? mediaGGlob.toLocaleString('pt-BR') : "0";
             
             let pCol = document.getElementById('percColhido').textContent;
-            let pPen = document.getElementById('percPendente').textContent;
             
             document.getElementById('relPercColhido').textContent = `${pCol}${pCol !== '100+' ? '%' : ''}`;
-            document.getElementById('relPercPendente').textContent = `${pPen}%`;
+            document.getElementById('relPercPendente').textContent = `${pctPendenteGlobal}%`;
 
             const relBody = document.getElementById('relTableBody');
             relBody.innerHTML = '';
@@ -905,12 +995,12 @@
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
-                    let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
+                    // Usa diretamente c.percDisplay, que já foi matematicamente balançado
                     relBody.innerHTML += `
                         <tr class="bg-white border-b border-slate-300">
                             <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle text-center border-r border-slate-300">${c.nome}</td>
                             <td class="py-3 px-5 text-center text-slate-700 h-[40px] align-middle border-r border-slate-300">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-3 px-5 text-center font-black text-slate-800 h-[40px] align-middle">${pCausa}%</td>
+                            <td class="py-3 px-5 text-center font-black text-slate-800 h-[40px] align-middle">${c.percDisplay}%</td>
                         </tr>
                     `;
                 });
@@ -921,13 +1011,13 @@
             if (naoDetalhado > 0) {
                 rowNaoDetalhado.classList.remove('hidden');
                 document.getElementById('relNaoDetalhadoQtd').textContent = naoDetalhado.toLocaleString('pt-BR');
-                document.getElementById('relNaoDetalhadoPerc').textContent = `${totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0}%`;
+                document.getElementById('relNaoDetalhadoPerc').textContent = `${percNaoDetalhadoGlobal}%`;
             } else {
                 rowNaoDetalhado.classList.add('hidden');
             }
 
             document.getElementById('relTotalQtd').textContent = totalPendenteGlob.toLocaleString('pt-BR');
-            document.getElementById('relTotalPerc').textContent = `${pPen}%`;
+            document.getElementById('relTotalPerc').textContent = `${pctPendenteGlobal}%`;
         }
 
         async function renderHtmlToImageSeguro() {
@@ -1003,16 +1093,19 @@
                 return;
             }
 
-            // Monta as causas justificadas
+            // Monta as causas justificadas perfeitamente alinhadas com a percentagem
             let listaEnvioCausas = causasList.map(c => {
-                let pCausa = totalTransplantadoGlob > 0 ? Math.round((c.qtd/totalTransplantadoGlob)*100) : 0;
-                return { nome: c.nome, qtd: c.qtd, perc: pCausa + '%' };
+                return { nome: c.nome, qtd: c.qtd, perc: c.percDisplay + '%' };
             });
             let somaJustificada = causasList.reduce((acc, c) => acc + c.qtd, 0);
             let naoDetalhado = totalPendenteGlob - somaJustificada;
 
-            if (naoDetalhado > 0) listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: (totalTransplantadoGlob > 0 ? Math.round((naoDetalhado/totalTransplantadoGlob)*100) : 0) + '%' });
-            if (listaEnvioCausas.length === 0) listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
+            if (naoDetalhado > 0) {
+                listaEnvioCausas.push({ nome: "Perdas não detalhadas", qtd: naoDetalhado, perc: percNaoDetalhadoGlobal + '%' });
+            }
+            if (listaEnvioCausas.length === 0) {
+                listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
+            }
 
             // Dados partilhados do Bloco / Ciclo
             const commonData = {
@@ -1022,7 +1115,7 @@
                 cultura: getSelectValue('cultura', 'culturaOutro'),
                 percColhido: document.getElementById('percColhido').textContent + '%',
                 pendente: totalPendenteGlob,
-                percPendente: document.getElementById('percPendente').textContent + '%',
+                percPendente: pctPendenteGlobal + '%',
                 causasLista: listaEnvioCausas,
                 // Totais globais do bloco para referência complementar
                 totalTransplantadoBloco: totalTransplantadoGlob,
@@ -1033,7 +1126,6 @@
             // Constrói um payload específico e individual para CADA variedade
             let payloads = variedades.map((v, index) => {
                 if (index === 0) {
-                    // A primeira variedade leva TUDO (incluindo as causas de perdas e totais globais)
                     return {
                         ...commonData,
                         variedade: v.variedade,
@@ -1043,7 +1135,6 @@
                         mediaG: v.mediaG
                     };
                 } else {
-                    // As variedades extra repetem apenas a identificação principal, deixando perdas vazias
                     return {
                         data: commonData.data,
                         ciclo: commonData.ciclo,
@@ -1052,7 +1143,7 @@
                         percColhido: '-',
                         pendente: '',
                         percPendente: '-',
-                        causasLista: [{ nome: "-", qtd: "", perc: "-" }], // Causas vazias para não repetir
+                        causasLista: [{ nome: "-", qtd: "", perc: "-" }], 
                         totalTransplantadoBloco: '',
                         totalColhidoBloco: '',
                         totalKgBloco: '',
@@ -1066,8 +1157,6 @@
             });
 
             try {
-                // Envia cada variedade sequencialmente em requisições individuais
-                // para garantir que a planilha insira uma nova linha por variedade do mesmo bloco.
                 for (let i = 0; i < payloads.length; i++) {
                     const payloadItem = payloads[i];
                     await fetch(url, { 
