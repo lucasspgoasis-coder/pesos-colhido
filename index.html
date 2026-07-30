@@ -23,8 +23,8 @@
             align-items: center;
         }
         .input-melhorado:focus {
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
             outline: none;
         }
 
@@ -41,7 +41,6 @@
             outline: none !important;
             box-shadow: none !important;
             background: transparent !important;
-            mix-blend-mode: multiply; 
         }
 
         /* Notificações Toasts Customizadas */
@@ -109,25 +108,30 @@
 
     <div id="captureArea" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 relative">
         
-        <!-- Cabeçalho Principal -->
-        <header class="flex flex-col md:flex-row items-center md:items-start border-b-2 border-emerald-200 pb-6 mb-8 gap-4">
-            <div class="flex-shrink-0 mb-2 md:mb-0 md:mr-6">
-                <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-28 h-28 object-contain logo-img" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
-            </div>
-            <div class="text-center md:text-left flex-grow flex flex-col justify-center h-full pt-2">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Registo Percentual de Perdas</h1>
-                <h2 class="text-xl md:text-2xl font-bold text-emerald-700 mt-1">Fazenda Oásis</h2>
+        <!-- Cabeçalho Principal (Verde Elegante com Logo Integrada) -->
+        <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white rounded-2xl p-6 md:p-8 shadow-md mb-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-800">
+            <div class="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
+                <div class="shrink-0">
+                    <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-24 h-24 md:w-28 md:h-28 object-contain logo-img drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
+                </div>
+                <div>
+                    <div class="inline-flex items-center gap-2 bg-emerald-800/80 text-emerald-200 text-xs font-bold uppercase px-3 py-1 rounded-full mb-2 border border-emerald-700/60 tracking-wider">
+                        <span>🌱</span> Fazenda Oásis
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">Registo Percentual de Perdas</h1>
+                    <p class="text-emerald-100/80 text-xs md:text-sm font-medium mt-1">Gestão de Produção & Análise de Desempenho Agrícola</p>
+                </div>
             </div>
             
-            <div class="mt-4 md:mt-0 flex gap-4 md:gap-6 bg-emerald-50/80 p-4 rounded-xl border border-emerald-200 shadow-sm items-center h-full shrink-0 min-w-[240px] justify-center">
-                <div class="text-center">
-                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1 whitespace-nowrap">Data</span>
-                    <span id="dataAtual" class="block text-base md:text-lg font-bold text-gray-800 whitespace-nowrap">--/--/----</span>
+            <div class="flex gap-4 bg-emerald-900/90 p-4 rounded-xl border border-emerald-700/60 shadow-inner items-center shrink-0 text-white min-w-[220px] justify-center">
+                <div class="text-center px-2">
+                    <span class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-0.5">Data</span>
+                    <span id="dataAtual" class="block text-base md:text-lg font-bold text-white whitespace-nowrap">--/--/----</span>
                 </div>
-                <div class="w-px h-10 bg-emerald-300"></div>
-                <div class="text-center">
-                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1 whitespace-nowrap">Ciclo Nº</span>
-                    <span id="semanaAtual" class="block text-base md:text-lg font-bold text-gray-800 whitespace-nowrap">--</span>
+                <div class="w-px h-8 bg-emerald-700/80"></div>
+                <div class="text-center px-2">
+                    <span class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-0.5">Ciclo Nº</span>
+                    <span id="semanaAtual" class="block text-base md:text-lg font-bold text-emerald-200 whitespace-nowrap">--</span>
                 </div>
             </div>
         </header>
@@ -208,7 +212,7 @@
                     <h3 class="text-lg font-bold text-emerald-900 flex items-center">
                         <span class="bg-emerald-600 w-2 h-6 rounded mr-2"></span> Detalhe de Variedades e Colheita
                     </h3>
-                    <button type="button" onclick="adicionarVariedade()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold shadow-sm transition-all text-sm flex items-center gap-2 w-full md:w-auto justify-center">
+                    <button type="button" onclick="adicionarVariedade()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg font-bold shadow-sm transition-all text-sm flex items-center gap-2 w-full md:w-auto justify-center">
                         <span>+</span> Adicionar Variedade
                     </button>
                 </div>
@@ -262,24 +266,24 @@
                 </div>
             </div>
 
-            <!-- Registo de Causas -->
-            <div class="bg-white border-2 border-amber-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-amber-50 p-4 border-b border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <h3 class="text-lg font-bold text-amber-900 flex items-center">
-                        <span class="bg-amber-500 w-2 h-6 rounded mr-2"></span> Detalhe das Causas de Perda
+            <!-- Registo de Causas com Cabeçalho Elegante -->
+            <div class="bg-white border-2 border-emerald-800/80 rounded-xl shadow-sm overflow-hidden">
+                <div class="bg-emerald-900 text-white p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <span class="bg-emerald-400 w-2 h-6 rounded mr-2"></span> Detalhe das Causas de Perda
                     </h3>
-                    <div class="flex flex-wrap gap-2 text-xs font-bold text-amber-800">
-                        <span class="bg-amber-100 px-3 py-1 rounded-full whitespace-nowrap border border-amber-300">
+                    <div class="flex flex-wrap gap-2 text-xs font-bold text-emerald-900">
+                        <span class="bg-emerald-100 px-3 py-1 rounded-full whitespace-nowrap border border-emerald-300">
                             Pendentes a justificar: <span id="pendentesLivres">0</span> unid.
                         </span>
-                        <span class="bg-amber-200 px-3 py-1 rounded-full whitespace-nowrap border border-amber-400">
+                        <span class="bg-emerald-200 px-3 py-1 rounded-full whitespace-nowrap border border-emerald-400">
                             Justificado: <span id="percJustificadoSoma">0</span>% de <span id="percPendenteMax">0</span>%
                         </span>
                     </div>
                 </div>
                 
-                <div class="w-full bg-amber-100 h-2 border-b border-amber-200">
-                    <div id="barraProgressoJustificativa" class="bg-amber-500 h-full transition-all duration-300 shadow-[0_0_8px_rgba(245,158,11,0.5)]" style="width: 0%"></div>
+                <div class="w-full bg-emerald-100 h-2 border-b border-emerald-200">
+                    <div id="barraProgressoJustificativa" class="bg-emerald-600 h-full transition-all duration-300 shadow-[0_0_8px_rgba(16,185,129,0.5)]" style="width: 0%"></div>
                 </div>
                 
                 <div class="p-5">
@@ -300,19 +304,19 @@
                             <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800">
                         </div>
                         <div class="w-full md:w-3/12">
-                            <button type="button" onclick="adicionarCausa()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold h-[48px] rounded-lg transition-colors shadow-md no-print flex items-center justify-center">
+                            <button type="button" onclick="adicionarCausa()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-[48px] rounded-lg transition-colors shadow-md no-print flex items-center justify-center">
                                 Adicionar
                             </button>
                         </div>
                     </div>
                     
-                    <div class="mt-6 border-2 border-emerald-600 rounded-lg overflow-hidden shadow-sm">
+                    <div class="mt-6 border-2 border-emerald-800 rounded-lg overflow-hidden shadow-sm">
                         <table class="min-w-full border-collapse text-sm bg-white text-center">
-                            <thead class="bg-emerald-600 text-white">
+                            <thead class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 text-white">
                                 <tr>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Causa</th>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Quantidade</th>
-                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-500">Percentagem da Perda</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-700">Causa</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-700">Quantidade</th>
+                                    <th class="px-4 py-3 text-center font-bold uppercase tracking-wider border-r border-emerald-700">Percentagem da Perda</th>
                                     <th class="px-4 py-3 text-center font-bold uppercase tracking-wider no-print w-20">Ação</th>
                                 </tr>
                             </thead>
@@ -328,29 +332,34 @@
         </form>
     </div>
 
-    <!-- ÁREA DE EXPORTAÇÃO (Layout Fixo Premium) -->
+    <!-- ÁREA DE EXPORTAÇÃO (Layout Fixo Premium com Cabeçalho Verde Elegante) -->
     <div id="relatorioExportacao">
         
-        <!-- Cabeçalho Relatório -->
-        <div class="flex justify-between items-center border-b-4 border-emerald-700 pb-6 mb-8">
+        <!-- Cabeçalho Relatório Exportação JPEG e PDF -->
+        <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-6 rounded-2xl mb-8 flex justify-between items-center shadow-md border border-emerald-800">
             <div class="flex items-center gap-6">
-                <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain" alt="Logo Fazenda Oásis">
-                <div class="flex flex-col justify-center">
-                    <h1 class="text-[32px] font-black uppercase tracking-wider text-slate-800 mb-1">Resumo de Produção</h1>
-                    <h2 class="text-xl font-bold text-emerald-700 tracking-wide">Desempenho e Análise de Perdas</h2>
+                <div class="shrink-0">
+                    <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain logo-img drop-shadow-md" alt="Logo Fazenda Oásis">
+                </div>
+                <div>
+                    <div class="inline-flex items-center gap-1.5 bg-emerald-800/90 text-emerald-200 text-xs font-bold uppercase px-3 py-1 rounded-full mb-1.5 border border-emerald-700/60 tracking-wider">
+                        <span>🌱</span> Fazenda Oásis
+                    </div>
+                    <h1 class="text-3xl font-black uppercase tracking-wider text-white mb-1">Resumo de Produção</h1>
+                    <h2 class="text-base font-semibold text-emerald-100">Desempenho e Análise de Perdas</h2>
                 </div>
             </div>
-            <div class="text-right border-l-2 border-slate-200 pl-6 flex flex-col justify-center">
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Ciclo Produtivo</p>
-                <p class="text-5xl font-black text-emerald-700 leading-none mb-2" id="relSemana">--</p>
-                <p class="text-lg text-slate-700 font-bold leading-none" id="relData">--/--/----</p>
+            <div class="text-right border-l border-emerald-700/80 pl-6 flex flex-col justify-center">
+                <p class="text-[11px] text-emerald-300 font-bold uppercase tracking-widest mb-1">Ciclo Produtivo</p>
+                <p class="text-5xl font-black text-white leading-none mb-2" id="relSemana">--</p>
+                <p class="text-base text-emerald-100 font-bold leading-none" id="relData">--/--/----</p>
             </div>
         </div>
 
         <!-- Secção 1: Parâmetros -->
         <div class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 1. Parâmetros da Plantação
+                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span> 1. Parâmetros da Plantação
             </h3>
             <div class="grid grid-cols-3 gap-4">
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
@@ -363,7 +372,6 @@
                 </div>
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade(s)</span>
-                    <!-- Exibe cada variedade numa linha individual separada -->
                     <span class="block text-base font-bold text-slate-800 leading-snug" id="relVariedade">-</span>
                 </div>
                 <div class="border border-slate-300 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
@@ -384,7 +392,7 @@
         <!-- Secção 2: Síntese de Volumes e Pesos -->
         <div class="mb-6">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2. Síntese Global de Produção
+                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span> 2. Síntese Global de Produção
             </h3>
             
             <div class="grid grid-cols-3 gap-6">
@@ -398,13 +406,13 @@
                 </div>
                 
                 <!-- Coluna 2: Colhido -->
-                <div class="border-2 border-emerald-600 p-5 rounded-xl bg-emerald-50 text-center shadow-sm relative overflow-hidden flex flex-col justify-center">
+                <div class="border-2 border-emerald-700 p-5 rounded-xl bg-emerald-50 text-center shadow-sm relative overflow-hidden flex flex-col justify-center">
                     <span class="block text-xs font-bold text-emerald-800 uppercase mb-2">Volume Colhido</span>
                     <div class="flex items-end justify-center gap-1 mb-2">
                         <span class="text-4xl font-black text-emerald-700 leading-none" id="relColhido">0</span>
                         <span class="text-xs font-bold text-emerald-600 pb-1">UN</span>
                     </div>
-                    <span class="text-sm font-bold text-white bg-emerald-600 px-3 py-0.5 rounded-full shadow-sm mb-4 inline-block" id="relPercColhido">0%</span>
+                    <span class="text-sm font-bold text-white bg-emerald-700 px-3 py-0.5 rounded-full shadow-sm mb-4 inline-block" id="relPercColhido">0%</span>
                     
                     <div class="border-t border-emerald-200 pt-3 grid grid-cols-2 gap-2 text-left">
                         <div>
@@ -435,44 +443,44 @@
         <!-- Secção: Detalhe Individual das Variedades -->
         <div id="relBlocoVariedades" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 2.1 Detalhe Específico por Variedade
+                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span> 2.1 Detalhe Específico por Variedade
             </h3>
-            <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-white border-2 border-emerald-900 rounded-lg overflow-hidden shadow-sm">
                 <table class="w-full text-center border-collapse">
-                    <thead class="bg-slate-100 text-slate-700 border-b border-slate-300">
+                    <thead class="bg-emerald-900 text-white">
                         <tr>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Variedade</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Transp. (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Colhido (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Total (KG)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center border-r border-emerald-800">Variedade</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center border-r border-emerald-800">Transp. (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center border-r border-emerald-800">Colhido (UN)</th>
+                            <th class="py-3 px-4 text-xs font-bold uppercase text-center border-r border-emerald-800">Total (KG)</th>
                             <th class="py-3 px-4 text-xs font-bold uppercase text-center">Média (g/un)</th>
                         </tr>
                     </thead>
                     <tbody id="relTableVariedades" class="text-sm">
-                        <!-- Injetado via JS com dados separados -->
+                        <!-- Injetado via JS -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Secção 3: Tabela de Perdas -->
+        <!-- Secção 3: Tabela de Perdas em Estilo Verde Elegante -->
         <div class="mb-10">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-600 rounded-sm inline-block"></span> 3. Tabela Detalhada de Perdas
+                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span> 3. Tabela Detalhada de Perdas
             </h3>
             
-            <div class="bg-white border-2 border-emerald-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-white border-2 border-emerald-900 rounded-xl overflow-hidden shadow-sm">
                 <table class="w-full text-center border-collapse">
-                    <thead class="bg-emerald-800 text-white">
+                    <thead class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white">
                         <tr>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-700 w-1/2">Causa Reportada</th>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-700 w-1/4">Quantidade (UN)</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-800 w-1/2">Causa Reportada</th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center border-r border-emerald-800 w-1/4">Quantidade (UN)</th>
                             <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">Impacto Total (%)</th>
                         </tr>
                     </thead>
                     <tbody id="relTableBody" class="text-sm bg-white">
                     </tbody>
-                    <tfoot class="bg-emerald-50 border-t-2 border-emerald-800 text-sm">
+                    <tfoot class="bg-emerald-50 border-t-2 border-emerald-900 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-emerald-200">
                             <td class="py-3 px-5 text-emerald-800 italic font-medium text-center border-r border-emerald-200">Perdas não detalhadas</td>
                             <td class="py-3 px-5 text-center text-emerald-900 font-bold border-r border-emerald-200" id="relNaoDetalhadoQtd">0</td>
@@ -490,8 +498,8 @@
         
         <div class="mt-10 border-t-2 border-slate-300 pt-6 flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                Documento Oficial de Registo
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                Documento Oficial de Registo - Fazenda Oásis
             </div>
             <div class="text-right">
                 <span>Fazenda Oásis © <span id="anoFooter">2026</span></span>
@@ -510,7 +518,7 @@
         <button type="button" onclick="exportarPDF(this)" class="px-3 md:px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg font-bold shadow transition-all flex items-center text-sm md:text-base">
             📄 Baixar PDF
         </button>
-        <button type="button" onclick="exportarJPEG(this)" class="px-3 md:px-4 py-2 text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold shadow transition-all flex items-center text-sm md:text-base">
+        <button type="button" onclick="exportarJPEG(this)" class="px-3 md:px-4 py-2 text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg font-bold shadow transition-all flex items-center text-sm md:text-base">
             🖼️ Baixar JPEG
         </button>
         <button type="button" onclick="enviarParaPlanilha()" id="btnEnviarPlanilha" class="px-3 md:px-6 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold shadow-lg transition-all flex items-center text-sm md:text-base">
@@ -527,14 +535,13 @@
         let mediaGGlob = 0;        
         let variedadeIdCount = 0;
         
-        // Novas variáveis globais para assegurar exatidão matemática nas perdas
         let pctPendenteGlobal = 0;
         let percNaoDetalhadoGlobal = 0;
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             let bgClass = 'bg-slate-800'; let icon = 'ℹ️';
-            if (type === 'success') { bgClass = 'bg-emerald-600'; icon = '✅'; } 
+            if (type === 'success') { bgClass = 'bg-emerald-700'; icon = '✅'; } 
             else if (type === 'error') { bgClass = 'bg-red-600'; icon = '❌'; } 
             else if (type === 'warning') { bgClass = 'bg-amber-500'; icon = '⚠️'; }
 
@@ -677,7 +684,6 @@
             let sumColhido = 0;
             let sumKg = 0;
 
-            // Recalcula as linhas individuais de cada variedade
             document.querySelectorAll('.variety-item').forEach(row => {
                 const transpInp = row.querySelector('.var-transp');
                 const colhidoInp = row.querySelector('.var-colhido');
@@ -704,10 +710,8 @@
                 }
             });
 
-            // Atualiza input de Total Transplantado Global
             document.getElementById('totalTransplantado').value = sumTransp > 0 ? sumTransp : '';
 
-            // Atualiza os Globais 
             totalTransplantadoGlob = sumTransp;
             totalColhidoGlob = sumColhido;
             totalKgGlob = Math.round(sumKg);
@@ -736,7 +740,6 @@
                     totalPendenteGlob = totalTransplantadoGlob - totalColhidoGlob;
                     let pctColhido = Math.round((totalColhidoGlob / totalTransplantadoGlob) * 100);
                     
-                    // pctPendenteGlobal representa fielmente o peso global da perda total
                     pctPendenteGlobal = 100 - pctColhido;
                     
                     elPercColhido.textContent = pctColhido;
@@ -748,13 +751,9 @@
                 pctPendenteGlobal = 0;
             }
             
-            // Reflete as alterações nas causas registadas
             atualizarStatusCausas();
         }
 
-        // Função responsável por calcular as percentagens das causas individuais
-        // garantindo que o somatório corresponde EXATAMENTE ao 'pctPendenteGlobal' 
-        // sem discrepâncias de arredondamento através do "Largest Remainder Method"
         function calcularPercentuaisCausas() {
             if (totalPendenteGlob <= 0) {
                 causasList.forEach(c => c.percDisplay = 0);
@@ -768,24 +767,18 @@
             let items = causasList.map(c => c.qtd);
             if (naoDetalhado > 0) { items.push(naoDetalhado); }
             
-            // 1. Calcular quota fracionária exata para cada item
             let exactPercs = items.map(q => (q / totalPendenteGlob) * pctPendenteGlobal);
-            
-            // 2. Extrair o piso (inteiro inferior) de cada cálculo
             let roundedPercs = exactPercs.map(p => Math.floor(p));
             
-            // 3. Forçar um mínimo de 1% para todos os itens que tenham quantidade (qtd > 0)
             items.forEach((q, i) => {
                 if (q > 0 && roundedPercs[i] === 0) {
                     roundedPercs[i] = 1;
                 }
             });
             
-            // 4. Ajustar discrepâncias para bater exatamente com pctPendenteGlobal
             let sumRounded = roundedPercs.reduce((a, b) => a + b, 0);
             
             if (sumRounded < pctPendenteGlobal) {
-                // Faltam percentuais (distribuir para os maiores restos como no método tradicional)
                 let diff = pctPendenteGlobal - sumRounded;
                 let remainders = exactPercs.map((p, i) => ({ index: i, rem: p - roundedPercs[i] }));
                 
@@ -795,8 +788,6 @@
                     roundedPercs[remainders[i % remainders.length].index]++;
                 }
             } else if (sumRounded > pctPendenteGlobal) {
-                // Passou do limite global porque forçámos alguns a 1%
-                // Retirar o excesso, priorizando quem tem mais % ou as menores frações se todos tiverem apenas 1%
                 let diff = sumRounded - pctPendenteGlobal;
                 
                 for (let i = 0; i < diff; i++) {
@@ -805,7 +796,6 @@
                     
                     for (let j = 0; j < roundedPercs.length; j++) {
                         if (roundedPercs[j] > 0) {
-                            // Se tiver > 1%, é o melhor candidato para reduzir. Se não, perde quem tinha a menor fração real.
                             let score = roundedPercs[j] > 1 ? 1000 + roundedPercs[j] : -exactPercs[j];
                             if (score > bestScore) {
                                 bestScore = score;
@@ -819,7 +809,6 @@
                 }
             }
             
-            // 5. Atribuir valores de volta às causas correspondentes para exibição visual (sem erros de soma)
             causasList.forEach((c, i) => {
                 c.percDisplay = roundedPercs[i];
             });
@@ -859,13 +848,13 @@
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
         function atualizarStatusCausas() {
-            calcularPercentuaisCausas(); // Recalcula magicamente sem diferenças de arredondamento
+            calcularPercentuaisCausas();
 
             const tbody = document.getElementById('tabelaCausasBody');
             const placeholder = document.getElementById('tabelaCausasVazia');
             tbody.innerHTML = ''; 
             let totalJustificado = 0;
-            let percJustificadoSoma = 0; // Armazena a soma visível perfeitamente unificada
+            let percJustificadoSoma = 0;
 
             if (causasList.length === 0) { placeholder.classList.remove('hidden'); } 
             else {
@@ -887,7 +876,6 @@
 
             document.getElementById('pendentesLivres').textContent = Math.max(0, totalPendenteGlob - totalJustificado).toLocaleString('pt-BR');
             document.getElementById('percJustificadoSoma').textContent = percJustificadoSoma;
-            
             document.getElementById('percPendenteMax').textContent = pctPendenteGlobal;
             
             const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
@@ -900,7 +888,6 @@
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
             
-            // Reinicia as variedades
             document.getElementById('variedadesList').innerHTML = '';
             variedadeIdCount = 0;
             adicionarVariedade();
@@ -941,7 +928,6 @@
         }
 
         function preencherRelatorioOculto() {
-            // Dados Gerais
             document.getElementById('relBloco').textContent = getSelectValue('bloco', 'blocoOutro');
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
             
@@ -959,7 +945,7 @@
                         <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.transplantado.toLocaleString('pt-BR')}</td>
                         <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.colhido.toLocaleString('pt-BR')}</td>
                         <td class="py-2 px-4 text-center text-slate-700 border-r border-slate-200">${v.totalKg.toLocaleString('pt-BR')}</td>
-                        <td class="py-2 px-4 text-center font-bold text-emerald-700">${v.mediaG}</td>
+                        <td class="py-2 px-4 text-center font-bold text-emerald-800">${v.mediaG}</td>
                     </tr>
                 `;
             });
@@ -973,7 +959,6 @@
                 document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
             } else { document.getElementById('relDataFim').textContent = '-'; }
 
-            // Resumo Produção Global
             document.getElementById('relTransp').textContent = totalTransplantadoGlob.toLocaleString('pt-BR');
             document.getElementById('relColhido').textContent = totalColhidoGlob.toLocaleString('pt-BR');
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
@@ -995,7 +980,6 @@
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
-                    // Usa diretamente c.percDisplay, que já foi matematicamente balançado
                     relBody.innerHTML += `
                         <tr class="bg-white border-b border-slate-300">
                             <td class="py-3 px-5 font-bold text-slate-800 h-[40px] align-middle text-center border-r border-slate-300">${c.nome}</td>
@@ -1093,7 +1077,6 @@
                 return;
             }
 
-            // Monta as causas justificadas perfeitamente alinhadas com a percentagem
             let listaEnvioCausas = causasList.map(c => {
                 return { nome: c.nome, qtd: c.qtd, perc: c.percDisplay + '%' };
             });
@@ -1107,7 +1090,6 @@
                 listaEnvioCausas.push({ nome: "Sem perdas", qtd: 0, perc: '0%' });
             }
 
-            // Dados partilhados do Bloco / Ciclo
             const commonData = {
                 data: document.getElementById('dataAtual').textContent,
                 ciclo: document.getElementById('cicloProducao').value || '-',
@@ -1117,13 +1099,11 @@
                 pendente: totalPendenteGlob,
                 percPendente: pctPendenteGlobal + '%',
                 causasLista: listaEnvioCausas,
-                // Totais globais do bloco para referência complementar
                 totalTransplantadoBloco: totalTransplantadoGlob,
                 totalColhidoBloco: totalColhidoGlob,
                 totalKgBloco: totalKgGlob
             };
 
-            // Constrói um payload específico e individual para CADA variedade
             let payloads = variedades.map((v, index) => {
                 if (index === 0) {
                     return {
@@ -1166,7 +1146,6 @@
                         body: JSON.stringify(payloadItem) 
                     });
 
-                    // Intervalo de 1 segundo para evitar conflito concorrente no Google Apps Script
                     if (payloads.length > 1 && i < payloads.length - 1) {
                         await new Promise(resolve => setTimeout(resolve, 1000));
                     }
@@ -1176,12 +1155,10 @@
                 limparFormulario();
                 
             } catch (error) {
-                // Contingência para caso de falha no envio
                 try {
                     const form = document.createElement('form'); form.method = 'POST'; form.action = url; form.target = '_blank'; 
                     const input = document.createElement('input'); input.type = 'hidden'; input.name = 'postData'; 
                     
-                    // Na contingência submete apenas a primeira para não gerar a linha mesclada errada
                     input.value = JSON.stringify(payloads[0]);
                     form.appendChild(input); document.body.appendChild(form); form.submit(); document.body.removeChild(form);
                     showToast('⚠️ Modo de contingência utilizado.', 'warning'); limparFormulario();
