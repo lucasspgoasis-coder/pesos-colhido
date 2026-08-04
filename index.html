@@ -63,18 +63,21 @@
         .badge-especificacao {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             max-width: 100%;
             word-break: break-word;
             white-space: normal;
-            line-height: 1.25;
-            padding: 4px 12px;
-            border-radius: 9999px;
+            line-height: 1.4;
+            padding: 4px 10px;
+            border-radius: 6px;
             font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.025em;
-            text-transform: uppercase;
+            font-weight: 600;
+            background-color: #f8fafc;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             box-sizing: border-box;
+            text-align: left;
         }
 
         /* Notificações Toasts Customizadas */
@@ -148,8 +151,8 @@
             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
             
             <div class="flex flex-col md:flex-row items-center gap-5 text-center md:text-left z-10">
-                <div class="shrink-0 bg-white/10 p-2 rounded-xl backdrop-blur-md border border-white/10">
-                    <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-24 h-24 md:w-28 md:h-28 object-contain logo-img drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
+                <div class="shrink-0">
+                    <img src="https://i.imgur.com/wEozr34.png" alt="Logo Fazenda Oásis" class="w-24 h-24 md:w-28 md:h-28 object-contain logo-img drop-shadow-2xl" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e0f2fe/0369a1?text=Fazenda+Oasis';">
                 </div>
                 <div>
                     <div class="inline-flex items-center gap-2 bg-emerald-800/80 text-emerald-200 text-xs font-bold uppercase px-3 py-1 rounded-full mb-2 border border-emerald-700/60 tracking-wider">
@@ -326,45 +329,51 @@
                 
                 <div class="p-6 bg-slate-50/50">
                     <!-- Formulário de Adição de Causas em Grelha Limpa -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                        <div class="md:col-span-4">
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider">Causa Principal *</label>
-                            <select id="causaLista" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
-                                <option value="" disabled selected>Selecione a causa...</option>
-                                <option value="Esquiara">Esquiara</option>
-                                <option value="Mal desenvolvidas">Mal desenvolvidas</option>
-                                <option value="Fungos">Fungos</option>
-                                <option value="Pragas">Pragas</option>
-                                <option value="outros">Outros...</option>
-                            </select>
+                    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-6">
+                        <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex items-center gap-2">
+                            <span class="text-emerald-600">➕</span>
+                            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Registar Nova Causa</h4>
                         </div>
+                        <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
+                            <div class="md:col-span-4">
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider">Causa Principal *</label>
+                                <select id="causaLista" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
+                                    <option value="" disabled selected>Selecione a causa...</option>
+                                    <option value="Esquiara">Esquiara</option>
+                                    <option value="Mal desenvolvidas">Mal desenvolvidas</option>
+                                    <option value="Fungos">Fungos</option>
+                                    <option value="Pragas">Pragas</option>
+                                    <option value="outros">Outros...</option>
+                                </select>
+                            </div>
 
-                        <div class="md:col-span-4">
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
-                                Especificação 
-                                <span class="normal-case text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">Opcional</span>
-                            </label>
-                            <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão negra, Largarta..." class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
-                        </div>
+                            <div class="md:col-span-4">
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
+                                    Especificação 
+                                    <span class="normal-case text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200">Opcional</span>
+                                </label>
+                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão negra, Largarta..." class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
+                            </div>
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider">Qtd (UN) *</label>
-                            <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600">
-                        </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider">Qtd (UN) *</label>
+                                <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600">
+                            </div>
 
-                        <div class="md:col-span-2">
-                            <button type="button" onclick="adicionarCausa()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-[48px] rounded-lg transition-colors shadow-sm no-print flex items-center justify-center gap-1.5 text-sm">
-                                <span>+</span> Adicionar
-                            </button>
+                            <div class="md:col-span-2">
+                                <button type="button" onclick="adicionarCausa()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-[48px] rounded-lg transition-colors shadow-sm no-print flex items-center justify-center gap-1.5 text-sm">
+                                    Adicionar
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Tabela Quadriculada Elegante de Causas -->
-                    <div class="mt-6 border border-slate-300 rounded-xl overflow-hidden shadow-sm bg-white">
+                    <div class="border border-slate-300 rounded-xl overflow-hidden shadow-sm bg-white">
                         <table class="w-full border-collapse text-sm text-center">
                             <thead class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 text-white">
                                 <tr class="divide-x divide-emerald-700/60">
-                                    <th class="px-5 py-3.5 text-center font-bold uppercase tracking-wider text-xs">Causa / Especificação Detalhada</th>
+                                    <th class="px-5 py-3.5 text-left pl-8 font-bold uppercase tracking-wider text-xs">Causa / Especificação Detalhada</th>
                                     <th class="px-5 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-36">Quantidade</th>
                                     <th class="px-5 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-36">Percentagem</th>
                                     <th class="px-4 py-3.5 text-center font-bold uppercase tracking-wider text-xs no-print w-20">Ação</th>
@@ -390,8 +399,8 @@
         <!-- Cabeçalho Relatório Exportação JPEG e PDF -->
         <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-6 rounded-2xl mb-8 flex justify-between items-center shadow-md border border-emerald-800 relative overflow-hidden">
             <div class="flex items-center gap-6 z-10">
-                <div class="shrink-0 bg-white/10 p-2 rounded-xl backdrop-blur-md">
-                    <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain logo-img drop-shadow-md" alt="Logo Fazenda Oásis">
+                <div class="shrink-0">
+                    <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain logo-img drop-shadow-2xl" alt="Logo Fazenda Oásis">
                 </div>
                 <div>
                     <div class="inline-flex items-center gap-1.5 bg-emerald-800/90 text-emerald-200 text-xs font-bold uppercase px-3 py-1 rounded-full mb-1.5 border border-emerald-700/60 tracking-wider">
@@ -501,31 +510,7 @@
                 <table class="w-full text-center border-collapse">
                     <thead class="bg-emerald-900 text-white">
                         <tr class="divide-x divide-emerald-800">
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Variedade</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Transp. (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Colhido (UN)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Total (KG)</th>
-                            <th class="py-3 px-4 text-xs font-bold uppercase text-center">Média (g/un)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="relTableVariedades" class="text-sm divide-y divide-slate-200">
-                        <!-- Injetado via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Secção 3: Tabela de Perdas em Estilo Quadriculado com Especificação -->
-        <div class="mb-10">
-            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span> 3. Tabela Detalhada de Perdas
-            </h3>
-            
-            <div class="bg-white border-2 border-slate-300 rounded-xl overflow-hidden shadow-sm">
-                <table class="w-full text-center border-collapse">
-                    <thead class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white">
-                        <tr class="divide-x divide-emerald-800">
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/2">Causa e Especificação Detalhada</th>
+                            <th class="py-4 px-8 font-bold text-xs uppercase tracking-wider text-left w-1/2">Causa e Especificação Detalhada</th>
                             <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">Quantidade (UN)</th>
                             <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">Impacto Total (%)</th>
                         </tr>
@@ -896,14 +881,15 @@
                     
                     // Célula de Causa com Badge Perfeitamente Ajustada sem Extravasar
                     let celulaCausa = `
-                        <div class="flex flex-col items-center justify-center py-1 max-w-full">
-                            <span class="font-bold text-slate-800 text-sm leading-snug mb-1">${causa.categoria}</span>
+                        <div class="flex flex-col items-start justify-center text-left py-2 w-full pl-3">
+                            <span class="font-extrabold text-slate-800 text-sm leading-tight">${causa.categoria}</span>
                     `;
                     
                     if (causa.especificacao) {
                         celulaCausa += `
-                            <div class="w-full flex justify-center px-2">
-                                <span class="badge-especificacao bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs">
+                            <div class="mt-2 flex items-start gap-2 w-full pr-2">
+                                <span class="text-slate-300 font-bold ml-1 mt-0.5 leading-none">↳</span>
+                                <span class="badge-especificacao">
                                     ${causa.especificacao}
                                 </span>
                             </div>
@@ -913,11 +899,11 @@
                     
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors divide-x divide-slate-200">
-                            <td class="px-5 py-3 text-center align-middle">
+                            <td class="px-5 py-2 align-middle">
                                 ${celulaCausa}
                             </td>
-                            <td class="px-5 py-3 text-center font-bold text-slate-700 align-middle">${causa.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="px-5 py-3 text-center font-black text-red-600 align-middle">${causa.percDisplay}%</td>
+                            <td class="px-5 py-3 text-center font-bold text-slate-700 align-middle text-base">${causa.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="px-5 py-3 text-center font-black text-red-600 align-middle text-base">${causa.percDisplay}%</td>
                             <td class="px-4 py-3 text-center no-print align-middle">
                                 <button type="button" onclick="removerCausa(${index})" class="text-red-600 font-bold bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-md shadow-xs text-xs transition-colors">
                                     ✕
@@ -1031,13 +1017,14 @@
                     somaQtdJustificada += c.qtd;
                     
                     let relCausa = `
-                        <div class="flex flex-col items-center justify-center py-1 max-w-full">
-                            <span class="font-bold text-slate-800 text-sm mb-1">${c.categoria}</span>
+                        <div class="flex flex-col items-start justify-center text-left py-2 w-full pl-3">
+                            <span class="font-extrabold text-slate-800 text-sm">${c.categoria}</span>
                     `;
                     if (c.especificacao) {
                         relCausa += `
-                            <div class="w-full flex justify-center px-2">
-                                <span class="badge-especificacao bg-emerald-50 text-emerald-800 border border-emerald-300">
+                            <div class="mt-2 flex items-start gap-2 w-full pr-2">
+                                <span class="text-slate-300 font-bold ml-1 mt-0.5 leading-none">↳</span>
+                                <span class="badge-especificacao">
                                     ${c.especificacao}
                                 </span>
                             </div>
@@ -1047,11 +1034,11 @@
 
                     relBody.innerHTML += `
                         <tr class="bg-white divide-x divide-slate-200">
-                            <td class="py-3 px-5 align-middle text-center">
+                            <td class="py-2 px-5 align-middle">
                                 ${relCausa}
                             </td>
-                            <td class="py-3 px-5 text-center text-slate-700 font-medium align-middle">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-3 px-5 text-center font-black text-slate-800 align-middle">${c.percDisplay}%</td>
+                            <td class="py-3 px-5 text-center text-slate-700 font-bold align-middle text-base">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-3 px-5 text-center font-black text-slate-800 align-middle text-base">${c.percDisplay}%</td>
                         </tr>
                     `;
                 });
