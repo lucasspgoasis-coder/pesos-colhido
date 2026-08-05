@@ -63,6 +63,21 @@
             line-height: 1.5;
         }
         
+        /* Estilo especial para input de ficheiro de foto */
+        .input-foto {
+            border-width: 2px;
+            border-color: #cbd5e1;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            transition: all 0.2s ease-in-out;
+        }
+        .input-foto:focus-within {
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+        }
+
         .logo-img {
             border: 0 !important;
             border-style: none !important;
@@ -71,7 +86,7 @@
             background: transparent !important;
         }
 
-        /* Badges de Especificação Contidos e Perfeitamente Ajustados */
+        /* Badges de Especificação */
         .badge-especificacao {
             display: inline-flex;
             align-items: center;
@@ -160,7 +175,6 @@
         
         <!-- Cabeçalho Principal (Verde Elegante com Grelha Integrada) -->
         <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white rounded-2xl p-6 md:p-8 shadow-md mb-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-800 relative overflow-hidden">
-            <!-- Padrão quadricular subtil no header -->
             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
             
             <div class="flex flex-col md:flex-row items-center gap-5 text-center md:text-left z-10">
@@ -284,6 +298,7 @@
                 </div>
             </div>
 
+            <!-- Detalhe de Variedades e Colheita -->
             <div class="bg-emerald-50/40 p-6 rounded-xl border border-emerald-200/80 shadow-sm">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-emerald-200 pb-4">
                     <h3 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
@@ -381,14 +396,14 @@
                 </div>
                 
                 <div class="p-6 bg-slate-50/50">
-                    <!-- Formulário de Adição de Causas em Grelha Limpa -->
+                    <!-- Formulário de Adição de Causas -->
                     <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-6">
                         <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex items-center gap-2">
                             <i class="fa-solid fa-circle-plus text-emerald-600"></i>
                             <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Registar Nova Causa</h4>
                         </div>
                         <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
-                            <div class="md:col-span-4">
+                            <div class="md:col-span-3">
                                 <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
                                     <i class="fa-solid fa-list text-emerald-600"></i> Causa Principal *
                                 </label>
@@ -402,14 +417,14 @@
                                 </select>
                             </div>
 
-                            <div class="md:col-span-4">
+                            <div class="md:col-span-3">
                                 <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
                                     <span class="flex items-center gap-1.5">
                                         <i class="fa-solid fa-pen-to-square text-emerald-600"></i> Especificação
                                     </span> 
                                     <span class="normal-case text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200">Opcional</span>
                                 </label>
-                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão negra, Lagarta..." class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
+                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão negra..." class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
                             </div>
 
                             <div class="md:col-span-2">
@@ -419,8 +434,19 @@
                                 <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600">
                             </div>
 
+                            <!-- NOVO CAMPO: Anexo de Foto -->
                             <div class="md:col-span-2">
-                                <button type="button" onclick="adicionarCausa()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-[48px] rounded-lg transition-colors shadow-sm no-print flex items-center justify-center gap-2 text-sm">
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="fa-solid fa-camera text-emerald-600"></i> Foto
+                                    </span>
+                                    <span class="normal-case text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200">Comprova</span>
+                                </label>
+                                <input type="file" id="causaFoto" accept="image/*" class="w-full rounded-lg input-foto px-2 text-slate-700 text-xs border-slate-300 focus:border-emerald-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <button type="button" id="btnAdicionarCausa" onclick="adicionarCausa()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-[48px] rounded-lg transition-colors shadow-sm no-print flex items-center justify-center gap-2 text-sm">
                                     <i class="fa-solid fa-plus"></i> Adicionar
                                 </button>
                             </div>
@@ -435,22 +461,29 @@
                                     <th class="px-5 py-3.5 text-left pl-6 font-bold uppercase tracking-wider text-xs">
                                         <span class="inline-flex items-center gap-2">
                                             <i class="fa-solid fa-clipboard-list text-emerald-300"></i>
-                                            <span>Causa / Especificação Detalhada</span>
+                                            <span>Causa Detalhada</span>
                                         </span>
                                     </th>
-                                    <th class="px-5 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-36">
+                                    <!-- NOVA COLUNA: Comprovativo com largura expandida -->
+                                    <th class="px-3 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-36 sm:w-44">
+                                        <span class="inline-flex items-center justify-center gap-1.5">
+                                            <i class="fa-solid fa-image text-emerald-300"></i>
+                                            <span>Anexo / Foto</span>
+                                        </span>
+                                    </th>
+                                    <th class="px-4 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-32">
                                         <span class="inline-flex items-center justify-center gap-1.5">
                                             <i class="fa-solid fa-boxes-stacked text-emerald-300"></i>
-                                            <span>Quantidade</span>
+                                            <span>Qtd</span>
                                         </span>
                                     </th>
-                                    <th class="px-5 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-36">
+                                    <th class="px-4 py-3.5 text-center font-bold uppercase tracking-wider text-xs w-32">
                                         <span class="inline-flex items-center justify-center gap-1.5">
                                             <i class="fa-solid fa-chart-pie text-emerald-300"></i>
-                                            <span>Percentagem</span>
+                                            <span>%</span>
                                         </span>
                                     </th>
-                                    <th class="px-4 py-3.5 text-center font-bold uppercase tracking-wider text-xs no-print w-24">
+                                    <th class="px-4 py-3.5 text-center font-bold uppercase tracking-wider text-xs no-print w-20">
                                         <span class="inline-flex items-center justify-center gap-1.5">
                                             <i class="fa-solid fa-gears text-emerald-300"></i>
                                             <span>Ação</span>
@@ -466,7 +499,7 @@
                             <div class="inline-block p-3 rounded-full bg-slate-100 text-slate-400 mb-2">
                                 <i class="fa-regular fa-folder-open text-2xl"></i>
                             </div>
-                            <p class="text-sm">Nenhuma causa adicionada ainda. Selecione uma causa e clique em adicionar.</p>
+                            <p class="text-sm">Nenhuma causa adicionada ainda. Preencha os campos e anexe uma foto se aplicável.</p>
                         </div>
                     </div>
                 </div>
@@ -489,9 +522,9 @@
                     </div>
                     <h1 class="text-3xl font-black uppercase tracking-wider text-white mb-1 flex items-center gap-3">
                         <i class="fa-solid fa-file-invoice text-emerald-400"></i>
-                        <span>Resumo de Produção</span>
+                        <span>Resumo de Produção e Perdas</span>
                     </h1>
-                    <h2 class="text-base font-semibold text-emerald-100">Desempenho e Análise de Perdas</h2>
+                    <h2 class="text-base font-semibold text-emerald-100">Desempenho Agrícola e Comprovativos</h2>
                 </div>
             </div>
             <div class="text-right border-l border-emerald-700/80 pl-6 flex flex-col justify-center z-10">
@@ -615,82 +648,39 @@
             </div>
         </div>
 
-        <!-- Secção: Detalhe Individual das Variedades -->
-        <div class="mb-8">
-            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span>
-                <i class="fa-solid fa-list-check text-emerald-700"></i>
-                <span>2.1 Detalhe Específico por Variedade</span>
-            </h3>
-            <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
-                <table class="w-full text-center border-collapse">
-                    <thead class="bg-slate-100 text-slate-700 border-b-2 border-slate-300">
-                        <tr class="divide-x divide-slate-200">
-                            <th class="py-3 px-4 font-bold text-xs uppercase tracking-wider w-1/3">
-                                <span class="inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-wheat-awn text-emerald-700"></i>
-                                    <span>Variedade</span>
-                                </span>
-                            </th>
-                            <th class="py-3 px-4 font-bold text-xs uppercase tracking-wider">
-                                <span class="inline-flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-seedling text-emerald-700"></i>
-                                    <span>Transp. (UN)</span>
-                                </span>
-                            </th>
-                            <th class="py-3 px-4 font-bold text-xs uppercase tracking-wider">
-                                <span class="inline-flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-basket-shopping text-emerald-700"></i>
-                                    <span>Colhido (UN)</span>
-                                </span>
-                            </th>
-                            <th class="py-3 px-4 font-bold text-xs uppercase tracking-wider">
-                                <span class="inline-flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-weight-hanging text-emerald-700"></i>
-                                    <span>Peso (KG)</span>
-                                </span>
-                            </th>
-                            <th class="py-3 px-4 font-bold text-xs uppercase tracking-wider">
-                                <span class="inline-flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-calculator text-emerald-700"></i>
-                                    <span>Média (g)</span>
-                                </span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="relTableVariedades" class="text-sm bg-white divide-y divide-slate-200">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Secção: Detalhe das Causas -->
+        <!-- Secção: Detalhe das Causas (Com nova coluna p/ fotos no relatório) -->
         <div id="relBlocoCausas" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
                 <span class="w-2 h-4 bg-red-600 rounded-sm inline-block"></span>
                 <i class="fa-solid fa-triangle-exclamation text-red-600"></i>
-                <span>3. Detalhe das Causas de Perda</span>
+                <span>3. Detalhe das Causas de Perda (Com Comprovativos)</span>
             </h3>
             <div class="bg-white border border-slate-300 rounded-lg overflow-hidden shadow-sm">
                 <table class="w-full text-center border-collapse">
                     <thead class="bg-red-900 text-white">
                         <tr class="divide-x divide-red-800">
-                            <th class="py-4 px-8 font-bold text-xs uppercase tracking-wider text-left w-1/2">
+                            <th class="py-4 px-6 font-bold text-xs uppercase tracking-wider text-left w-2/5">
                                 <span class="inline-flex items-center gap-2">
                                     <i class="fa-solid fa-clipboard-list text-red-300"></i>
-                                    <span>Causa e Especificação Detalhada</span>
+                                    <span>Causa Registada</span>
                                 </span>
                             </th>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">
+                            <th class="py-4 px-3 font-bold text-xs uppercase tracking-wider text-center w-1/5">
+                                <span class="inline-flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-image text-red-300"></i>
+                                    <span>Comprovativo</span>
+                                </span>
+                            </th>
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/5">
                                 <span class="inline-flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-boxes-stacked text-red-300"></i>
                                     <span>Quantidade (UN)</span>
                                 </span>
                             </th>
-                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/4">
+                            <th class="py-4 px-5 font-bold text-xs uppercase tracking-wider text-center w-1/5">
                                 <span class="inline-flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-chart-pie text-red-300"></i>
-                                    <span>Impacto Total (%)</span>
+                                    <span>Impacto (%)</span>
                                 </span>
                             </th>
                         </tr>
@@ -699,17 +689,17 @@
                     </tbody>
                     <tfoot class="bg-slate-50 border-t-2 border-slate-300 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-slate-200 divide-x divide-slate-200">
-                            <td class="py-3 px-5 text-slate-600 italic font-medium text-center flex items-center justify-center gap-2">
+                            <td colspan="2" class="py-3 px-5 text-slate-600 italic font-medium text-center flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-circle-question text-slate-400"></i>
-                                <span>Perdas não detalhadas</span>
+                                <span>Perdas não detalhadas (Sem justificação / Sem foto)</span>
                             </td>
                             <td class="py-3 px-5 text-center text-slate-800 font-bold" id="relNaoDetalhadoQtd">0</td>
                             <td class="py-3 px-5 text-center text-slate-800 font-bold" id="relNaoDetalhadoPerc">0%</td>
                         </tr>
                         <tr class="bg-red-50 divide-x divide-red-200">
-                            <td class="py-4 px-5 font-black uppercase text-center tracking-widest text-xs text-red-900 flex items-center justify-center gap-2">
+                            <td colspan="2" class="py-4 px-5 font-black uppercase text-center tracking-widest text-xs text-red-900 flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-calculator"></i>
-                                <span>Total de Perdas</span>
+                                <span>Total de Perdas Registadas</span>
                             </td>
                             <td class="py-4 px-5 text-center font-black text-xl text-red-900 leading-none" id="relTotalQtd">0</td>
                             <td class="py-4 px-5 text-center font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
@@ -751,8 +741,31 @@
         </button>
     </div>
 
+    <!-- Modal para Ampliar Visualização da Foto (Lightbox) -->
+    <div id="modalFoto" class="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all duration-300" onclick="fecharModalFoto()">
+        <div class="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 border border-slate-200" onclick="event.stopPropagation()">
+            <button onclick="fecharModalFoto()" class="absolute top-4 right-4 bg-slate-900/80 hover:bg-slate-900 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg backdrop-blur-md transition-colors z-10 shadow-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="imgModalExpandida" src="" alt="Comprovativo Ampliado" class="max-w-full max-h-[82vh] rounded-xl object-contain mx-auto block shadow-inner">
+            <p class="text-center text-xs font-semibold text-slate-500 mt-2 mb-1">Clique fora ou no botão X para fechar</p>
+        </div>
+    </div>
+
     <script>
-        let causasList = []; // Array: { categoria: 'Nome', especificacao: 'Desc', qtd: 0, percDisplay: 0 }
+        function abrirModalFoto(src) {
+            const modal = document.getElementById('modalFoto');
+            const img = document.getElementById('imgModalExpandida');
+            img.src = src;
+            modal.classList.remove('hidden');
+        }
+
+        function fecharModalFoto() {
+            const modal = document.getElementById('modalFoto');
+            modal.classList.add('hidden');
+        }
+
+        let causasList = []; // Modificado para armazenar também a base64 da foto: { categoria, especificacao, qtd, percDisplay, fotoBase64 }
         let totalTransplantadoGlob = 0;
         let totalColhidoGlob = 0;
         let totalPendenteGlob = 0;
@@ -777,6 +790,17 @@
             } else {
                 return '<i class="fa-solid fa-triangle-exclamation text-slate-500"></i>';
             }
+        }
+
+        /* LER FICHEIRO PARA BASE64 (Para anexos de fotos) */
+        function lerFotoBase64(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) { resolve(null); return; }
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsDataURL(file);
+            });
         }
 
         function showToast(message, type = 'success') {
@@ -1051,13 +1075,17 @@
             else { percNaoDetalhadoGlobal = 0; }
         }
 
-        function adicionarCausa() {
+        async function adicionarCausa() {
             if (totalPendenteGlob <= 0) { showToast("Não há perdas para justificar.", "warning"); return; }
+            
+            const btn = document.getElementById('btnAdicionarCausa');
+            const textoOriginal = btn.innerHTML;
             
             const sel = document.getElementById('causaLista');
             let categoria = sel.value;
             const espec = document.getElementById('causaEspecificacao').value.trim();
             const qtd = parseInt(document.getElementById('causaQtd').value);
+            const fotoInput = document.getElementById('causaFoto');
 
             if (!categoria) { showToast("Selecione uma causa válida.", "warning"); return; }
             if (categoria === "outros") {
@@ -1069,20 +1097,41 @@
             const disponivel = totalPendenteGlob - causasList.reduce((acc, curr) => acc + curr.qtd, 0);
             if (qtd > disponivel) { showToast(`Quantidade excede as perdas pendentes (Máximo: ${disponivel} un).`, "error"); return; }
 
-            const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase());
-            
-            if (idxExistente >= 0) { 
-                causasList[idxExistente].qtd += qtd; 
-            } else { 
-                causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0 }); 
-            }
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> A processar...';
+            btn.disabled = true;
 
-            sel.value = ''; 
-            document.getElementById('causaEspecificacao').value = '';
-            document.getElementById('causaQtd').value = '';
-            
-            showToast("Causa adicionada com sucesso!");
-            atualizarStatusCausas();
+            try {
+                // Ler a imagem caso exista
+                const fotoFile = fotoInput.files[0];
+                const base64Foto = await lerFotoBase64(fotoFile);
+
+                // Se não tiver foto, e já existir uma causa igual sem foto, apenas soma. 
+                // Se tiver foto, cria sempre um novo registo para ter comprovativo individual.
+                if (!base64Foto) {
+                    const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase() && !c.fotoBase64);
+                    if (idxExistente >= 0) { 
+                        causasList[idxExistente].qtd += qtd; 
+                    } else { 
+                        causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, fotoBase64: null }); 
+                    }
+                } else {
+                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, fotoBase64: base64Foto });
+                }
+
+                // Limpar campos após inserção
+                sel.value = ''; 
+                document.getElementById('causaEspecificacao').value = '';
+                document.getElementById('causaQtd').value = '';
+                fotoInput.value = ''; // Limpar input de ficheiro
+                
+                showToast("Causa adicionada com sucesso!");
+                atualizarStatusCausas();
+            } catch (error) {
+                showToast("Erro ao processar a imagem.", "error");
+            } finally {
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+            }
         }
 
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
@@ -1106,7 +1155,6 @@
                     
                     const iconTag = getCausaIcon(causa.categoria);
                     
-                    // Célula de Causa com Ícone do Registro e Badge Perfeitamente Ajustada
                     let celulaCausa = `
                         <div class="flex flex-col items-start justify-center text-left py-2 w-full pl-3">
                             <span class="font-extrabold text-slate-800 text-sm leading-tight flex items-center gap-2">
@@ -1127,19 +1175,38 @@
                         `;
                     }
                     celulaCausa += `</div>`;
+
+                    // Lógica para mostrar thumbnail do comprovativo preenchendo o espaço da coluna
+                    let celulaFoto = '';
+                    if(causa.fotoBase64) {
+                        celulaFoto = `<div class="relative group">
+                                        <img src="${causa.fotoBase64}" onclick="abrirModalFoto('${causa.fotoBase64}')" alt="Comprovativo" class="w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-xl shadow-md border-2 border-emerald-300 mx-auto block cursor-pointer hover:scale-[1.03] hover:border-emerald-600 transition-all duration-200" title="Clique para ampliar">
+                                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity flex items-center justify-center pointer-events-none w-28 h-28 sm:w-36 sm:h-36 mx-auto">
+                                            <span class="bg-white/90 text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow flex items-center gap-1"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
+                                        </div>
+                                      </div>`;
+                    } else {
+                        celulaFoto = `<div class="w-28 h-28 sm:w-36 sm:h-36 bg-slate-50 border-2 border-slate-200 border-dashed rounded-xl flex flex-col items-center justify-center mx-auto text-slate-400">
+                                        <i class="fa-solid fa-image text-2xl mb-1"></i>
+                                        <span class="text-[10px] uppercase font-bold tracking-wider">Sem Foto</span>
+                                      </div>`;
+                    }
                     
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors divide-x divide-slate-200">
                             <td class="px-5 py-2 align-middle">
                                 ${celulaCausa}
                             </td>
-                            <td class="px-5 py-3 text-center font-bold text-slate-700 align-middle text-base">
+                            <td class="px-3 py-3 align-middle text-center">
+                                ${celulaFoto}
+                            </td>
+                            <td class="px-4 py-3 text-center font-bold text-slate-700 align-middle text-base">
                                 <span class="inline-flex items-center gap-1.5 justify-center">
                                     <i class="fa-solid fa-box text-slate-400 text-xs"></i>
                                     <span>${causa.qtd.toLocaleString('pt-BR')}</span>
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-center font-black text-red-600 align-middle text-base">
+                            <td class="px-4 py-3 text-center font-black text-red-600 align-middle text-base">
                                 <span class="inline-flex items-center gap-1 justify-center bg-red-50 text-red-700 px-2.5 py-1 rounded-md border border-red-200">
                                     <i class="fa-solid fa-percent text-xs"></i>
                                     <span>${causa.percDisplay}%</span>
@@ -1167,6 +1234,7 @@
             document.getElementById('registroForm').reset();
             ['blocoOutro', 'culturaOutro', 'boxDataFim'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById('causaEspecificacao').value = '';
+            document.getElementById('causaFoto').value = '';
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
             
@@ -1208,28 +1276,30 @@
             document.getElementById('relCultura').textContent = getSelectValue('cultura', 'culturaOutro');
             
             const variedades = getVariedadesData();
-            const relVarTable = document.getElementById('relTableVariedades');
-            relVarTable.innerHTML = '';
             
             const nomesLista = variedades.map(v => v.variedade);
             document.getElementById('relVariedade').innerHTML = nomesLista.length > 0 ? nomesLista.join('<br>') : 'Não inf.';
 
-            variedades.forEach(v => {
-                relVarTable.innerHTML += `
-                    <tr class="divide-x divide-slate-200">
-                        <td class="py-2.5 px-4 font-semibold text-slate-800 text-center">
-                            <span class="inline-flex items-center gap-1.5">
-                                <i class="fa-solid fa-wheat-awn text-emerald-600 text-xs"></i>
-                                <span>${v.variedade}</span>
-                            </span>
-                        </td>
-                        <td class="py-2.5 px-4 text-center text-slate-700">${v.transplantado.toLocaleString('pt-BR')}</td>
-                        <td class="py-2.5 px-4 text-center text-slate-700">${v.colhido.toLocaleString('pt-BR')}</td>
-                        <td class="py-2.5 px-4 text-center text-slate-700">${v.totalKg.toLocaleString('pt-BR')}</td>
-                        <td class="py-2.5 px-4 text-center font-bold text-emerald-800">${v.mediaG}</td>
-                    </tr>
-                `;
-            });
+            const relVarTable = document.getElementById('relTableVariedades');
+            if (relVarTable) {
+                relVarTable.innerHTML = '';
+                variedades.forEach(v => {
+                    relVarTable.innerHTML += `
+                        <tr class="divide-x divide-slate-200">
+                            <td class="py-2.5 px-4 font-semibold text-slate-800 text-center">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-wheat-awn text-emerald-600 text-xs"></i>
+                                    <span>${v.variedade}</span>
+                                </span>
+                            </td>
+                            <td class="py-2.5 px-4 text-center text-slate-700">${v.transplantado.toLocaleString('pt-BR')}</td>
+                            <td class="py-2.5 px-4 text-center text-slate-700">${v.colhido.toLocaleString('pt-BR')}</td>
+                            <td class="py-2.5 px-4 text-center text-slate-700">${v.totalKg.toLocaleString('pt-BR')}</td>
+                            <td class="py-2.5 px-4 text-center font-bold text-emerald-800">${v.mediaG}</td>
+                        </tr>
+                    `;
+                });
+            }
 
             const status = document.getElementById('statusPlantio').value;
             document.getElementById('relStatus').textContent = status;
@@ -1259,7 +1329,7 @@
             if(causasList.length === 0 && totalPendenteGlob === 0) {
                 relBody.innerHTML = `
                     <tr>
-                        <td colspan="3" class="py-5 px-5 text-center text-slate-500 italic bg-slate-50">
+                        <td colspan="4" class="py-5 px-5 text-center text-slate-500 italic bg-slate-50">
                             <i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>
                             <span>Nenhuma perda registada.</span>
                         </td>
@@ -1289,10 +1359,20 @@
                     }
                     relCausa += `</div>`;
 
+                    let relFoto = '';
+                    if(c.fotoBase64) {
+                        relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-32 h-32 sm:w-36 sm:h-36 object-cover rounded-xl shadow-md border-2 border-slate-300 mx-auto block">`;
+                    } else {
+                        relFoto = `<span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 inline-block">Sem Foto</span>`;
+                    }
+
                     relBody.innerHTML += `
                         <tr class="bg-white divide-x divide-slate-200">
-                            <td class="py-2 px-5 align-middle">
+                            <td class="py-2 px-6 align-middle">
                                 ${relCausa}
+                            </td>
+                            <td class="py-2.5 px-3 text-center align-middle">
+                                ${relFoto}
                             </td>
                             <td class="py-3 px-5 text-center text-slate-700 font-bold align-middle text-base">${c.qtd.toLocaleString('pt-BR')}</td>
                             <td class="py-3 px-5 text-center font-black text-slate-800 align-middle text-base">${c.percDisplay}%</td>
@@ -1388,9 +1468,12 @@
                 return;
             }
 
+            // Não enviamos o Base64 para a folha de cálculo porque a string é enorme e pode quebrar a requisição.
+            // Apenas informamos visualmente se há ou não uma foto associada ao registo.
             let listaEnvioCausas = causasList.map(c => {
                 let nomeCompleto = c.categoria;
                 if (c.especificacao) { nomeCompleto += ` - ${c.especificacao}`; }
+                if (c.fotoBase64) { nomeCompleto += ` (Com Anexo/Foto)`; } 
                 return { nome: nomeCompleto, qtd: c.qtd, perc: c.percDisplay + '%' };
             });
             let somaJustificada = causasList.reduce((acc, c) => acc + c.qtd, 0);
