@@ -700,9 +700,8 @@
                             <td class="py-3 px-5 text-center text-slate-700 font-bold text-base" id="relNaoDetalhadoQtd">0</td>
                             <td class="py-3 px-5 text-center align-middle">
                                 <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-between w-full text-xs font-black">
-                                        <span class="text-slate-600" id="relNaoDetalhadoPercPerda">0% <span class="text-[9px] text-slate-400 font-medium">da perda</span></span>
-                                        <span class="text-slate-600 text-[10px] bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 font-bold" id="relNaoDetalhadoPerc">0% <span class="text-[9px] text-slate-400 font-normal">safra</span></span>
+                                    <div class="flex items-center justify-center w-full text-xs font-black mb-0.5">
+                                        <span class="text-slate-600 text-sm" id="relNaoDetalhadoPerc">0%</span>
                                     </div>
                                     <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
                                         <div id="relNaoDetalhadoBarra" class="h-full bg-slate-400 rounded-full" style="width: 0%"></div>
@@ -1019,9 +1018,8 @@
                 span.textContent = '';
                 return;
             }
-            const percPerda = Math.min(100, Math.round((val / totalPendenteGlob) * 100));
             const percSafra = totalTransplantadoGlob > 0 ? ((val / totalTransplantadoGlob) * 100).toFixed(1) : 0;
-            span.textContent = `+${percPerda}% da perda (+${percSafra}% da safra)`;
+            span.textContent = `Impacto: +${percSafra}% da safra`;
         }
 
         function calcularPercentuaisCausas() {
@@ -1192,11 +1190,10 @@
                             </td>
                             <td class="px-4 py-4 align-middle text-center">
                                 <div class="flex flex-col items-center gap-1.5 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-between w-full text-xs font-black">
-                                        <span class="text-red-600">${causa.percPerda}% <span class="text-[9px] text-slate-500 font-semibold">da perda</span></span>
-                                        <span class="text-slate-600 text-[10px] bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 font-bold" title="Impacto no Total da Safra">${causa.percDisplay}% <span class="text-[9px] text-slate-400 font-normal">safra</span></span>
+                                    <div class="flex items-center justify-center w-full text-sm font-black">
+                                        <span class="text-red-600">${causa.percDisplay}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
                                     </div>
-                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner" title="Representa ${causa.percPerda}% do total de perdas">
                                         <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full transition-all duration-700 shadow-sm" style="width: ${causa.percPerda}%"></div>
                                     </div>
                                 </div>
@@ -1318,9 +1315,8 @@
                             <td class="py-3 px-5 text-center text-slate-700 font-bold align-middle text-lg">${c.qtd.toLocaleString('pt-BR')}</td>
                             <td class="py-3 px-5 text-center align-middle">
                                 <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-between w-full text-xs font-black">
-                                        <span class="text-red-600">${c.percPerda}% <span class="text-[9px] text-slate-500 font-medium">da perda</span></span>
-                                        <span class="text-slate-700 text-[10px] bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 font-bold">${c.percDisplay}% <span class="text-[9px] text-slate-500 font-normal">safra</span></span>
+                                    <div class="flex items-center justify-center w-full text-sm font-black mb-0.5">
+                                        <span class="text-red-600">${c.percDisplay}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
                                     </div>
                                     <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
                                         <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full" style="width: ${c.percPerda}%"></div>
@@ -1342,10 +1338,9 @@
             if (naoDetalhado > 0) {
                 rowNaoDetalhado.classList.remove('hidden');
                 document.getElementById('relNaoDetalhadoQtd').textContent = naoDetalhado.toLocaleString('pt-BR');
-                document.getElementById('relNaoDetalhadoPerc').textContent = `${percNaoDetalhadoGlobal}% safra`;
+                document.getElementById('relNaoDetalhadoPerc').innerHTML = `${percNaoDetalhadoGlobal}% <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">da safra</span>`;
                 
                 const percNaoDetalhadoPerda = Math.min(100, Math.round((naoDetalhado / totalPendenteGlob) * 100));
-                document.getElementById('relNaoDetalhadoPercPerda').innerHTML = `${percNaoDetalhadoPerda}% <span class="text-[9px] text-slate-400 font-medium">da perda</span>`;
                 document.getElementById('relNaoDetalhadoBarra').style.width = `${percNaoDetalhadoPerda}%`;
             } else {
                 rowNaoDetalhado.classList.add('hidden');
