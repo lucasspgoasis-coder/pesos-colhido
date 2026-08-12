@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Produção e Perdas - Fazenda Oásis</title>
+    <title>Registo de Produção e Perdas - Fazenda Oásis</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -134,6 +134,11 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
+        /* Efeito de carregamento da barra da tabela */
+        @keyframes fillBar {
+            from { width: 0%; }
+        }
+
         /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO */
         #relatorioExportacao {
             position: absolute;
@@ -188,7 +193,7 @@
                     </div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight flex items-center justify-center md:justify-start gap-2">
                         <i class="fa-solid fa-chart-line text-emerald-400 text-xl md:text-2xl"></i>
-                        <span>Registro Percentual de Perdas</span>
+                        <span>Registo Percentual de Perdas</span>
                     </h1>
                     <p class="text-emerald-100/80 text-xs md:text-sm font-medium mt-1">Gestão de Produção & Análise de Desempenho Agrícola</p>
                 </div>
@@ -373,7 +378,7 @@
                 </div>
             </div>
 
-            <!-- Registo de Causas MELHORADO COM BARRA DE PROGRESSO DINÂMICA -->
+            <!-- Registo de Causas MELHORADO -->
             <div class="bg-white border border-slate-200 rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden ring-1 ring-slate-100">
                 
                 <!-- Header da Secção de Causas -->
@@ -405,19 +410,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Painel da Barra de Progresso de Justificativa -->
-                <div class="px-6 pt-3 pb-4 bg-slate-50/80 border-b border-slate-200">
-                    <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1.5">
-                        <span class="flex items-center gap-2 text-slate-800">
-                            <i class="fa-solid fa-chart-line text-emerald-600"></i>
-                            <span>Progresso da Justificativa das Perdas:</span>
-                        </span>
-                        <span id="textoProgressoJustificativa" class="text-emerald-700 font-extrabold">0% Justificado (0 / 0 UN)</span>
-                    </div>
-                    <div class="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden border border-slate-300/80 shadow-inner">
-                        <div id="barraProgressoJustificativa" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.6)] rounded-full" style="width: 0%"></div>
-                    </div>
+                
+                <!-- Barra de Progresso Elegante -->
+                <div class="w-full bg-slate-100 h-1.5 relative overflow-hidden">
+                    <div id="barraProgressoJustificativa" class="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-700 ease-out shadow-[0_0_10px_rgba(16,185,129,0.8)]" style="width: 0%"></div>
                 </div>
                 
                 <div class="p-6 md:p-8 bg-slate-50/30">
@@ -456,8 +452,7 @@
                                 <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
                                     Qtd (UN) *
                                 </label>
-                                <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600 hover:border-slate-400 text-center" oninput="atualizarPreviewCausaInput()">
-                                <span id="previewCausaCalc" class="block text-[10px] font-bold text-emerald-600 mt-1 h-3 text-center"></span>
+                                <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600 hover:border-slate-400 text-center">
                             </div>
 
                             <div class="md:col-span-2">
@@ -480,17 +475,17 @@
                         <table class="w-full border-collapse text-sm text-left">
                             <thead class="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-6 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-1/3">
+                                    <th class="px-6 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-2/5">
                                         Identificação da Causa
                                     </th>
                                     <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-36 sm:w-44">
                                         Evidência Fotográfica
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-28">
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-32">
                                         Volume (UN)
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-48">
-                                        Progresso & Impacto (%)
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-40">
+                                        Impacto (%)
                                     </th>
                                     <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center no-print w-16">
                                         Ação
@@ -507,7 +502,7 @@
                             <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-300 mb-4 shadow-inner">
                                 <i class="fa-solid fa-clipboard-list text-3xl"></i>
                             </div>
-                            <h4 class="text-slate-700 font-bold text-base mb-1">Nenhuma causa registrada</h4>
+                            <h4 class="text-slate-700 font-bold text-base mb-1">Nenhuma causa registada</h4>
                             <p class="text-sm text-slate-500 max-w-sm">Utilize o formulário acima para detalhar as quebras de produção e anexe fotografias se aplicável.</p>
                         </div>
                     </div>
@@ -650,42 +645,27 @@
             </div>
         </div>
 
-        <!-- Secção 3: Detalhe das Causas (Relatório com Progresso e Foto) -->
+        <!-- Secção 3: Detalhe das Causas (Relatório Limpo e Profissional) -->
         <div id="relBlocoCausas" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
                 <span class="w-2 h-4 bg-red-600 rounded-sm inline-block"></span>
-                <span>3. Detalhe das Causas de Perda (Com Barra de Progresso)</span>
+                <span>3. Detalhe das Causas de Perda (Com Comprovativos)</span>
             </h3>
-
-            <!-- Barra de Progresso no JPEG/PDF Exportado -->
-            <div class="mb-4 bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm">
-                <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1.5">
-                    <span class="flex items-center gap-1.5">
-                        <i class="fa-solid fa-chart-line text-emerald-600"></i>
-                        <span>Progresso da Justificativa de Perdas:</span>
-                    </span>
-                    <span id="relProgressoTexto" class="text-emerald-700 font-extrabold text-sm">0% Justificado (0 / 0 UN)</span>
-                </div>
-                <div class="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden border border-slate-300">
-                    <div id="relBarraProgressoJustificativa" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
                         <tr>
                             <th class="py-4 px-6 font-black text-[11px] uppercase tracking-widest w-2/5">
-                                Causa Registrada
+                                Causa Registada
                             </th>
                             <th class="py-4 px-3 font-black text-[11px] uppercase tracking-widest text-center w-1/5">
                                 Comprovativo
                             </th>
-                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/6">
+                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/5">
                                 Qtd (UN)
                             </th>
-                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/4">
-                                Progresso & Impacto (%)
+                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/5">
+                                Impacto (%)
                             </th>
                         </tr>
                     </thead>
@@ -695,23 +675,14 @@
                     <tfoot class="bg-slate-50 border-t-2 border-slate-300 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-slate-200">
                             <td colspan="2" class="py-3 px-6 text-slate-500 italic font-medium">
-                                <i class="fa-solid fa-circle-question text-slate-400 mr-2"></i> Perdas não detalhadas (Sem causa / Sem foto)
+                                <i class="fa-solid fa-circle-question text-slate-400 mr-2"></i> Perdas não detalhadas (Sem justificação / Sem foto)
                             </td>
-                            <td class="py-3 px-5 text-center text-slate-700 font-bold text-base" id="relNaoDetalhadoQtd">0</td>
-                            <td class="py-3 px-5 text-center align-middle">
-                                <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-xs font-black mb-0.5">
-                                        <span class="text-slate-600 text-sm" id="relNaoDetalhadoPerc">0%</span>
-                                    </div>
-                                    <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
-                                        <div id="relNaoDetalhadoBarra" class="h-full bg-slate-400 rounded-full" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                            </td>
+                            <td class="py-3 px-5 text-center text-slate-700 font-bold" id="relNaoDetalhadoQtd">0</td>
+                            <td class="py-3 px-5 text-center text-slate-700 font-bold" id="relNaoDetalhadoPerc">0%</td>
                         </tr>
                         <tr class="bg-red-50/50">
                             <td colspan="2" class="py-4 px-6 font-black uppercase tracking-widest text-[11px] text-red-900 text-right pr-10">
-                                Total de Perdas Registradas
+                                Total de Perdas Registadas
                             </td>
                             <td class="py-4 px-5 text-center font-black text-xl text-red-900 leading-none" id="relTotalQtd">0</td>
                             <td class="py-4 px-5 text-center font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
@@ -724,7 +695,7 @@
         <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-certificate"></i>
-                Documento Oficial de Registro - Fazenda Oásis
+                Documento Oficial de Registo - Fazenda Oásis
             </div>
             <div class="text-right flex items-center gap-1">
                 <i class="fa-regular fa-copyright"></i>
@@ -771,6 +742,7 @@
             img.src = src;
             modal.classList.remove('hidden');
             
+            // Pequeno delay para garantir que a transição do Tailwind funciona
             setTimeout(() => {
                 modal.setAttribute('data-state', 'open');
                 content.setAttribute('data-state', 'open');
@@ -782,7 +754,7 @@
             const content = document.getElementById('modalFotoContent');
             modal.removeAttribute('data-state');
             content.removeAttribute('data-state');
-            setTimeout(() => modal.classList.add('hidden'), 300);
+            setTimeout(() => modal.classList.add('hidden'), 300); // Tempo da transição
         }
 
         let causasList = []; 
@@ -1007,35 +979,16 @@
                 totalPendenteGlob = 0; pctPendenteGlobal = 0;
             }
             atualizarStatusCausas();
-            atualizarPreviewCausaInput();
-        }
-
-        function atualizarPreviewCausaInput() {
-            const val = parseInt(document.getElementById('causaQtd').value);
-            const span = document.getElementById('previewCausaCalc');
-            if(!span) return;
-            if (isNaN(val) || val <= 0 || totalPendenteGlob <= 0) {
-                span.textContent = '';
-                return;
-            }
-            const percSafra = totalTransplantadoGlob > 0 ? ((val / totalTransplantadoGlob) * 100).toFixed(1) : 0;
-            span.textContent = `Impacto: +${percSafra}% da safra`;
         }
 
         function calcularPercentuaisCausas() {
             if (totalPendenteGlob <= 0) {
-                causasList.forEach(c => { c.percDisplay = 0; c.percPerda = 0; });
-                percNaoDetalhadoGlobal = 0; return;
+                causasList.forEach(c => c.percDisplay = 0); percNaoDetalhadoGlobal = 0; return;
             }
             
             let totalJustificado = causasList.reduce((acc, c) => acc + c.qtd, 0);
             let naoDetalhado = totalPendenteGlob - totalJustificado;
             
-            // Calcula percentual exato do total de perdas para cada causa (0 a 100% da perda total)
-            causasList.forEach(c => {
-                c.percPerda = Math.min(100, Math.round((c.qtd / totalPendenteGlob) * 100));
-            });
-
             let items = causasList.map(c => c.qtd);
             if (naoDetalhado > 0) { items.push(naoDetalhado); }
             
@@ -1099,15 +1052,14 @@
                 if (!base64Foto) {
                     const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase() && !c.fotoBase64);
                     if (idxExistente >= 0) { causasList[idxExistente].qtd += qtd; } 
-                    else { causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, percPerda: 0, fotoBase64: null }); }
+                    else { causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, fotoBase64: null }); }
                 } else {
-                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, percPerda: 0, fotoBase64: base64Foto });
+                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, fotoBase64: base64Foto });
                 }
 
                 sel.value = ''; document.getElementById('causaEspecificacao').value = '';
                 document.getElementById('causaQtd').value = ''; fotoInput.value = '';
                 document.getElementById('causaOutro').value = ''; document.getElementById('causaOutro').classList.add('hidden');
-                document.getElementById('previewCausaCalc').textContent = '';
                 
                 showToast("Causa adicionada com sucesso!");
                 atualizarStatusCausas();
@@ -1135,6 +1087,7 @@
                     
                     const iconBox = getCausaIcon(causa.categoria);
                     
+                    // Célula Causa Visualmente Impressionante
                     let celulaCausa = `
                         <div class="flex items-center gap-3 w-full">
                             ${iconBox}
@@ -1154,6 +1107,7 @@
                     }
                     celulaCausa += `</div></div>`;
 
+                    // Célula Foto Elegante
                     let celulaFoto = '';
                     if(causa.fotoBase64) {
                         celulaFoto = `
@@ -1173,9 +1127,10 @@
                         `;
                     }
                     
-                    // Célula de Barra de Progresso e Percentual para cada causa
+                    // Injeção da Linha (Removido divide-x, adicionado efeito de hover com borda lateral)
                     tbody.innerHTML += `
                         <tr class="group hover:bg-emerald-50/40 transition-colors duration-200 border-b border-slate-100 last:border-0 relative">
+                            <!-- Efeito Borda Esquerda no Hover -->
                             <td class="px-6 py-4 align-middle relative">
                                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-sm"></div>
                                 ${celulaCausa}
@@ -1189,12 +1144,10 @@
                                 </span>
                             </td>
                             <td class="px-4 py-4 align-middle text-center">
-                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-sm font-black">
-                                        <span class="text-red-600">${causa.percDisplay}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
-                                    </div>
-                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner" title="Representa ${causa.percPerda}% do total de perdas">
-                                        <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full transition-all duration-700 shadow-sm" style="width: ${causa.percPerda}%"></div>
+                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[100px] mx-auto">
+                                    <span class="font-black text-red-600 text-base leading-none">${causa.percDisplay}%</span>
+                                    <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] transition-all duration-700" style="width: ${causa.percDisplay}%"></div>
                                     </div>
                                 </div>
                             </td>
@@ -1208,15 +1161,12 @@
                 });
             }
 
-            const pendenteRestante = Math.max(0, totalPendenteGlob - totalJustificado);
-            document.getElementById('pendentesLivres').textContent = pendenteRestante.toLocaleString('pt-BR');
+            document.getElementById('pendentesLivres').textContent = Math.max(0, totalPendenteGlob - totalJustificado).toLocaleString('pt-BR');
             document.getElementById('percJustificadoSoma').textContent = percJustificadoSoma;
             document.getElementById('percPendenteMax').textContent = pctPendenteGlobal;
             
-            // Atualização da Barra de Progresso Global de Justificativa
-            const progressoFracao = totalPendenteGlob > 0 ? Math.min(100, Math.round((totalJustificado / totalPendenteGlob) * 100)) : 0;
-            document.getElementById('barraProgressoJustificativa').style.width = `${progressoFracao}%`;
-            document.getElementById('textoProgressoJustificativa').textContent = `${progressoFracao}% Justificado (${totalJustificado.toLocaleString('pt-BR')} / ${totalPendenteGlob.toLocaleString('pt-BR')} UN)`;
+            const progressoFracao = totalPendenteGlob > 0 ? (totalJustificado / totalPendenteGlob) * 100 : 0;
+            document.getElementById('barraProgressoJustificativa').style.width = `${Math.min(progressoFracao, 100)}%`;
         }
 
         function limparFormulario() {
@@ -1224,7 +1174,6 @@
             ['blocoOutro', 'culturaOutro', 'causaOutro', 'boxDataFim'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById('causaEspecificacao').value = '';
             document.getElementById('causaFoto').value = '';
-            document.getElementById('previewCausaCalc').textContent = '';
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
             
@@ -1287,7 +1236,7 @@
 
             if(causasList.length === 0 && totalPendenteGlob === 0) {
                 relBody.innerHTML = `
-                    <tr><td colspan="4" class="py-6 px-5 text-center text-slate-500 italic font-medium"><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Nenhuma perda registrada neste ciclo.</td></tr>`;
+                    <tr><td colspan="4" class="py-6 px-5 text-center text-slate-500 italic font-medium"><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Nenhuma perda registada neste ciclo.</td></tr>`;
             } else {
                 causasList.forEach(c => {
                     somaQtdJustificada += c.qtd;
@@ -1314,12 +1263,10 @@
                             <td class="py-3 px-3 text-center align-middle">${relFoto}</td>
                             <td class="py-3 px-5 text-center text-slate-700 font-bold align-middle text-lg">${c.qtd.toLocaleString('pt-BR')}</td>
                             <td class="py-3 px-5 text-center align-middle">
-                                <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-sm font-black mb-0.5">
-                                        <span class="text-red-600">${c.percDisplay}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
-                                    </div>
-                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-                                        <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full" style="width: ${c.percPerda}%"></div>
+                                <div class="flex flex-col items-center gap-1 w-full max-w-[80px] mx-auto">
+                                    <span class="font-black text-red-600 text-sm leading-none">${c.percDisplay}%</span>
+                                    <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full" style="width: ${c.percDisplay}%"></div>
                                     </div>
                                 </div>
                             </td>
@@ -1328,20 +1275,12 @@
                 });
             }
 
-            // Atualização da Barra de Progresso no topo da Secção de Causas do Relatório Exportado
-            const progFrac = totalPendenteGlob > 0 ? Math.min(100, Math.round((somaQtdJustificada / totalPendenteGlob) * 100)) : 0;
-            document.getElementById('relBarraProgressoJustificativa').style.width = `${progFrac}%`;
-            document.getElementById('relProgressoTexto').textContent = `${progFrac}% Justificado (${somaQtdJustificada.toLocaleString('pt-BR')} / ${totalPendenteGlob.toLocaleString('pt-BR')} UN)`;
-
             const naoDetalhado = totalPendenteGlob - somaQtdJustificada;
             const rowNaoDetalhado = document.getElementById('relRowNaoDetalhado');
             if (naoDetalhado > 0) {
                 rowNaoDetalhado.classList.remove('hidden');
                 document.getElementById('relNaoDetalhadoQtd').textContent = naoDetalhado.toLocaleString('pt-BR');
-                document.getElementById('relNaoDetalhadoPerc').innerHTML = `${percNaoDetalhadoGlobal}% <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">da safra</span>`;
-                
-                const percNaoDetalhadoPerda = Math.min(100, Math.round((naoDetalhado / totalPendenteGlob) * 100));
-                document.getElementById('relNaoDetalhadoBarra').style.width = `${percNaoDetalhadoPerda}%`;
+                document.getElementById('relNaoDetalhadoPerc').textContent = `${percNaoDetalhadoGlobal}%`;
             } else {
                 rowNaoDetalhado.classList.add('hidden');
             }
