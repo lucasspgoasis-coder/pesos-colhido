@@ -134,12 +134,12 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO */
+        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Tamanho Aumentado) */
         #relatorioExportacao {
             position: absolute;
             left: -9999px;
             top: 0;
-            width: 1024px;
+            width: 1280px; /* Largura aumentada para comportar imagens e dados maiores */
             background-color: #ffffff;
             padding: 48px;
             box-sizing: border-box;
@@ -674,47 +674,48 @@
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
+                        <!-- TAMANHOS DE FONTE AUMENTADOS AQUI -->
                         <tr>
-                            <th class="py-4 px-6 font-black text-[11px] uppercase tracking-widest w-2/5">
+                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-1/3">
                                 Causa Registrada
                             </th>
-                            <th class="py-4 px-3 font-black text-[11px] uppercase tracking-widest text-center w-1/5">
+                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-1/3">
                                 Comprovativo
                             </th>
-                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/6">
+                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-1/6">
                                 Qtd (UN)
                             </th>
-                            <th class="py-4 px-5 font-black text-[11px] uppercase tracking-widest text-center w-1/4">
+                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-1/6">
                                 Progresso & Impacto (%)
                             </th>
                         </tr>
                     </thead>
                     <tbody id="relTableBody" class="text-sm bg-white">
-                        <!-- Preenchido via JS -->
+                        <!-- Preenchido via JS com fontes/imagens grandes -->
                     </tbody>
                     <tfoot class="bg-slate-50 border-t-2 border-slate-300 text-sm">
                         <tr id="relRowNaoDetalhado" class="hidden border-b border-slate-200">
-                            <td colspan="2" class="py-3 px-6 text-slate-500 italic font-medium">
+                            <td colspan="2" class="py-4 px-6 text-slate-500 italic font-medium text-base">
                                 <i class="fa-solid fa-circle-question text-slate-400 mr-2"></i> Perdas não detalhadas (Sem causa / Sem foto)
                             </td>
-                            <td class="py-3 px-5 text-center text-slate-700 font-bold text-base" id="relNaoDetalhadoQtd">0</td>
-                            <td class="py-3 px-5 text-center align-middle">
-                                <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
+                            <td class="py-4 px-5 text-center text-slate-700 font-bold text-2xl" id="relNaoDetalhadoQtd">0</td>
+                            <td class="py-4 px-5 text-center align-middle">
+                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[160px] mx-auto">
                                     <div class="flex items-center justify-center w-full text-xs font-black mb-0.5">
-                                        <span class="text-slate-600 text-sm" id="relNaoDetalhadoPerc">0%</span>
+                                        <span class="text-slate-600 text-base" id="relNaoDetalhadoPerc">0%</span>
                                     </div>
-                                    <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
+                                    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
                                         <div id="relNaoDetalhadoBarra" class="h-full bg-slate-400 rounded-full" style="width: 0%"></div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr class="bg-red-50/50">
-                            <td colspan="2" class="py-4 px-6 font-black uppercase tracking-widest text-[11px] text-red-900 text-right pr-10">
+                            <td colspan="2" class="py-5 px-6 font-black uppercase tracking-widest text-sm text-red-900 text-right pr-10">
                                 Total de Perdas Registradas
                             </td>
-                            <td class="py-4 px-5 text-center font-black text-xl text-red-900 leading-none" id="relTotalQtd">0</td>
-                            <td class="py-4 px-5 text-center font-black text-xl text-red-600 leading-none" id="relTotalPerc">0%</td>
+                            <td class="py-5 px-5 text-center font-black text-3xl text-red-900 leading-none" id="relTotalQtd">0</td>
+                            <td class="py-5 px-5 text-center font-black text-3xl text-red-600 leading-none" id="relTotalPerc">0%</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -1293,32 +1294,33 @@
                     somaQtdJustificada += c.qtd;
                     
                     let relCausa = `
-                        <div class="flex flex-col gap-1.5 py-1 items-start">
-                            <span class="inline-block px-3 py-1 rounded border-2 border-indigo-300 bg-indigo-50 text-indigo-900 font-extrabold text-[12px] shadow-sm">${c.categoria}</span>
+                        <div class="flex flex-col gap-2 py-2 items-start">
+                            <span class="inline-block px-4 py-1.5 rounded border-2 border-indigo-300 bg-indigo-50 text-indigo-900 font-extrabold text-sm shadow-sm">${c.categoria}</span>
                     `;
                     if (c.especificacao) {
-                        relCausa += `<span class="text-[11px] text-slate-600 font-medium leading-tight">Esp: ${c.especificacao}</span>`;
+                        relCausa += `<span class="text-xs text-slate-600 font-medium leading-tight">Esp: ${c.especificacao}</span>`;
                     }
                     relCausa += `</div>`;
 
                     let relFoto = '';
                     if(c.fotoBase64) {
-                        relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-24 h-16 sm:w-32 sm:h-20 object-cover rounded shadow-sm border border-slate-300 mx-auto block">`;
+                        // TAMANHO DA IMAGEM EXPORTADA DEFINIDO AQUI (Muito maior: 256x176 px aprox)
+                        relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-64 h-44 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`;
                     } else {
-                        relFoto = `<span class="text-[9px] uppercase font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded border border-slate-200 inline-block">Sem Anexo</span>`;
+                        relFoto = `<span class="text-xs uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`;
                     }
 
                     relBody.innerHTML += `
                         <tr class="border-b border-slate-100 last:border-0">
-                            <td class="py-3 px-6 align-middle">${relCausa}</td>
-                            <td class="py-3 px-3 text-center align-middle">${relFoto}</td>
-                            <td class="py-3 px-5 text-center text-slate-700 font-bold align-middle text-lg">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-3 px-5 text-center align-middle">
-                                <div class="flex flex-col items-center gap-1 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-sm font-black mb-0.5">
-                                        <span class="text-red-600">${c.percDisplay}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
+                            <td class="py-4 px-6 align-middle">${relCausa}</td>
+                            <td class="py-4 px-3 text-center align-middle">${relFoto}</td>
+                            <td class="py-4 px-5 text-center text-slate-700 font-bold align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')}</td>
+                            <td class="py-4 px-5 text-center align-middle">
+                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[160px] mx-auto">
+                                    <div class="flex items-center justify-center w-full text-lg font-black mb-0.5">
+                                        <span class="text-red-600">${c.percDisplay}% <span class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
                                     </div>
-                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
                                         <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full" style="width: ${c.percPerda}%"></div>
                                     </div>
                                 </div>
@@ -1338,7 +1340,7 @@
             if (naoDetalhado > 0) {
                 rowNaoDetalhado.classList.remove('hidden');
                 document.getElementById('relNaoDetalhadoQtd').textContent = naoDetalhado.toLocaleString('pt-BR');
-                document.getElementById('relNaoDetalhadoPerc').innerHTML = `${percNaoDetalhadoGlobal}% <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">da safra</span>`;
+                document.getElementById('relNaoDetalhadoPerc').innerHTML = `${percNaoDetalhadoGlobal}% <span class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">da safra</span>`;
                 
                 const percNaoDetalhadoPerda = Math.min(100, Math.round((naoDetalhado / totalPendenteGlob) * 100));
                 document.getElementById('relNaoDetalhadoBarra').style.width = `${percNaoDetalhadoPerda}%`;
