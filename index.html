@@ -405,6 +405,15 @@
                     <div class="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden border border-slate-300/80 shadow-inner">
                         <div id="barraProgressoJustificativa" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.6)] rounded-full" style="width: 0%"></div>
                     </div>
+                    
+                    <!-- NOVO: ALERTA PACK HOUSE NA UI -->
+                    <div id="alertaPackHouseUI" class="hidden mt-3 bg-amber-50 border border-amber-200/60 rounded-lg p-2.5 flex items-start gap-2 shadow-sm transition-all duration-300">
+                        <i class="fa-solid fa-circle-exclamation text-amber-500 mt-0.5 shrink-0 text-sm"></i>
+                        <div class="text-[11px] text-amber-800 leading-tight">
+                            <strong class="uppercase text-[9px] tracking-wider block mb-0.5 text-amber-600">Aviso para o Relatório Final (Pack House)</strong>
+                            O saldo de <span id="uiDifQtd" class="font-bold"></span> un (<span id="uiDifPerc" class="font-extrabold text-amber-700"></span> da safra) refere-se ao <strong>Descarte Geral de Pack House</strong>. Por ser descartado em lote de forma consolidada, é impossível contabilizar a causa individual por cada cabeça/unidade.
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="p-6 md:p-8 bg-slate-50/30">
@@ -664,6 +673,21 @@
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+
+            <!-- NOVO: NOTA DO PACK HOUSE NO RELATÓRIO DE EXPORTAÇÃO -->
+            <div id="relPackHouseNota" class="hidden mt-4 bg-amber-50/80 border-2 border-amber-200 p-5 rounded-xl flex items-center gap-5 shadow-sm">
+                <div class="bg-amber-500 text-white w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-md shrink-0 border border-amber-600/50">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1 flex items-center gap-2">
+                        Descarte Geral no Pack House <span class="bg-amber-200 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Diferença Restante: <span id="relDifPerc"></span></span>
+                    </h4>
+                    <p class="text-xs text-amber-800 font-semibold leading-snug">
+                        <strong>Observação Importante:</strong> Os <span id="relDifQtd" class="font-black text-sm text-amber-900"></span> itens (<span id="relDifPercTxt" class="font-bold"></span> da safra) que complementam o Índice Total de Perda (<span id="relTotalPendenteNota"></span> un) referem-se ao descarte geral no <strong>Pack House</strong>. O lote é descartado de forma consolidada e global, o que impossibilita a triagem e a contabilização individual da causa primária por cada cabeça/unidade.
+                    </p>
+                </div>
             </div>
         </div>
         
@@ -1061,6 +1085,17 @@
             const progressoFracao = totalPendenteGlob > 0 ? Math.min(100, (totalJustificado / totalPendenteGlob) * 100) : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${progressoFracao}%`;
             document.getElementById('textoProgressoJustificativa').textContent = `${formatarPerc(progressoFracao)}% Contabilizado (${totalJustificado.toLocaleString('pt-BR')} / ${totalPendenteGlob.toLocaleString('pt-BR')} UN)`;
+
+            const alertaUI = document.getElementById('alertaPackHouseUI');
+            const difQtd = totalPendenteGlob - totalJustificado;
+            if (difQtd > 0 && totalPendenteGlob > 0) {
+                alertaUI.classList.remove('hidden');
+                const difPercSafra = Math.max(0, pctPendenteGlobal - percJustificadoSoma);
+                document.getElementById('uiDifQtd').textContent = difQtd.toLocaleString('pt-BR');
+                document.getElementById('uiDifPerc').textContent = formatarPerc(difPercSafra) + '%';
+            } else {
+                alertaUI.classList.add('hidden');
+            }
         }
 
         function limparFormulario() {
@@ -1176,6 +1211,20 @@
             // Atualização do rodapé com a soma real de todas as causas registradas
             document.getElementById('relTotalQtd').textContent = sumQtdRegistrada.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${formatarPerc(sumPercRegistrada)}%`;
+
+            const relPackHouseNota = document.getElementById('relPackHouseNota');
+            const difQtd = totalPendenteGlob - sumQtdRegistrada;
+            
+            if (difQtd > 0 && totalPendenteGlob > 0) {
+                const difPercSafra = Math.max(0, pctPendenteGlobal - sumPercRegistrada);
+                relPackHouseNota.classList.remove('hidden');
+                document.getElementById('relDifPerc').textContent = formatarPerc(difPercSafra) + '%';
+                document.getElementById('relDifPercTxt').textContent = formatarPerc(difPercSafra) + '%';
+                document.getElementById('relDifQtd').textContent = difQtd.toLocaleString('pt-BR');
+                document.getElementById('relTotalPendenteNota').textContent = totalPendenteGlob.toLocaleString('pt-BR');
+            } else {
+                relPackHouseNota.classList.add('hidden');
+            }
         }
 
         async function renderHtmlToImageSeguro() {
