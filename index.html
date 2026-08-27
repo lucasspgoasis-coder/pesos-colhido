@@ -141,7 +141,6 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* LAYOUT DE EXPORTAÇÃO E IMPRESSÃO (Tamanho Aumentado) */
         #relatorioExportacao {
             position: absolute;
             left: -9999px;
@@ -181,7 +180,6 @@
 
     <div id="captureArea" class="max-w-5xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200 p-6 md:p-10 relative">
         
-        <!-- Cabeçalho Principal -->
         <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white rounded-2xl p-6 md:p-8 shadow-md mb-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-800 relative overflow-hidden">
             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
             
@@ -220,7 +218,6 @@
 
         <form id="registroForm" class="space-y-8" onsubmit="event.preventDefault();">
             
-            <!-- Dados Gerais -->
             <div class="bg-slate-50/80 p-6 rounded-xl border border-slate-200 shadow-sm relative">
                 <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <span class="bg-emerald-600 text-white p-1.5 rounded-lg flex items-center justify-center w-8 h-8 text-sm">
@@ -369,7 +366,6 @@
                 </div>
             </div>
 
-            <!-- Registo de Causas MELHORADO -->
             <div class="bg-white border border-slate-200 rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden ring-1 ring-slate-100">
                 
                 <!-- Header da Secção de Causas -->
@@ -406,7 +402,6 @@
                         <div id="barraProgressoJustificativa" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.6)] rounded-full" style="width: 0%"></div>
                     </div>
                     
-                    <!-- NOVO: ALERTA PACK HOUSE NA UI -->
                     <div id="alertaPackHouseUI" class="hidden mt-3 bg-amber-50 border border-amber-200/60 rounded-lg p-2.5 flex items-start gap-2 shadow-sm transition-all duration-300">
                         <i class="fa-solid fa-circle-exclamation text-amber-500 mt-0.5 shrink-0 text-sm"></i>
                         <div class="text-[11px] text-amber-800 leading-tight">
@@ -471,7 +466,6 @@
                         </div>
                     </div>
                     
-                    <!-- Tabela de Causas -->
                     <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
                         <table class="w-full border-collapse text-sm text-left">
                             <thead class="bg-slate-50 border-b border-slate-200">
@@ -485,8 +479,8 @@
                                     <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-28">
                                         Volume (UN)
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-48">
-                                        Progresso & Impacto (%)
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-56">
+                                        Impacto & Comparativo
                                     </th>
                                     <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center no-print w-16">
                                         Ação
@@ -551,39 +545,27 @@
             </h3>
             <div class="grid grid-cols-3 gap-4">
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Bloco / Setor
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Bloco / Setor</span>
                     <span class="block text-xl font-black text-slate-800" id="relBloco">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Cultura
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Cultura</span>
                     <span class="block text-xl font-black text-slate-800" id="relCultura">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Variedade(s)
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade(s)</span>
                     <span class="block text-base font-bold text-slate-800 leading-snug" id="relVariedade">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Estado
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Estado</span>
                     <span class="block text-lg font-bold text-emerald-700" id="relStatus">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Data Finalização
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Data Finalização</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDataFim">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Ciclo Produtivo
-                    </span>
+                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Ciclo Produtivo</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDiasProd">-</span>
                 </div>
             </div>
@@ -617,18 +599,14 @@
 
                 <div class="flex items-center gap-6 bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-red-200 shadow-sm shrink-0">
                     <div class="text-center px-4 border-r border-red-100">
-                        <span class="block text-xs font-extrabold text-red-600 uppercase tracking-wider mb-1">
-                            Volume Perdido
-                        </span>
+                        <span class="block text-xs font-extrabold text-red-600 uppercase tracking-wider mb-1">Volume Perdido</span>
                         <div class="flex items-end justify-center gap-1">
                             <span class="text-4xl font-black text-red-700 leading-none" id="relPendente">0</span>
                             <span class="text-xs font-bold text-red-500 pb-1">UN</span>
                         </div>
                     </div>
                     <div class="text-center px-4">
-                        <span class="block text-xs font-extrabold text-red-600 uppercase tracking-wider mb-1">
-                            Índice de Perda
-                        </span>
+                        <span class="block text-xs font-extrabold text-red-600 uppercase tracking-wider mb-1">Índice de Perda</span>
                         <span class="text-3xl font-black text-white bg-red-600 px-4 py-1 rounded-lg shadow-sm inline-block" id="relPercPendente">0,0%</span>
                     </div>
                 </div>
@@ -646,17 +624,17 @@
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
                         <tr>
-                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-1/3">
+                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-[30%]">
                                 Causa Registrada
                             </th>
-                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-1/3">
+                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[25%]">
                                 Comprovativo
                             </th>
-                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-1/6">
+                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[15%]">
                                 Qtd (UN)
                             </th>
-                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-1/6">
-                                Impacto (%)
+                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[30%]">
+                                Comparativo de Impacto
                             </th>
                         </tr>
                     </thead>
@@ -669,13 +647,13 @@
                                 Total de Perdas Contabilizadas no Campo
                             </td>
                             <td class="py-5 px-5 text-center font-black text-3xl text-red-900 leading-none" id="relTotalQtd">0</td>
-                            <td class="py-5 px-5 text-center font-black text-3xl text-red-600 leading-none" id="relTotalPerc">0,0%</td>
+                            <td class="py-5 px-5 text-center font-black text-2xl text-red-600 leading-none"><span id="relTotalPerc">0,0%</span> <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-1">da safra</span></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
-            <!-- NOVO: NOTA DO PACK HOUSE NO RELATÓRIO DE EXPORTAÇÃO -->
+            <!-- NOTA DO PACK HOUSE NO RELATÓRIO DE EXPORTAÇÃO -->
             <div id="relPackHouseNota" class="hidden mt-4 bg-amber-50/80 border-2 border-amber-200 p-5 rounded-xl flex items-center gap-5 shadow-sm">
                 <div class="bg-amber-500 text-white w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-md shrink-0 border border-amber-600/50">
                     <i class="fa-solid fa-boxes-packing"></i>
@@ -693,12 +671,10 @@
         
         <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
-                <i class="fa-solid fa-certificate"></i>
-                Documento Oficial de Registro de Perdas - Fazenda Oásis
+                <i class="fa-solid fa-certificate"></i> Documento Oficial de Registro de Perdas - Fazenda Oásis
             </div>
             <div class="text-right flex items-center gap-1">
-                <i class="fa-regular fa-copyright"></i>
-                <span>Fazenda Oásis <span id="anoFooter">2026</span></span>
+                <i class="fa-regular fa-copyright"></i> <span>Fazenda Oásis <span id="anoFooter">2026</span></span>
             </div>
         </div>
     </div>
@@ -769,6 +745,35 @@
         function formatarPerc(val) {
             if (isNaN(val) || val === null || val === undefined) return '0,0';
             return Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        }
+
+        /* Função para determinar o nível visual de impacto baseado na quantidade */
+        function getImpactoLevel(qtd) {
+            if (qtd >= 800) {
+                return {
+                    label: 'ALTO IMPACTO',
+                    badgeClass: 'bg-red-500 text-white border-red-600 shadow-sm shadow-red-200',
+                    barGradient: 'from-red-500 via-rose-500 to-red-600',
+                    textColor: 'text-red-700',
+                    icon: 'fa-solid fa-fire text-amber-300'
+                };
+            } else if (qtd >= 500) {
+                return {
+                    label: 'MÉDIO IMPACTO',
+                    badgeClass: 'bg-amber-500 text-white border-amber-600 shadow-sm shadow-amber-200',
+                    barGradient: 'from-amber-400 via-amber-500 to-orange-500',
+                    textColor: 'text-amber-700',
+                    icon: 'fa-solid fa-triangle-exclamation text-white'
+                };
+            } else {
+                return {
+                    label: 'BAIXO IMPACTO',
+                    badgeClass: 'bg-emerald-600 text-white border-emerald-700 shadow-sm shadow-emerald-200',
+                    barGradient: 'from-emerald-400 via-teal-500 to-emerald-600',
+                    textColor: 'text-emerald-700',
+                    icon: 'fa-solid fa-circle-check text-emerald-200'
+                };
+            }
         }
 
         function getCausaIcon(categoria) {
@@ -883,11 +888,8 @@
             const mediaDiv = document.getElementById('mediaGlobDisplay');
             if (mediaDiv) {
                 mediaDiv.textContent = mediaGGlob.toLocaleString('pt-BR');
-                if (mediaGGlob > 0) {
-                    mediaDiv.classList.replace('text-slate-600', 'text-emerald-600');
-                } else {
-                    mediaDiv.classList.replace('text-emerald-600', 'text-slate-600');
-                }
+                if (mediaGGlob > 0) { mediaDiv.classList.replace('text-slate-600', 'text-emerald-600'); } 
+                else { mediaDiv.classList.replace('text-emerald-600', 'text-slate-600'); }
             }
 
             const elPercColhido = document.getElementById('percColhido'); 
@@ -907,8 +909,7 @@
                     elPercPendente.textContent = formatarPerc(pctPendenteGlobal);
                 }
             } else {
-                elPercColhido.textContent = "0,0"; 
-                elPercPendente.textContent = "0,0";
+                elPercColhido.textContent = "0,0"; elPercPendente.textContent = "0,0";
                 totalPendenteGlob = 0; pctPendenteGlobal = 0;
             }
             atualizarStatusCausas();
@@ -919,10 +920,7 @@
             const val = parseInt(document.getElementById('causaQtd').value);
             const span = document.getElementById('previewCausaCalc');
             if(!span) return;
-            if (isNaN(val) || val <= 0 || totalTransplantadoGlob <= 0) {
-                span.textContent = '';
-                return;
-            }
+            if (isNaN(val) || val <= 0 || totalTransplantadoGlob <= 0) { span.textContent = ''; return; }
             const percSafra = formatarPerc((val / totalTransplantadoGlob) * 100);
             span.textContent = `Impacto: +${percSafra}% da safra`;
         }
@@ -932,10 +930,9 @@
                 causasList.forEach(c => { c.percDisplay = 0; c.percPerda = 0; });
                 return;
             }
-            
             causasList.forEach(c => {
-                c.percDisplay = (c.qtd / totalTransplantadoGlob) * 100; // Impacto na safra (%)
-                c.percPerda = totalPendenteGlob > 0 ? Math.min(100, (c.qtd / totalPendenteGlob) * 100) : 0; // % em relação às perdas
+                c.percDisplay = (c.qtd / totalTransplantadoGlob) * 100; 
+                c.percPerda = totalPendenteGlob > 0 ? Math.min(100, (c.qtd / totalPendenteGlob) * 100) : 0; 
             });
         }
 
@@ -988,6 +985,8 @@
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
         function atualizarStatusCausas() {
+            // Ordena sempre do maior volume de perda para o menor
+            causasList.sort((a, b) => b.qtd - a.qtd);
             calcularPercentuaisCausas();
 
             const tbody = document.getElementById('tabelaCausasBody');
@@ -996,21 +995,31 @@
             let totalJustificado = 0; 
             let percJustificadoSoma = 0;
 
+            const maxQtd = causasList.length > 0 ? Math.max(...causasList.map(c => c.qtd)) : 0;
+
             if (causasList.length === 0) { 
                 placeholder.classList.remove('hidden'); 
             } else {
                 placeholder.classList.add('hidden');
+                
                 causasList.forEach((causa, index) => {
                     totalJustificado += causa.qtd;
                     percJustificadoSoma += causa.percDisplay;
                     
+                    const impactInfo = getImpactoLevel(causa.qtd);
+                    const relativeToMax = maxQtd > 0 ? (causa.qtd / maxQtd) * 100 : 0;
+                    
                     const iconBox = getCausaIcon(causa.categoria);
+                    const rankBadge = `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-[10px] shadow-sm shrink-0">#${index + 1}</span>`;
                     
                     let celulaCausa = `
                         <div class="flex items-center gap-3 w-full">
                             ${iconBox}
                             <div class="flex flex-col items-start justify-center text-left gap-1.5">
-                                <span class="inline-flex items-center px-3 py-1 rounded-lg border-2 border-indigo-200 bg-indigo-50 text-indigo-800 font-extrabold text-sm shadow-sm tracking-wide">${causa.categoria}</span>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    ${rankBadge}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-lg border-2 border-indigo-200 bg-indigo-50 text-indigo-900 font-extrabold text-sm shadow-sm tracking-wide">${causa.categoria}</span>
+                                </div>
                     `;
                     
                     if (causa.especificacao) {
@@ -1043,30 +1052,44 @@
                             </div>
                         `;
                     }
+
+                    // Comparativo de Impacto mais visual e destacado
+                    let impactHtmlUI = `
+                        <div class="flex flex-col gap-1.5 w-full max-w-[240px] mx-auto bg-gradient-to-br from-slate-50 to-white p-2.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
+                                    <i class="${impactInfo.icon}"></i> ${impactInfo.label}
+                                </span>
+                                <span class="text-xs font-black ${impactInfo.textColor}">${formatarPerc(causa.percDisplay)}% <span class="text-[9px] font-semibold text-slate-400">safra</span></span>
+                            </div>
+                            
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden border border-slate-300/80 p-0.5 shadow-inner">
+                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700 shadow-sm" style="width: ${relativeToMax}%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center text-[9px] text-slate-500 font-bold px-0.5">
+                                <span>Part. Perdas:</span>
+                                <span class="font-black ${impactInfo.textColor}">${formatarPerc(causa.percPerda)}%</span>
+                            </div>
+                        </div>
+                    `;
                     
                     tbody.innerHTML += `
                         <tr class="group hover:bg-emerald-50/40 transition-colors duration-200 border-b border-slate-100 last:border-0 relative">
                             <td class="px-6 py-4 align-middle relative">
-                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-sm"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-1 ${causa.qtd >= 800 ? 'bg-red-500' : (causa.qtd >= 500 ? 'bg-amber-500' : 'bg-emerald-500')} opacity-80 group-hover:opacity-100 transition-opacity rounded-r-sm"></div>
                                 ${celulaCausa}
                             </td>
                             <td class="px-4 py-4 align-middle text-center">
                                 ${celulaFoto}
                             </td>
                             <td class="px-4 py-4 align-middle text-center">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg border border-slate-200 shadow-sm group-hover:bg-white group-hover:border-emerald-200 transition-colors">
-                                    <span class="text-[13px]">${causa.qtd.toLocaleString('pt-BR')}</span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-800 font-black rounded-lg border border-slate-200 shadow-sm text-sm">
+                                    ${causa.qtd.toLocaleString('pt-BR')} <span class="text-[10px] text-slate-400 font-bold">UN</span>
                                 </span>
                             </td>
                             <td class="px-4 py-4 align-middle text-center">
-                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[140px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-sm font-black">
-                                        <span class="text-red-600">${formatarPerc(causa.percDisplay)}% <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
-                                    </div>
-                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner" title="Representa ${formatarPerc(causa.percPerda)}% do total de perdas">
-                                        <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full transition-all duration-700 shadow-sm" style="width: ${causa.percPerda}%"></div>
-                                    </div>
-                                </div>
+                                ${impactHtmlUI}
                             </td>
                             <td class="px-4 py-4 align-middle text-center no-print">
                                 <button type="button" onclick="removerCausa(${index})" class="text-slate-300 hover:text-red-500 hover:bg-red-50 w-9 h-9 rounded-full transition-all duration-200 mx-auto flex items-center justify-center focus:outline-none" title="Excluir Causa">
@@ -1081,7 +1104,6 @@
             document.getElementById('percJustificadoSoma').textContent = formatarPerc(percJustificadoSoma);
             document.getElementById('percPendenteMax').textContent = formatarPerc(pctPendenteGlobal);
             
-            // Barra de Progresso do Detalhamento das Perdas
             const progressoFracao = totalPendenteGlob > 0 ? Math.min(100, (totalJustificado / totalPendenteGlob) * 100) : 0;
             document.getElementById('barraProgressoJustificativa').style.width = `${progressoFracao}%`;
             document.getElementById('textoProgressoJustificativa').textContent = `${formatarPerc(progressoFracao)}% Contabilizado (${totalJustificado.toLocaleString('pt-BR')} / ${totalPendenteGlob.toLocaleString('pt-BR')} UN)`;
@@ -1093,9 +1115,7 @@
                 const difPercSafra = Math.max(0, pctPendenteGlobal - percJustificadoSoma);
                 document.getElementById('uiDifQtd').textContent = difQtd.toLocaleString('pt-BR');
                 document.getElementById('uiDifPerc').textContent = formatarPerc(difPercSafra) + '%';
-            } else {
-                alertaUI.classList.add('hidden');
-            }
+            } else { alertaUI.classList.add('hidden'); }
         }
 
         function limparFormulario() {
@@ -1124,17 +1144,8 @@
             const sel = document.getElementById('variedade'); 
             const out = document.getElementById('variedadeOutro');
             let nome = "Não inf.";
-            if (sel && sel.value) {
-                nome = sel.value === 'outros' ? (out.value.trim() || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.');
-            }
-            
-            return [{ 
-                variedade: nome, 
-                transplantado: totalTransplantadoGlob, 
-                colhido: totalColhidoGlob, 
-                totalKg: totalKgGlob, 
-                mediaG: mediaGGlob 
-            }];
+            if (sel && sel.value) { nome = sel.value === 'outros' ? (out.value.trim() || 'Não inf.') : (sel.options[sel.selectedIndex]?.text || 'Não inf.'); }
+            return [{ variedade: nome, transplantado: totalTransplantadoGlob, colhido: totalColhidoGlob, totalKg: totalKgGlob, mediaG: mediaGGlob }];
         }
 
         function preencherRelatorioOculto() {
@@ -1154,61 +1165,78 @@
                 document.getElementById('relDataFim').textContent = dataF ? formatarDataInputToBR(dataF) : 'Não inf.';
             } else { document.getElementById('relDataFim').textContent = '-'; }
 
-            // Flash Card values
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relPercPendente').textContent = `${formatarPerc(pctPendenteGlobal)}%`;
+
+            // Ordena antes de gerar o relatório em PDF/JPEG/Impressão
+            causasList.sort((a, b) => b.qtd - a.qtd);
 
             const relBody = document.getElementById('relTableBody');
             relBody.innerHTML = '';
 
             let sumQtdRegistrada = 0;
             let sumPercRegistrada = 0;
+            const maxQtd = causasList.length > 0 ? Math.max(...causasList.map(c => c.qtd)) : 0;
 
             if(causasList.length === 0) {
                 relBody.innerHTML = `
                     <tr><td colspan="4" class="py-6 px-5 text-center text-slate-500 italic font-medium"><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Nenhuma causa de perda registrada neste ciclo.</td></tr>`;
             } else {
-                causasList.forEach(c => {
+                causasList.forEach((c, index) => {
                     sumQtdRegistrada += c.qtd;
                     sumPercRegistrada += c.percDisplay;
 
+                    const impactInfo = getImpactoLevel(c.qtd);
+                    const relativeToMax = maxQtd > 0 ? (c.qtd / maxQtd) * 100 : 0;
+
                     let relCausa = `
-                        <div class="flex flex-col gap-2 py-2 items-start">
-                            <span class="inline-block px-4 py-1.5 rounded border-2 border-indigo-300 bg-indigo-50 text-indigo-900 font-extrabold text-sm shadow-sm">${c.categoria}</span>
+                        <div class="flex items-center gap-2 py-1">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-xs shadow-sm shrink-0">#${index + 1}</span>
+                            <div class="flex flex-col gap-1 items-start">
+                                <span class="inline-block px-3 py-1 rounded border-2 border-indigo-200 bg-indigo-50 text-indigo-950 font-extrabold text-sm shadow-sm">${c.categoria}</span>
+                                ${c.especificacao ? `<span class="text-xs text-slate-600 font-semibold leading-tight">Esp: ${c.especificacao}</span>` : ''}
+                            </div>
+                        </div>
                     `;
-                    if (c.especificacao) {
-                        relCausa += `<span class="text-xs text-slate-600 font-medium leading-tight">Esp: ${c.especificacao}</span>`;
-                    }
-                    relCausa += `</div>`;
 
                     let relFoto = '';
-                    if(c.fotoBase64) {
-                        relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-64 h-44 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`;
-                    } else {
-                        relFoto = `<span class="text-xs uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`;
-                    }
+                    if(c.fotoBase64) { relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-64 h-44 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`; } 
+                    else { relFoto = `<span class="text-xs uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`; }
+
+                    let relMiniChart = `
+                        <div class="flex flex-col gap-2 w-full max-w-[260px] mx-auto bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md border text-[10px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
+                                    <i class="${impactInfo.icon}"></i> ${impactInfo.label}
+                                </span>
+                                <span class="text-sm font-black ${impactInfo.textColor}">${formatarPerc(c.percDisplay)}%</span>
+                            </div>
+                            
+                            <div class="w-full h-3.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300 p-0.5">
+                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full" style="width: ${relativeToMax}%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center text-[10px] text-slate-600 font-bold">
+                                <span>Impacto nas Perdas:</span>
+                                <span class="font-black ${impactInfo.textColor}">${formatarPerc(c.percPerda)}%</span>
+                            </div>
+                        </div>
+                    `;
 
                     relBody.innerHTML += `
                         <tr class="border-b border-slate-100 last:border-0">
-                            <td class="py-4 px-6 align-middle">${relCausa}</td>
-                            <td class="py-4 px-3 text-center align-middle">${relFoto}</td>
-                            <td class="py-4 px-5 text-center text-slate-700 font-bold align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')}</td>
-                            <td class="py-4 px-5 text-center align-middle">
-                                <div class="flex flex-col items-center gap-1.5 w-full max-w-[160px] mx-auto">
-                                    <div class="flex items-center justify-center w-full text-lg font-black mb-0.5">
-                                        <span class="text-red-600">${formatarPerc(c.percDisplay)}% <span class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">da safra</span></span>
-                                    </div>
-                                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-                                        <div class="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full" style="width: ${c.percPerda}%"></div>
-                                    </div>
-                                </div>
+                            <td class="py-4 px-6 align-middle relative">
+                                <div class="absolute left-0 top-0 bottom-0 w-1.5 ${c.qtd >= 800 ? 'bg-red-500' : (c.qtd >= 500 ? 'bg-amber-500' : 'bg-emerald-500')} rounded-r-sm"></div>
+                                ${relCausa}
                             </td>
+                            <td class="py-4 px-3 text-center align-middle">${relFoto}</td>
+                            <td class="py-4 px-5 text-center text-slate-800 font-black align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')} <span class="text-xs font-bold text-slate-400 block">UN</span></td>
+                            <td class="py-4 px-5 text-center align-middle">${relMiniChart}</td>
                         </tr>
                     `;
                 });
             }
 
-            // Atualização do rodapé com a soma real de todas as causas registradas
             document.getElementById('relTotalQtd').textContent = sumQtdRegistrada.toLocaleString('pt-BR');
             document.getElementById('relTotalPerc').textContent = `${formatarPerc(sumPercRegistrada)}%`;
 
@@ -1222,9 +1250,7 @@
                 document.getElementById('relDifPercTxt').textContent = formatarPerc(difPercSafra) + '%';
                 document.getElementById('relDifQtd').textContent = difQtd.toLocaleString('pt-BR');
                 document.getElementById('relTotalPendenteNota').textContent = totalPendenteGlob.toLocaleString('pt-BR');
-            } else {
-                relPackHouseNota.classList.add('hidden');
-            }
+            } else { relPackHouseNota.classList.add('hidden'); }
         }
 
         async function renderHtmlToImageSeguro() {
@@ -1319,8 +1345,8 @@
                 } else {
                     return {
                         data: commonData.data, ciclo: commonData.ciclo, bloco: commonData.bloco, cultura: commonData.cultura,
-                        percColhido: '-', pendente: '', percPendente: '-', causasLista: [{ nome: "-", qtd: "", perc: "-" }], 
-                        totalTransplantadoBloco: '', totalColhidoBloco: '', totalKgBloco: '',
+                        percColhido: commonData.percColhido, pendente: 0, percPendente: "0,0%", causasLista: [],
+                        totalTransplantadoBloco: 0, totalColhidoBloco: 0, totalKgBloco: 0,
                         variedade: v.variedade, transplantado: v.transplantado, colhido: v.colhido, 
                         totalKg: v.totalKg.toLocaleString('pt-BR'), mediaG: v.mediaG
                     };
@@ -1328,19 +1354,12 @@
             });
 
             try {
-                for (let i = 0; i < payloads.length; i++) {
-                    await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payloads[i]) });
-                    if (payloads.length > 1 && i < payloads.length - 1) await new Promise(resolve => setTimeout(resolve, 1000));
+                for (let pl of payloads) {
+                    await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pl) });
                 }
-                showToast('Dados enviados com sucesso!', 'success'); limparFormulario();
-            } catch (error) {
-                try {
-                    const form = document.createElement('form'); form.method = 'POST'; form.action = url; form.target = '_blank'; 
-                    const input = document.createElement('input'); input.type = 'hidden'; input.name = 'postData'; 
-                    input.value = JSON.stringify(payloads[0]);
-                    form.appendChild(input); document.body.appendChild(form); form.submit(); document.body.removeChild(form);
-                    showToast('Modo de contingência utilizado.', 'warning'); limparFormulario();
-                } catch (fallbackError) { showToast('Falha de ligação ao enviar para a planilha.', 'error'); }
+                showToast("Dados enviados para a planilha com sucesso!");
+                setTimeout(() => limparFormulario(), 2000);
+            } catch (error) { showToast("Erro de conexão ao enviar dados.", "error"); 
             } finally { btn.innerHTML = textoOriginal; btn.disabled = false; }
         }
     </script>
