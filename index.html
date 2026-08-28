@@ -178,7 +178,7 @@
     <!-- Container Toast -->
     <div id="toastContainer"></div>
 
-    <div id="captureArea" class="max-w-5xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200 p-6 md:p-10 relative">
+    <div id="captureArea" class="max-w-6xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200 p-6 md:p-10 relative">
         
         <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white rounded-2xl p-6 md:p-8 shadow-md mb-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-800 relative overflow-hidden">
             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
@@ -226,7 +226,7 @@
                     <span>Informações da Plantação</span>
                 </h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     <div class="col-span-1">
                         <label for="cicloProducao" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
                             <i class="fa-solid fa-arrows-spin text-emerald-600 text-xs"></i> Ciclo Nº *
@@ -236,9 +236,9 @@
 
                     <div class="col-span-1">
                         <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-layer-group text-emerald-600 text-xs"></i> Setor (Bloco) *
+                            <i class="fa-solid fa-layer-group text-emerald-600 text-xs"></i> Bloco Atual *
                         </label>
-                        <select id="bloco" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800" required>
+                        <select id="bloco" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800 border-emerald-300" required>
                             <option value="" disabled selected>Selecione um bloco</option>
                             <option value="01">Bloco 01</option>
                             <option value="02">Bloco 02</option>
@@ -253,6 +253,27 @@
                             <option value="outros">Outros...</option>
                         </select>
                         <input type="text" id="blocoOutro" placeholder="Digite o bloco" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label for="blocoAnterior" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-clock-rotate-left text-slate-500 text-xs"></i> Bloco Anterior
+                        </label>
+                        <select id="blocoAnterior" class="w-full rounded-lg input-melhorado px-4 bg-slate-50 text-gray-800">
+                            <option value="Nenhum" selected>Nenhum (1º Registro)</option>
+                            <option value="01">Bloco 01</option>
+                            <option value="02">Bloco 02</option>
+                            <option value="03">Bloco 03</option>
+                            <option value="04">Bloco 04</option>
+                            <option value="05">Bloco 05</option>
+                            <option value="06">Bloco 06</option>
+                            <option value="07">Bloco 07</option>
+                            <option value="08">Bloco 08</option>
+                            <option value="09">Bloco 09</option>
+                            <option value="10">Bloco 10</option>
+                            <option value="outros">Outros...</option>
+                        </select>
+                        <input type="text" id="blocoAnteriorOutro" placeholder="Digite o bloco anterior" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white">
                     </div>
 
                     <div class="col-span-1">
@@ -283,7 +304,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6 pt-6 border-t border-slate-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-slate-200">
                     <div class="col-span-1">
                         <label for="totalTransplantado" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
                             <i class="fa-solid fa-boxes-stacked text-emerald-600 text-xs"></i> Total Transplantado *
@@ -296,23 +317,6 @@
                             <i class="fa-solid fa-basket-shopping text-emerald-600 text-xs"></i> Total Colhido
                         </label>
                         <input type="number" min="0" id="totalColhido" placeholder="Ex: 4500" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-700 bg-white shadow-sm" oninput="recalcularTudo()">
-                    </div>
-
-                    <div class="col-span-1">
-                        <label for="pesoTotal" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-weight-hanging text-emerald-600 text-xs"></i> Peso Total (KG)
-                        </label>
-                        <input type="number" min="0" step="0.1" id="pesoTotal" placeholder="Ex: 1800" class="w-full rounded-lg input-melhorado px-4 text-lg font-bold text-emerald-700 bg-white shadow-sm" oninput="recalcularTudo()">
-                    </div>
-
-                    <div class="col-span-1">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-calculator text-emerald-600 text-xs"></i> Média / Unid.
-                        </label>
-                        <div class="w-full h-[48px] rounded-lg bg-slate-50 border border-slate-200 flex items-center px-4 shadow-sm">
-                            <span id="mediaGlobDisplay" class="text-xl font-black text-slate-600">0</span>
-                            <span class="text-sm font-bold text-slate-500 ml-1">g</span>
-                        </div>
                     </div>
                 </div>
 
@@ -419,49 +423,59 @@
                             <i class="fa-solid fa-layer-group text-emerald-600/80"></i>
                             <h4 class="text-xs font-black text-slate-600 uppercase tracking-widest">Adicionar Nova Causa de Perda</h4>
                         </div>
-                        <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
-                            <div class="md:col-span-3">
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
                                     Causa Principal *
                                 </label>
-                                <select id="causaLista" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400">
-                                    <option value="" disabled selected>Selecione a causa...</option>
+                                <select id="causaLista" class="w-full rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400" onchange="verificarHistorico()">
+                                    <option value="" disabled selected>Selecione...</option>
                                     <option value="Esquiara">Esquiara</option>
                                     <option value="Mal desenvolvidas">Mal desenvolvidas</option>
                                     <option value="Fungos">Fungos</option>
                                     <option value="Pragas">Pragas</option>
                                     <option value="outros">Outros...</option>
                                 </select>
-                                <input type="text" id="causaOutro" placeholder="Digite a causa" class="mt-2 w-full hidden rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600">
+                                <input type="text" id="causaOutro" placeholder="Digite..." class="mt-2 w-full hidden rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600" oninput="verificarHistorico()">
                             </div>
 
-                            <div class="md:col-span-3">
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
                                     <span>Especificação</span> 
-                                    <span class="normal-case text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">Opcional</span>
                                 </label>
-                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão negra..." class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400">
+                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão..." class="w-full rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400" oninput="verificarHistorico()">
                             </div>
 
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
-                                    Qtd (UN) *
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
+                                    Qtd Atual (UN) *
                                 </label>
-                                <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-4 bg-white text-slate-800 text-sm font-bold border-slate-300 focus:border-emerald-600 hover:border-slate-400 text-center" oninput="atualizarPreviewCausaInput()">
-                                <span id="previewCausaCalc" class="block text-[10px] font-bold text-emerald-600 mt-1 h-3 text-center"></span>
+                                <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-2 bg-emerald-50 text-emerald-900 text-sm font-black border-slate-300 focus:border-emerald-600 hover:border-slate-400 text-center" oninput="atualizarPreviewCausaInput()">
+                            </div>
+
+                            <!-- NOVO CAMPO: QUANTIDADE ANTERIOR (MEMÓRIA) -->
+                            <div class="md:col-span-2 relative group">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1">
+                                    Qtd Anterior <i class="fa-solid fa-clock-rotate-left text-slate-400" title="Preenchido automaticamente com o último registro salvo"></i>
+                                </label>
+                                <input type="number" id="causaQtdAnterior" min="0" placeholder="Auto..." class="w-full rounded-lg input-melhorado px-2 bg-slate-50 text-slate-600 text-sm font-bold border-slate-300 focus:border-slate-400 hover:border-slate-400 text-center">
                             </div>
 
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
                                     <span>Foto / Anexo</span>
                                 </label>
-                                <input type="file" id="causaFoto" accept="image/*" class="w-full rounded-lg input-foto px-2 text-slate-700 text-xs border-slate-300 focus:border-emerald-600 hover:border-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:uppercase file:tracking-wider file:font-black file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                                <input type="file" id="causaFoto" accept="image/*" class="w-full rounded-lg input-foto px-1 text-slate-700 text-xs border-slate-300 focus:border-emerald-600 hover:border-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:uppercase file:tracking-wider file:font-black file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
                             </div>
 
                             <div class="md:col-span-2">
                                 <button type="button" id="btnAdicionarCausa" onclick="adicionarCausa()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold h-[48px] rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 no-print flex items-center justify-center gap-2 text-sm">
                                     <i class="fa-solid fa-plus"></i> Inserir
                                 </button>
+                            </div>
+                            
+                            <div class="md:col-span-12">
+                                <span id="previewCausaCalc" class="block text-[10px] font-bold text-emerald-600 text-left mt-1 h-2"></span>
                             </div>
                         </div>
                     </div>
@@ -470,20 +484,23 @@
                         <table class="w-full border-collapse text-sm text-left">
                             <thead class="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-6 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-1/3">
-                                        Identificação da Causa
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-[25%]">
+                                        Identificação
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-36 sm:w-44">
-                                        Evidência Fotográfica
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
+                                        Evidência
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-28">
-                                        Volume (UN)
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
+                                        Vol Atual
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-56">
-                                        Impacto & Comparativo
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
+                                        Variação <span class="block text-[8px] text-slate-400 font-normal normal-case mt-0.5">(vs Bloco Anterior)</span>
                                     </th>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center no-print w-16">
-                                        Ação
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[25%]">
+                                        Impacto %
+                                    </th>
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center no-print w-[5%]">
+                                        <i class="fa-solid fa-gear"></i>
                                     </th>
                                 </tr>
                             </thead>
@@ -498,7 +515,7 @@
                                 <i class="fa-solid fa-clipboard-list text-3xl"></i>
                             </div>
                             <h4 class="text-slate-700 font-bold text-base mb-1">Nenhuma causa registrada</h4>
-                            <p class="text-sm text-slate-500 max-w-sm">Utilize o formulário acima para detalhar as quebras de produção e anexe fotografias se aplicável.</p>
+                            <p class="text-sm text-slate-500 max-w-sm">Utilize o formulário acima para detalhar as quebras e o sistema salvará o histórico automaticamente.</p>
                         </div>
                     </div>
                 </div>
@@ -523,7 +540,7 @@
                         <i class="fa-solid fa-file-circle-exclamation text-emerald-400"></i>
                         <span>Relatório de Perdas no Campo</span>
                     </h1>
-                    <h2 class="text-base font-semibold text-emerald-100">Contagem de Perdas e Comprovativos Fotográficos</h2>
+                    <h2 class="text-base font-semibold text-emerald-100">Contagem de Perdas e Variação por Ciclo/Bloco</h2>
                 </div>
             </div>
             <div class="text-right border-l border-emerald-700/80 pl-6 flex flex-col justify-center z-10">
@@ -543,19 +560,21 @@
                 <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span>
                 <span>1. Parâmetros da Plantação</span>
             </h3>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Bloco / Setor</span>
-                    <span class="block text-xl font-black text-slate-800" id="relBloco">-</span>
+            <!-- GRID AJUSTADA (REMOVIDO BLOCO ANTERIOR) -->
+            <div class="grid grid-cols-4 gap-4">
+                <div class="border border-emerald-200 p-4 rounded-lg bg-emerald-50/40 text-center shadow-sm">
+                    <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco Atual</span>
+                    <span class="block text-xl font-black text-emerald-900" id="relBloco">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Cultura</span>
                     <span class="block text-xl font-black text-slate-800" id="relCultura">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
+                <div class="col-span-2 border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Variedade(s)</span>
                     <span class="block text-base font-bold text-slate-800 leading-snug" id="relVariedade">-</span>
                 </div>
+                
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Estado</span>
                     <span class="block text-lg font-bold text-emerald-700" id="relStatus">-</span>
@@ -564,7 +583,7 @@
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Data Finalização</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDataFim">-</span>
                 </div>
-                <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
+                <div class="col-span-2 border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm flex flex-col justify-center">
                     <span class="block text-xs font-bold text-slate-500 uppercase mb-1">Ciclo Produtivo</span>
                     <span class="block text-lg font-bold text-slate-800" id="relDiasProd">-</span>
                 </div>
@@ -617,24 +636,27 @@
         <div id="relBlocoCausas" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
                 <span class="w-2 h-4 bg-red-600 rounded-sm inline-block"></span>
-                <span>3. Detalhe das Causas de Perda no Campo</span>
+                <span>3. Detalhe das Causas e Comparativo com Registro Anterior</span>
             </h3>
 
             <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
                         <tr>
-                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-[30%]">
+                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-[25%]">
                                 Causa Registrada
                             </th>
-                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[25%]">
+                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[20%]">
                                 Comprovativo
                             </th>
-                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[15%]">
-                                Qtd (UN)
+                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[15%]">
+                                Vol Atual
                             </th>
-                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[30%]">
-                                Comparativo de Impacto
+                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[15%]">
+                                Variação <br><span class="text-[9px] font-bold text-slate-400">vs Bloco Anterior</span>
+                            </th>
+                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[25%]">
+                                Impacto % (Safra)
                             </th>
                         </tr>
                     </thead>
@@ -646,8 +668,9 @@
                             <td colspan="2" class="py-5 px-6 font-black uppercase tracking-widest text-sm text-red-900 text-right pr-10">
                                 Total de Perdas Contabilizadas no Campo
                             </td>
-                            <td class="py-5 px-5 text-center font-black text-3xl text-red-900 leading-none" id="relTotalQtd">0</td>
-                            <td class="py-5 px-5 text-center font-black text-2xl text-red-600 leading-none"><span id="relTotalPerc">0,0%</span> <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-1">da safra</span></td>
+                            <td class="py-5 px-3 text-center font-black text-3xl text-red-900 leading-none" id="relTotalQtd">0</td>
+                            <td class="py-5 px-3 text-center"></td>
+                            <td class="py-5 px-5 text-center font-black text-3xl text-red-600 leading-none"><span id="relTotalPerc">0,0%</span></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -710,6 +733,27 @@
     </div>
 
     <script>
+        // --- MEMÓRIA INTELIGENTE DO SISTEMA (LocalStorage) ---
+        let historicoPerdas = JSON.parse(localStorage.getItem('oasisHistoricoPerdas')) || {};
+
+        function verificarHistorico() {
+            let cat = document.getElementById('causaLista').value;
+            if(cat === 'outros') cat = document.getElementById('causaOutro').value;
+            let esp = document.getElementById('causaEspecificacao').value.trim();
+            
+            if(cat) {
+                let chave = cat + "_" + esp;
+                let inputQtdAnterior = document.getElementById('causaQtdAnterior');
+                
+                if(historicoPerdas[chave] !== undefined) {
+                    inputQtdAnterior.value = historicoPerdas[chave];
+                } else {
+                    inputQtdAnterior.value = '';
+                }
+            }
+        }
+        // ----------------------------------------------------
+
         function abrirModalFoto(src) {
             const modal = document.getElementById('modalFoto');
             const content = document.getElementById('modalFotoContent');
@@ -741,13 +785,11 @@
         
         let pctPendenteGlobal = 0;
 
-        /* Função auxiliar para formatar números com 1 casa decimal em PT-BR */
         function formatarPerc(val) {
             if (isNaN(val) || val === null || val === undefined) return '0,0';
             return Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
         }
 
-        /* Função para determinar o nível visual de impacto baseado na quantidade */
         function getImpactoLevel(qtd) {
             if (qtd >= 800) {
                 return {
@@ -854,6 +896,7 @@
         function configurarCamposOutros() {
             const campos = [
                 { select: 'bloco', input: 'blocoOutro' }, 
+                { select: 'blocoAnterior', input: 'blocoAnteriorOutro' },
                 { select: 'cultura', input: 'culturaOutro' },
                 { select: 'variedade', input: 'variedadeOutro' },
                 { select: 'causaLista', input: 'causaOutro' }
@@ -873,24 +916,11 @@
         function recalcularTudo() {
             const t = parseInt(document.getElementById('totalTransplantado').value) || 0;
             const c = parseInt(document.getElementById('totalColhido').value) || 0;
-            const k = parseFloat(document.getElementById('pesoTotal').value) || 0;
 
             totalTransplantadoGlob = t;
             totalColhidoGlob = c;
-            totalKgGlob = Math.round(k);
-
-            if (totalColhidoGlob > 0 && totalKgGlob > 0) {
-                mediaGGlob = Math.round((totalKgGlob * 1000) / totalColhidoGlob);
-            } else {
-                mediaGGlob = 0;
-            }
-
-            const mediaDiv = document.getElementById('mediaGlobDisplay');
-            if (mediaDiv) {
-                mediaDiv.textContent = mediaGGlob.toLocaleString('pt-BR');
-                if (mediaGGlob > 0) { mediaDiv.classList.replace('text-slate-600', 'text-emerald-600'); } 
-                else { mediaDiv.classList.replace('text-emerald-600', 'text-slate-600'); }
-            }
+            totalKgGlob = 0;
+            mediaGGlob = 0;
 
             const elPercColhido = document.getElementById('percColhido'); 
             const elPercPendente = document.getElementById('percPendente');
@@ -943,6 +973,7 @@
             const sel = document.getElementById('causaLista'); let categoria = sel.value;
             const espec = document.getElementById('causaEspecificacao').value.trim();
             const qtd = parseInt(document.getElementById('causaQtd').value);
+            const qtdAnteriorInput = parseInt(document.getElementById('causaQtdAnterior').value) || 0;
             const fotoInput = document.getElementById('causaFoto');
 
             if (!categoria) { showToast("Selecione uma causa válida.", "warning"); return; }
@@ -951,11 +982,16 @@
                 if (!causaOutroVal) { showToast("Por favor, especifique a causa.", "warning"); return; }
                 categoria = causaOutroVal;
             }
-            if (!qtd || isNaN(qtd) || qtd <= 0) { showToast("Insira uma quantidade válida.", "warning"); return; }
+            if (!qtd || isNaN(qtd) || qtd <= 0) { showToast("Insira uma quantidade atual válida.", "warning"); return; }
 
             const registradoAtual = causasList.reduce((acc, curr) => acc + curr.qtd, 0);
             const disponivel = totalPendenteGlob - registradoAtual;
             if (qtd > disponivel) { showToast(`Quantidade excede o total de perdas contabilizadas no campo (${disponivel} un).`, "error"); return; }
+
+            // Salva na memória do navegador a quantidade recém inserida para uso futuro (próximo bloco)
+            let chave = categoria + "_" + espec;
+            historicoPerdas[chave] = qtd; 
+            localStorage.setItem('oasisHistoricoPerdas', JSON.stringify(historicoPerdas));
 
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Inserindo...'; btn.disabled = true;
 
@@ -965,14 +1001,19 @@
 
                 if (!base64Foto) {
                     const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase() && !c.fotoBase64);
-                    if (idxExistente >= 0) { causasList[idxExistente].qtd += qtd; } 
-                    else { causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, percPerda: 0, fotoBase64: null }); }
+                    if (idxExistente >= 0) { 
+                        causasList[idxExistente].qtd += qtd; 
+                        causasList[idxExistente].qtdAnterior = qtdAnteriorInput;
+                    } 
+                    else { causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, qtdAnterior: qtdAnteriorInput, percDisplay: 0, percPerda: 0, fotoBase64: null }); }
                 } else {
-                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, percDisplay: 0, percPerda: 0, fotoBase64: base64Foto });
+                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, qtdAnterior: qtdAnteriorInput, percDisplay: 0, percPerda: 0, fotoBase64: base64Foto });
                 }
 
                 sel.value = ''; document.getElementById('causaEspecificacao').value = '';
-                document.getElementById('causaQtd').value = ''; fotoInput.value = '';
+                document.getElementById('causaQtd').value = ''; 
+                document.getElementById('causaQtdAnterior').value = '';
+                fotoInput.value = '';
                 document.getElementById('causaOutro').value = ''; document.getElementById('causaOutro').classList.add('hidden');
                 document.getElementById('previewCausaCalc').textContent = '';
                 
@@ -984,8 +1025,19 @@
 
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
+        function criarHtmlVariacao(qtdAtual, qtdAnterior) {
+            let diff = qtdAtual - (qtdAnterior || 0);
+            
+            if (diff > 0) {
+                 return `<div class="flex flex-col items-center gap-1 mt-1"><span class="text-[10px] font-black uppercase tracking-wider text-red-700 bg-red-50 border-2 border-red-500 px-2 py-0.5 rounded-md shadow-sm">Aumentou</span><div class="flex items-center justify-center gap-1.5 text-red-600 text-sm font-black"><i class="fa-solid fa-arrow-trend-up"></i> +${diff}</div></div>`;
+            } else if (diff < 0) {
+                 return `<div class="flex flex-col items-center gap-1 mt-1"><span class="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 border-2 border-emerald-500 px-2 py-0.5 rounded-md shadow-sm">Diminuiu</span><div class="flex items-center justify-center gap-1.5 text-emerald-600 text-sm font-black"><i class="fa-solid fa-arrow-trend-down"></i> ${diff}</div></div>`;
+            } else {
+                 return `<div class="flex flex-col items-center gap-1 mt-1"><span class="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-50 border-2 border-blue-500 px-2 py-0.5 rounded-md shadow-sm">Manteve</span><div class="flex items-center justify-center gap-1.5 text-blue-600 text-sm font-black"><i class="fa-solid fa-minus"></i> 0</div></div>`;
+            }
+        }
+
         function atualizarStatusCausas() {
-            // Ordena sempre do maior volume de perda para o menor
             causasList.sort((a, b) => b.qtd - a.qtd);
             calcularPercentuaisCausas();
 
@@ -1037,7 +1089,7 @@
                     let celulaFoto = '';
                     if(causa.fotoBase64) {
                         celulaFoto = `
-                            <div class="relative group w-24 h-16 sm:w-28 sm:h-20 mx-auto rounded-lg overflow-hidden border border-slate-200 shadow-sm cursor-pointer" onclick="abrirModalFoto('${causa.fotoBase64}')" title="Clique para ampliar">
+                            <div class="relative group w-20 h-14 mx-auto rounded-lg overflow-hidden border border-slate-200 shadow-sm cursor-pointer" onclick="abrirModalFoto('${causa.fotoBase64}')" title="Clique para ampliar">
                                 <img src="${causa.fotoBase64}" alt="Comprovativo" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                                     <i class="fa-solid fa-expand text-white drop-shadow-md text-lg"></i>
@@ -1046,24 +1098,25 @@
                         `;
                     } else {
                         celulaFoto = `
-                            <div class="w-24 h-16 sm:w-28 sm:h-20 mx-auto rounded-lg border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-1">
-                                <i class="fa-solid fa-image text-lg"></i>
-                                <span class="text-[8px] uppercase font-bold tracking-widest text-slate-400">Sem Foto</span>
+                            <div class="w-20 h-14 mx-auto rounded-lg border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-1">
+                                <i class="fa-solid fa-image text-sm"></i>
+                                <span class="text-[7px] uppercase font-bold tracking-widest text-slate-400">Sem Foto</span>
                             </div>
                         `;
                     }
 
-                    // Comparativo de Impacto mais visual e destacado
+                    let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior);
+
                     let impactHtmlUI = `
-                        <div class="flex flex-col gap-1.5 w-full max-w-[240px] mx-auto bg-gradient-to-br from-slate-50 to-white p-2.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                        <div class="flex flex-col gap-1.5 w-full max-w-[200px] mx-auto bg-gradient-to-br from-slate-50 to-white p-2.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
                             <div class="flex items-center justify-between">
                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
                                 </span>
-                                <span class="text-xs font-black ${impactInfo.textColor}">${formatarPerc(causa.percDisplay)}% <span class="text-[9px] font-semibold text-slate-400">da safra</span></span>
+                                <span class="text-xl md:text-2xl font-black ${impactInfo.textColor} leading-none">${formatarPerc(causa.percDisplay)}%</span>
                             </div>
                             
-                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden border border-slate-300/80 p-0.5 shadow-inner">
+                            <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden border border-slate-300/80 p-0.5 shadow-inner mt-1">
                                 <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700 shadow-sm" style="width: ${relativeToMax}%"></div>
                             </div>
                         </div>
@@ -1071,22 +1124,30 @@
                     
                     tbody.innerHTML += `
                         <tr class="group hover:bg-emerald-50/40 transition-colors duration-200 border-b border-slate-100 last:border-0 relative">
-                            <td class="px-6 py-4 align-middle relative">
+                            <td class="px-4 py-4 align-middle relative">
                                 <div class="absolute left-0 top-0 bottom-0 w-1 ${causa.qtd >= 800 ? 'bg-red-500' : (causa.qtd >= 500 ? 'bg-amber-500' : 'bg-emerald-500')} opacity-80 group-hover:opacity-100 transition-opacity rounded-r-sm"></div>
                                 ${celulaCausa}
                             </td>
-                            <td class="px-4 py-4 align-middle text-center">
+                            <td class="px-2 py-4 align-middle text-center">
                                 ${celulaFoto}
                             </td>
-                            <td class="px-4 py-4 align-middle text-center">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-800 font-black rounded-lg border border-slate-200 shadow-sm text-sm">
-                                    ${causa.qtd.toLocaleString('pt-BR')} <span class="text-[10px] text-slate-400 font-bold">UN</span>
-                                </span>
+                            <td class="px-2 py-4 align-middle text-center">
+                                <div class="flex flex-col items-center gap-1">
+                                    <span class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 text-slate-800 font-black rounded-lg border border-slate-200 shadow-sm text-sm">
+                                        ${causa.qtd.toLocaleString('pt-BR')} <span class="text-[9px] text-slate-400 font-bold">UN</span>
+                                    </span>
+                                </div>
                             </td>
-                            <td class="px-4 py-4 align-middle text-center">
+                            <td class="px-2 py-4 align-middle text-center">
+                                <div class="flex flex-col items-center gap-1">
+                                    <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center leading-tight">Em comparação ao<br>bloco anterior: <span class="text-slate-800 font-black text-[10px]">${causa.qtdAnterior || 0}</span></span>
+                                    ${htmlVariacao}
+                                </div>
+                            </td>
+                            <td class="px-2 py-4 align-middle text-center">
                                 ${impactHtmlUI}
                             </td>
-                            <td class="px-4 py-4 align-middle text-center no-print">
+                            <td class="px-2 py-4 align-middle text-center no-print">
                                 <button type="button" onclick="removerCausa(${index})" class="text-slate-300 hover:text-red-500 hover:bg-red-50 w-9 h-9 rounded-full transition-all duration-200 mx-auto flex items-center justify-center focus:outline-none" title="Excluir Causa">
                                     <i class="fa-solid fa-trash-can text-sm"></i>
                                 </button>
@@ -1115,13 +1176,14 @@
 
         function limparFormulario() {
             document.getElementById('registroForm').reset();
-            ['blocoOutro', 'culturaOutro', 'causaOutro', 'variedadeOutro', 'boxDataFim'].forEach(id => {
+            ['blocoOutro', 'blocoAnteriorOutro', 'culturaOutro', 'causaOutro', 'variedadeOutro', 'boxDataFim'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.classList.add('hidden');
             });
             document.getElementById('causaEspecificacao').value = '';
             document.getElementById('causaFoto').value = '';
             document.getElementById('previewCausaCalc').textContent = '';
+            document.getElementById('causaQtdAnterior').value = '';
             document.getElementById('semanaAtual').textContent = '--';
             document.getElementById('relSemana').textContent = '--';
             
@@ -1163,7 +1225,6 @@
             document.getElementById('relPendente').textContent = totalPendenteGlob.toLocaleString('pt-BR');
             document.getElementById('relPercPendente').textContent = `${formatarPerc(pctPendenteGlobal)}%`;
 
-            // Ordena antes de gerar o relatório em PDF/JPEG/Impressão
             causasList.sort((a, b) => b.qtd - a.qtd);
 
             const relBody = document.getElementById('relTableBody');
@@ -1175,7 +1236,7 @@
 
             if(causasList.length === 0) {
                 relBody.innerHTML = `
-                    <tr><td colspan="4" class="py-6 px-5 text-center text-slate-500 italic font-medium"><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Nenhuma causa de perda registrada neste ciclo.</td></tr>`;
+                    <tr><td colspan="5" class="py-6 px-5 text-center text-slate-500 italic font-medium"><i class="fa-solid fa-check text-emerald-500 mr-2"></i>Nenhuma causa de perda registrada neste ciclo.</td></tr>`;
             } else {
                 causasList.forEach((c, index) => {
                     sumQtdRegistrada += c.qtd;
@@ -1195,23 +1256,25 @@
                     `;
 
                     let relFoto = '';
-                    if(c.fotoBase64) { relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-64 h-44 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`; } 
-                    else { relFoto = `<span class="text-xs uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`; }
+                    if(c.fotoBase64) { relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-48 h-32 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`; } 
+                    else { relFoto = `<span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`; }
 
                     let relMiniChart = `
-                        <div class="flex flex-col gap-2 w-full max-w-[260px] mx-auto bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col gap-2 w-full max-w-[200px] mx-auto bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm">
                             <div class="flex items-center justify-between">
                                 <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md border text-[10px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
                                 </span>
-                                <span class="text-xs font-black ${impactInfo.textColor}">${formatarPerc(c.percDisplay)}% <span class="text-[9px] font-semibold text-slate-400">da safra</span></span>
+                                <span class="text-2xl font-black ${impactInfo.textColor}">${formatarPerc(c.percDisplay)}%</span>
                             </div>
                             
-                            <div class="w-full h-3.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300 p-0.5">
+                            <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden border border-slate-300 p-0.5">
                                 <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full" style="width: ${relativeToMax}%"></div>
                             </div>
                         </div>
                     `;
+
+                    let htmlVariacao = criarHtmlVariacao(c.qtd, c.qtdAnterior);
 
                     relBody.innerHTML += `
                         <tr class="border-b border-slate-100 last:border-0">
@@ -1220,7 +1283,13 @@
                                 ${relCausa}
                             </td>
                             <td class="py-4 px-3 text-center align-middle">${relFoto}</td>
-                            <td class="py-4 px-5 text-center text-slate-800 font-black align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')} <span class="text-xs font-bold text-slate-400 block">UN</span></td>
+                            <td class="py-4 px-3 text-center text-slate-800 font-black align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')} <span class="text-xs font-bold text-slate-400 block">UN</span></td>
+                            <td class="py-4 px-3 text-center align-middle">
+                                <div class="flex flex-col items-center gap-1.5">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center leading-tight block">Em comparação ao<br>bloco anterior: <span class="text-slate-800 font-black">${c.qtdAnterior || 0}</span></span>
+                                    ${htmlVariacao}
+                                </div>
+                            </td>
                             <td class="py-4 px-5 text-center align-middle">${relMiniChart}</td>
                         </tr>
                     `;
@@ -1320,7 +1389,9 @@
 
             const commonData = {
                 data: document.getElementById('dataAtual').textContent, ciclo: document.getElementById('cicloProducao').value || '-',
-                bloco: getSelectValue('bloco', 'blocoOutro'), cultura: getSelectValue('cultura', 'culturaOutro'),
+                bloco: getSelectValue('bloco', 'blocoOutro'), 
+                blocoAnterior: getSelectValue('blocoAnterior', 'blocoAnteriorOutro'),
+                cultura: getSelectValue('cultura', 'culturaOutro'),
                 percColhido: document.getElementById('percColhido').textContent + '%', pendente: totalPendenteGlob,
                 percPendente: formatarPerc(pctPendenteGlobal) + '%', causasLista: listaEnvioCausas,
                 totalTransplantadoBloco: totalTransplantadoGlob, totalColhidoBloco: totalColhidoGlob, totalKgBloco: totalKgGlob
