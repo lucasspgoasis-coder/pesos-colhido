@@ -86,7 +86,7 @@
             background: transparent !important;
         }
 
-        /* Badges de Especificação */
+        /* Badges de Especificação - Modificado para aumentar fonte */
         .badge-especificacao {
             display: inline-flex;
             align-items: center;
@@ -95,12 +95,12 @@
             word-break: break-word;
             white-space: normal;
             line-height: 1.4;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem; /* Aumentado */
+            font-weight: 700; /* Aumentado para melhor legibilidade */
             background-color: #f8fafc;
-            color: #475569;
+            color: #334155;
             border: 1px solid #cbd5e1;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             box-sizing: border-box;
@@ -559,7 +559,6 @@
                 <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span>
                 <span>1. Parâmetros da Plantação</span>
             </h3>
-            <!-- GRID AJUSTADA (REMOVIDO BLOCO ANTERIOR) -->
             <div class="grid grid-cols-4 gap-4">
                 <div class="border border-emerald-200 p-4 rounded-lg bg-emerald-50/40 text-center shadow-sm">
                     <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco Atual</span>
@@ -596,7 +595,6 @@
                 <span>2. Destaque de Perdas Contabilizadas</span>
             </h3>
             
-            <!-- FLASH CARD: Perdas no Campo -->
             <div class="flash-card-perdas p-6 rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-5">
                     <div class="bg-red-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0">
@@ -1096,10 +1094,10 @@
                     
                     if (causa.especificacao) {
                         celulaCausa += `
-                                <div class="inline-block">
+                                <div class="inline-block mt-1">
                                     <span class="badge-especificacao">
-                                        <i class="fa-solid fa-tag text-emerald-500 text-[9px]"></i>
-                                        <span class="text-[11px]">${causa.especificacao}</span>
+                                        <i class="fa-solid fa-tag text-emerald-500 text-[11px]"></i>
+                                        <span>${causa.especificacao}</span>
                                     </span>
                                 </div>
                         `;
@@ -1276,9 +1274,9 @@
                     let relCausa = `
                         <div class="flex items-center gap-2 py-1">
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-xs shadow-sm shrink-0">#${index + 1}</span>
-                            <div class="flex flex-col gap-1 items-start">
+                            <div class="flex flex-col gap-1.5 items-start">
                                 <span class="inline-block px-3 py-1 rounded border border-slate-200 bg-slate-50 text-slate-900 font-extrabold text-sm shadow-xs">${c.categoria}</span>
-                                ${c.especificacao ? `<span class="text-xs text-slate-600 font-semibold leading-tight">Esp: ${c.especificacao}</span>` : ''}
+                                ${c.especificacao ? `<span class="text-sm md:text-base text-slate-800 font-bold leading-tight bg-slate-100/80 px-2 py-1 rounded border border-slate-200"><i class="fa-solid fa-tag text-emerald-500 text-[10px] mr-1"></i> ${c.especificacao}</span>` : ''}
                             </div>
                         </div>
                     `;
@@ -1287,13 +1285,13 @@
                     let relFoto = '';
                     
                     if (fotosArray.length > 0) { 
-                        // Tamanho padronizado e proporção idêntica para todas as fotos no relatório gerado
-                        let imgSizeClass = 'w-40 h-40';
+                        // Aumentando expressivamente o tamanho e a largura da foto no PDF/Exportação
+                        let imgSizeClass = 'w-72 h-52'; 
 
                         relFoto = `<div class="flex flex-row flex-wrap items-center justify-center gap-4 p-2 max-w-full">`;
                         fotosArray.forEach(fotoSrc => {
                             relFoto += `
-                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass} aspect-square">
+                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass}">
                                     <img src="${fotoSrc}" alt="Comprovativo ${c.categoria}" class="w-full h-full object-cover">
                                 </div>
                             `;
