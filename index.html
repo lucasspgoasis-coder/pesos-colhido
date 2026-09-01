@@ -95,17 +95,37 @@
             word-break: break-word;
             white-space: normal;
             line-height: 1.4;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background-color: #f8fafc;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background-color: #ffffff;
+            color: #334155;
+            border: 1px solid #94a3b8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            -webkit-text-stroke: 0px; 
             box-sizing: border-box;
             text-align: left;
             transition: all 0.2s ease;
+        }
+
+        .badge-especificacao-relatorio {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 100%;
+            word-break: break-word;
+            white-space: normal;
+            line-height: 1.4;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            background-color: #f8fafc;
+            color: #1e293b;
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            -webkit-text-stroke: 0px;
         }
 
         /* Flash Card Estilizado */
@@ -115,7 +135,6 @@
             box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.1), 0 8px 10px -6px rgba(225, 29, 72, 0.1);
         }
 
-        /* Notificações Toasts Customizadas */
         #toastContainer {
             position: fixed;
             top: 20px;
@@ -347,7 +366,6 @@
                 </div>
             </div>
 
-            <!-- Percentuais Resumo com Decimais -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-emerald-50 border-2 border-emerald-300 p-5 rounded-xl shadow-sm flex flex-col justify-center items-center md:items-start text-center md:text-left">
                     <p class="text-sm font-bold text-emerald-800 uppercase tracking-wide flex items-center gap-2">
@@ -372,7 +390,6 @@
 
             <div class="bg-white border border-slate-200 rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden ring-1 ring-slate-100">
                 
-                <!-- Header da Secção de Causas -->
                 <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <h3 class="text-xl font-extrabold text-white flex items-center gap-3 tracking-tight">
                         <div class="bg-emerald-500/20 text-emerald-400 p-2 rounded-xl border border-emerald-500/30 flex items-center justify-center shadow-inner">
@@ -393,7 +410,6 @@
                     </div>
                 </div>
 
-                <!-- Painel da Barra de Progresso de Perdas Contabilizadas -->
                 <div class="px-6 pt-3 pb-4 bg-slate-50/80 border-b border-slate-200">
                     <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1.5">
                         <span class="flex items-center gap-2 text-slate-800">
@@ -417,7 +433,6 @@
                 
                 <div class="p-6 md:p-8 bg-slate-50/30">
                     
-                    <!-- Formulário de Adição de Causas -->
                     <div class="bg-white border border-slate-200/80 rounded-xl shadow-sm overflow-hidden mb-8 transition-all hover:shadow-md hover:border-emerald-200">
                         <div class="bg-slate-50/80 px-5 py-3 border-b border-slate-100 flex items-center gap-2">
                             <i class="fa-solid fa-layer-group text-emerald-600/80"></i>
@@ -483,17 +498,17 @@
                         <table class="w-full border-collapse text-sm text-left">
                             <thead class="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-[24%]">
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-[22%]">
                                         Identificação
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[22%]">
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[20%]">
                                         Evidência (Fotos)
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[14%]">
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[12%]">
                                         Vol Atual
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
-                                        Variação <span class="block text-[8px] text-slate-400 font-normal normal-case mt-0.5">(vs Bloco Anterior)</span>
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[21%]">
+                                        Variação <br><span class="block text-[9px] font-bold text-slate-400 normal-case mt-0.5 leading-tight">Comparação ao bloco anterior</span>
                                     </th>
                                     <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[20%]">
                                         Impacto %
@@ -525,7 +540,6 @@
     <!-- ÁREA DE EXPORTAÇÃO (Oculta até ser gerada) -->
     <div id="relatorioExportacao">
         
-        <!-- Cabeçalho Relatório -->
         <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-6 rounded-2xl mb-8 flex justify-between items-center shadow-md border border-emerald-800 relative overflow-hidden">
             <div class="flex items-center gap-6 z-10">
                 <div class="shrink-0">
@@ -553,13 +567,11 @@
             </div>
         </div>
 
-        <!-- Secção 1: Parâmetros Quadriculados -->
         <div class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span>
                 <span>1. Parâmetros da Plantação</span>
             </h3>
-            <!-- GRID AJUSTADA (REMOVIDO BLOCO ANTERIOR) -->
             <div class="grid grid-cols-4 gap-4">
                 <div class="border border-emerald-200 p-4 rounded-lg bg-emerald-50/40 text-center shadow-sm">
                     <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco Atual</span>
@@ -589,14 +601,12 @@
             </div>
         </div>
 
-        <!-- Secção 2: FLASH CARD DE PERDAS NO CAMPO -->
         <div class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <span class="w-2 h-4 bg-red-600 rounded-sm inline-block"></span>
                 <span>2. Destaque de Perdas Contabilizadas</span>
             </h3>
             
-            <!-- FLASH CARD: Perdas no Campo -->
             <div class="flash-card-perdas p-6 rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-5">
                     <div class="bg-red-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shrink-0">
@@ -631,7 +641,6 @@
             </div>
         </div>
 
-        <!-- Secção 3: Detalhe das Causas -->
         <div id="relBlocoCausas" class="mb-8">
             <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-3 flex items-center gap-2">
                 <span class="w-2 h-4 bg-red-600 rounded-sm inline-block"></span>
@@ -642,17 +651,17 @@
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
                         <tr>
-                            <th class="py-4 px-5 font-black text-xs uppercase tracking-widest w-[24%]">
+                            <th class="py-4 px-5 font-black text-xs uppercase tracking-widest w-[22%]">
                                 Causa Registrada
                             </th>
-                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[32%]">
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[28%]">
                                 Comprovativo (Fotos)
                             </th>
-                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[14%]">
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[12%]">
                                 Vol Atual
                             </th>
-                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[15%]">
-                                Variação <br><span class="text-[9px] font-bold text-slate-400">vs Bloco Anterior</span>
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[23%]">
+                                Variação <br><span class="text-[9px] font-bold text-slate-400 normal-case leading-tight block mt-0.5">Comparação ao bloco anterior</span>
                             </th>
                             <th class="py-4 px-4 font-black text-xs uppercase tracking-widest text-center w-[15%]">
                                 Impacto % (Safra)
@@ -675,7 +684,6 @@
                 </table>
             </div>
 
-            <!-- NOTA DO PACK HOUSE NO RELATÓRIO DE EXPORTAÇÃO -->
             <div id="relPackHouseNota" class="hidden mt-4 bg-amber-50/80 border-2 border-amber-200 p-5 rounded-xl flex items-center gap-5 shadow-sm">
                 <div class="bg-amber-500 text-white w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-md shrink-0 border border-amber-600/50">
                     <i class="fa-solid fa-boxes-packing"></i>
@@ -701,7 +709,7 @@
         </div>
     </div>
 
-    <!-- Barra Inferior -->
+    <!-- Barra Inferior e Modal -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] flex justify-center flex-wrap gap-2 md:gap-4 no-print z-50">
         <button type="button" onclick="limparFormulario()" class="px-4 py-2 text-slate-700 border-2 border-slate-300 hover:bg-slate-100 rounded-lg font-bold transition-all text-sm md:text-base flex items-center gap-2">
             <i class="fa-solid fa-rotate-left"></i> Limpar
@@ -720,7 +728,6 @@
         </button>
     </div>
 
-    <!-- Modal para Ampliar Visualização da Foto -->
     <div id="modalFoto" class="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all duration-300 opacity-0 data-[state=open]:opacity-100" onclick="fecharModalFoto()">
         <div class="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 border border-slate-200 scale-95 transition-transform duration-300 data-[state=open]:scale-100" id="modalFotoContent" onclick="event.stopPropagation()">
             <button onclick="fecharModalFoto()" class="absolute top-4 right-4 bg-slate-900/80 hover:bg-slate-900 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg backdrop-blur-md transition-colors z-10 shadow-lg border border-white/20">
@@ -732,7 +739,6 @@
     </div>
 
     <script>
-        // --- MEMÓRIA INTELIGENTE DO SISTEMA (LocalStorage) ---
         let historicoPerdas = JSON.parse(localStorage.getItem('oasisHistoricoPerdas')) || {};
 
         function verificarHistorico() {
@@ -752,7 +758,6 @@
                 }
             }
         }
-        // ----------------------------------------------------
 
         function abrirModalFoto(src) {
             const modal = document.getElementById('modalFoto');
@@ -832,6 +837,23 @@
             else if (cat.includes('praga')) { iconClass = 'fa-bug text-red-600'; bgClass = 'bg-red-100'; }
 
             return `<div class="${bgClass} w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border border-white/50 shadow-sm"><i class="fa-solid ${iconClass}"></i></div>`;
+        }
+        
+        function getColorForCause(index) {
+            // Paleta de cores vibrantes e profissionais para destacar cada causa no comparativo
+            const colors = [
+                { hex: '#4f46e5', bg: 'bg-indigo-600' }, // Índigo
+                { hex: '#e11d48', bg: 'bg-rose-600' },   // Rosa Forte
+                { hex: '#d97706', bg: 'bg-amber-600' },  // Âmbar
+                { hex: '#0d9488', bg: 'bg-teal-600' },   // Turquesa
+                { hex: '#9333ea', bg: 'bg-purple-600' }, // Roxo
+                { hex: '#0284c7', bg: 'bg-sky-600' },    // Azul Céu
+                { hex: '#db2777', bg: 'bg-pink-600' },   // Rosa Choque
+                { hex: '#16a34a', bg: 'bg-green-600' },  // Verde
+                { hex: '#ea580c', bg: 'bg-orange-600' }, // Laranja
+                { hex: '#475569', bg: 'bg-slate-600' }   // Cinza Ardósia
+            ];
+            return colors[index % colors.length];
         }
 
         function lerFotosBase64(files) {
@@ -996,7 +1018,6 @@
             const disponivel = totalPendenteGlob - registradoAtual;
             if (qtd > disponivel) { showToast(`Quantidade excede o total de perdas contabilizadas no campo (${disponivel} un).`, "error"); return; }
 
-            // Salva na memória do navegador a quantidade recém inserida para uso futuro (próximo bloco)
             let chave = categoria + "_" + espec;
             historicoPerdas[chave] = qtd; 
             localStorage.setItem('oasisHistoricoPerdas', JSON.stringify(historicoPerdas));
@@ -1041,20 +1062,81 @@
 
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
-        function criarHtmlVariacao(qtdAtual, qtdAnterior) {
-            if (qtdAnterior === null || qtdAnterior === undefined || isNaN(qtdAnterior)) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-slate-500 bg-slate-100/80 border border-slate-300 px-2.5 py-0.5 rounded-md shadow-sm">Sem Dados</span><div class="flex items-center justify-center gap-1.5 text-slate-400 text-lg font-black"><i class="fa-solid fa-ban text-sm"></i> N/A</div></div>`;
-            }
+        function gerarGraficoPizzaSVG(valorAtual, valorAnterior, hexColor = '#059669') {
+            let v1 = Number(valorAtual) || 0;
+            let v2 = Number(valorAnterior) || 0;
+            let total = v1 + v2;
+            let p1 = total > 0 ? (v1 / total) * 100 : 100;
             
-            let diff = qtdAtual - qtdAnterior;
+            return `
+            <div class="relative w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full overflow-hidden shadow-sm flex items-center justify-center bg-slate-200">
+                <svg viewBox="0 0 32 32" class="w-full h-full transform -rotate-90 block absolute inset-0">
+                    <circle r="15.915494309189533" cx="16" cy="16" fill="transparent"
+                            stroke="${hexColor}" stroke-width="32"
+                            stroke-dasharray="${p1} 100" />
+                </svg>
+                <div class="absolute inset-0 rounded-full border border-slate-300/50 pointer-events-none"></div>
+            </div>
+            `;
+        }
+
+        function criarHtmlVariacao(qtdAtual, qtdAnterior, blocoAtual, blocoAnterior, colorObj) {
+            let bAtual = blocoAtual && blocoAtual !== "Não informado" ? blocoAtual : "Atual";
+            let bAnterior = blocoAnterior && blocoAnterior !== "Não informado" ? blocoAnterior : "Anterior";
             
-            if (diff > 0) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-red-700 bg-red-100/80 border border-red-300 px-2.5 py-0.5 rounded-md shadow-sm">Aumentou</span><div class="flex items-center justify-center gap-1.5 text-red-600 text-lg font-black"><i class="fa-solid fa-arrow-trend-up"></i> +${diff}</div></div>`;
-            } else if (diff < 0) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-emerald-700 bg-emerald-100/80 border border-emerald-300 px-2.5 py-0.5 rounded-md shadow-sm">Diminuiu</span><div class="flex items-center justify-center gap-1.5 text-emerald-600 text-lg font-black"><i class="fa-solid fa-arrow-trend-down"></i> ${diff}</div></div>`;
+            let isAnteriorValid = (qtdAnterior !== null && qtdAnterior !== undefined && !isNaN(qtdAnterior));
+            
+            let hexColor = colorObj ? colorObj.hex : '#059669';
+            let bgClass = colorObj ? colorObj.bg : 'bg-emerald-600';
+
+            let htmlPizza = '';
+            let htmlLegenda = '';
+            
+            if (isAnteriorValid) {
+                htmlPizza = gerarGraficoPizzaSVG(qtdAtual, qtdAnterior, hexColor);
+                htmlLegenda = `
+                    <div class="flex flex-col items-start text-[11px] sm:text-xs font-semibold text-slate-700 w-full mt-3 bg-white p-2 rounded-lg border border-slate-200 shadow-sm leading-tight text-left">
+                        <span class="text-[8.5px] uppercase text-slate-400 font-black tracking-widest mb-1.5 w-full text-center border-b border-slate-100 pb-1">Comparação vs Anterior</span>
+                        <div class="flex items-center gap-2 w-full mb-1">
+                            <div class="w-3 h-3 rounded-full ${bgClass} shrink-0 shadow-sm"></div>
+                            <span class="truncate flex-1 text-slate-500" title="${bAtual}">${bAtual}:</span>
+                            <span class="font-bold text-slate-800">${qtdAtual}</span>
+                        </div>
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="w-3 h-3 rounded-full bg-slate-200 border border-slate-300 shrink-0 shadow-sm"></div>
+                            <span class="truncate flex-1 text-slate-500" title="${bAnterior}">${bAnterior}:</span>
+                            <span class="font-bold text-slate-800">${qtdAnterior}</span>
+                        </div>
+                    </div>
+                `;
             } else {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-blue-700 bg-blue-100/80 border border-blue-300 px-2.5 py-0.5 rounded-md shadow-sm">Manteve</span><div class="flex items-center justify-center gap-1.5 text-blue-600 text-lg font-black"><i class="fa-solid fa-minus"></i> 0</div></div>`;
+                 htmlPizza = `
+                 <div class="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shadow-inner">
+                     <i class="fa-solid fa-chart-pie text-slate-300 text-3xl"></i>
+                 </div>`;
+                 htmlLegenda = `<div class="text-[11px] sm:text-xs text-slate-400 font-semibold mt-3 text-center bg-white p-2 rounded-lg border border-slate-100"><span class="text-[8.5px] uppercase font-black tracking-widest block mb-0.5 border-b border-slate-100 pb-1">Comparação</span>Sem dados</div>`;
             }
+
+            let diff = isAnteriorValid ? (qtdAtual - qtdAnterior) : null;
+            let htmlVariacaoBadge = '';
+            
+            if (!isAnteriorValid) {
+                 htmlVariacaoBadge = `<span class="inline-block mt-2.5 text-xs font-bold uppercase tracking-widest text-slate-400 bg-slate-100 border border-slate-200 px-3 py-1 rounded-md shadow-sm">N/A</span>`;
+            } else if (diff > 0) {
+                 htmlVariacaoBadge = `<span class="inline-block mt-2.5 text-xs font-bold uppercase tracking-widest text-red-700 bg-red-50 border border-red-200 px-3 py-1 rounded-md shadow-sm"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +${diff}</span>`;
+            } else if (diff < 0) {
+                 htmlVariacaoBadge = `<span class="inline-block mt-2.5 text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-md shadow-sm"><i class="fa-solid fa-arrow-trend-down mr-1"></i> ${diff}</span>`;
+            } else {
+                 htmlVariacaoBadge = `<span class="inline-block mt-2.5 text-xs font-bold uppercase tracking-widest text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-md shadow-sm"><i class="fa-solid fa-minus mr-1"></i> 0</span>`;
+            }
+            
+            return `
+                <div class="flex flex-col items-center w-full max-w-[180px] mx-auto p-1">
+                    ${htmlPizza}
+                    ${htmlVariacaoBadge}
+                    ${htmlLegenda}
+                </div>
+            `;
         }
 
         function atualizarStatusCausas() {
@@ -1074,6 +1156,9 @@
             } else {
                 placeholder.classList.add('hidden');
                 
+                let bAtualNome = getSelectValue('bloco', 'blocoOutro');
+                let bAnteriorNome = getSelectValue('blocoAnterior', 'blocoAnteriorOutro');
+
                 causasList.forEach((causa, index) => {
                     totalJustificado += causa.qtd;
                     percJustificadoSoma += causa.percDisplay;
@@ -1096,10 +1181,10 @@
                     
                     if (causa.especificacao) {
                         celulaCausa += `
-                                <div class="inline-block">
+                                <div class="inline-block mt-1">
                                     <span class="badge-especificacao">
-                                        <i class="fa-solid fa-tag text-emerald-500 text-[9px]"></i>
-                                        <span class="text-[11px]">${causa.especificacao}</span>
+                                        <i class="fa-solid fa-tag text-emerald-500 text-[11px]"></i>
+                                        <span>${causa.especificacao}</span>
                                     </span>
                                 </div>
                         `;
@@ -1132,7 +1217,9 @@
                         `;
                     }
 
-                    let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior);
+                    // Seleciona uma cor vibrante exclusiva baseada no índice
+                    let colorObj = getColorForCause(index);
+                    let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior, bAtualNome, bAnteriorNome, colorObj);
 
                     let impactHtmlUI = `
                         <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-2.5 rounded-xl border border-slate-200/60 shadow-xs hover:border-slate-300/80 transition-all">
@@ -1166,10 +1253,7 @@
                                 </div>
                             </td>
                             <td class="px-2 py-4 align-middle text-center">
-                                <div class="flex flex-col items-center gap-1">
-                                    <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center leading-tight">Em comparação ao<br>bloco anterior: <span class="text-slate-800 font-black text-sm">${causa.qtdAnterior !== null ? causa.qtdAnterior : '-'}</span></span>
-                                    ${htmlVariacao}
-                                </div>
+                                ${htmlVariacao}
                             </td>
                             <td class="px-2 py-4 align-middle text-center">
                                 ${impactHtmlUI}
@@ -1258,6 +1342,9 @@
             const relBody = document.getElementById('relTableBody');
             relBody.innerHTML = '';
 
+            let bAtualNome = getSelectValue('bloco', 'blocoOutro');
+            let bAnteriorNome = getSelectValue('blocoAnterior', 'blocoAnteriorOutro');
+
             let sumQtdRegistrada = 0;
             let sumPercRegistrada = 0;
             const maxQtd = causasList.length > 0 ? Math.max(...causasList.map(c => c.qtd)) : 0;
@@ -1278,7 +1365,13 @@
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-xs shadow-sm shrink-0">#${index + 1}</span>
                             <div class="flex flex-col gap-1 items-start">
                                 <span class="inline-block px-3 py-1 rounded border border-slate-200 bg-slate-50 text-slate-900 font-extrabold text-sm shadow-xs">${c.categoria}</span>
-                                ${c.especificacao ? `<span class="text-xs text-slate-600 font-semibold leading-tight">Esp: ${c.especificacao}</span>` : ''}
+                                ${c.especificacao ? `
+                                <div class="mt-1.5">
+                                    <span class="badge-especificacao-relatorio">
+                                        <i class="fa-solid fa-tag text-emerald-600"></i>
+                                        <span>${c.especificacao}</span>
+                                    </span>
+                                </div>` : ''}
                             </div>
                         </div>
                     `;
@@ -1287,7 +1380,6 @@
                     let relFoto = '';
                     
                     if (fotosArray.length > 0) { 
-                        // Tamanho padronizado e proporção idêntica para todas as fotos no relatório gerado
                         let imgSizeClass = 'w-40 h-40';
 
                         relFoto = `<div class="flex flex-row flex-wrap items-center justify-center gap-4 p-2 max-w-full">`;
@@ -1318,7 +1410,9 @@
                         </div>
                     `;
 
-                    let htmlVariacao = criarHtmlVariacao(c.qtd, c.qtdAnterior);
+                    // Puxa as cores de modo dinâmico também para o relatório impresso
+                    let colorObj = getColorForCause(index);
+                    let htmlVariacao = criarHtmlVariacao(c.qtd, c.qtdAnterior, bAtualNome, bAnteriorNome, colorObj);
 
                     relBody.innerHTML += `
                         <tr class="border-b border-slate-100 last:border-0">
@@ -1329,10 +1423,7 @@
                             <td class="py-4 px-3 text-center align-middle">${relFoto}</td>
                             <td class="py-4 px-3 text-center text-slate-800 font-black align-middle text-2xl">${c.qtd.toLocaleString('pt-BR')} <span class="text-xs font-bold text-slate-400 block mt-1">UN</span></td>
                             <td class="py-4 px-3 text-center align-middle">
-                                <div class="flex flex-col items-center gap-2">
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center leading-tight block">Em comparação ao<br>bloco anterior: <span class="text-slate-800 font-black text-sm">${c.qtdAnterior !== null ? c.qtdAnterior : '-'}</span></span>
-                                    ${htmlVariacao}
-                                </div>
+                                ${htmlVariacao}
                             </td>
                             <td class="py-4 px-5 text-center align-middle">${relMiniChart}</td>
                         </tr>
