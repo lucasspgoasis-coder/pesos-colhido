@@ -1110,14 +1110,14 @@
                     let celulaFoto = '';
                     
                     if (fotosArray.length > 0) {
-                        let sizeClass = fotosArray.length === 1 ? 'w-16 h-16' : (fotosArray.length === 2 ? 'w-14 h-14' : 'w-12 h-12');
-                        celulaFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-2 py-1 max-w-full overflow-x-auto">`;
+                        let sizeClass = 'w-24 h-24 sm:w-28 sm:h-28';
+                        celulaFoto = `<div class="flex flex-row flex-wrap items-center justify-center gap-3 py-2 max-w-full">`;
                         fotosArray.forEach(fotoSrc => {
                             celulaFoto += `
-                                <div class="relative group ${sizeClass} rounded-lg overflow-hidden border border-slate-300 shadow-sm cursor-pointer shrink-0 transition-transform hover:scale-105" onclick="abrirModalFoto('${fotoSrc}')" title="Clique para ampliar">
+                                <div class="relative group ${sizeClass} aspect-square rounded-xl overflow-hidden border border-slate-300 shadow-md cursor-pointer shrink-0 transition-transform hover:scale-105" onclick="abrirModalFoto('${fotoSrc}')" title="Clique para ampliar">
                                     <img src="${fotoSrc}" alt="Comprovativo" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                                        <i class="fa-solid fa-expand text-white drop-shadow-md text-xs"></i>
+                                        <i class="fa-solid fa-expand text-white drop-shadow-md text-xl"></i>
                                     </div>
                                 </div>
                             `;
@@ -1125,9 +1125,9 @@
                         celulaFoto += `</div>`;
                     } else {
                         celulaFoto = `
-                            <div class="w-12 h-12 mx-auto rounded-lg border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-0.5">
-                                <i class="fa-solid fa-image text-xs"></i>
-                                <span class="text-[7px] uppercase font-bold tracking-widest text-slate-400">Sem Foto</span>
+                            <div class="w-16 h-16 mx-auto rounded-xl border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-1 shadow-inner">
+                                <i class="fa-solid fa-image text-sm"></i>
+                                <span class="text-[8px] uppercase font-bold tracking-widest text-slate-400">Sem Foto</span>
                             </div>
                         `;
                     }
@@ -1287,23 +1287,20 @@
                     let relFoto = '';
                     
                     if (fotosArray.length > 0) { 
-                        // Sizing inteligente por quantidade para manter lado a lado na mesma linha sem quebrar altura
-                        let imgSizeClass = 'w-44 h-44';
-                        if (fotosArray.length === 2) imgSizeClass = 'w-36 h-36';
-                        else if (fotosArray.length === 3) imgSizeClass = 'w-28 h-28';
-                        else if (fotosArray.length >= 4) imgSizeClass = 'w-24 h-24';
+                        // Tamanho padronizado e proporção idêntica para todas as fotos no relatório gerado
+                        let imgSizeClass = 'w-40 h-40';
 
-                        relFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-3 p-2 max-w-full">`;
+                        relFoto = `<div class="flex flex-row flex-wrap items-center justify-center gap-4 p-2 max-w-full">`;
                         fotosArray.forEach(fotoSrc => {
                             relFoto += `
-                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass}">
+                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass} aspect-square">
                                     <img src="${fotoSrc}" alt="Comprovativo ${c.categoria}" class="w-full h-full object-cover">
                                 </div>
                             `;
                         });
                         relFoto += `</div>`;
                     } else { 
-                        relFoto = `<span class="text-[11px] uppercase font-black text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 inline-block">Sem Anexo</span>`; 
+                        relFoto = `<span class="text-[11px] uppercase font-black text-slate-400 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200 inline-block shadow-sm">Sem Anexo</span>`; 
                     }
 
                     let relMiniChart = `
