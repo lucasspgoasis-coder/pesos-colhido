@@ -424,7 +424,7 @@
                             <h4 class="text-xs font-black text-slate-600 uppercase tracking-widest">Adicionar Nova Causa de Perda</h4>
                         </div>
                         <div class="p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                            <div class="md:col-span-2">
+                            <div class="md:col-span-4">
                                 <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
                                     Causa Principal *
                                 </label>
@@ -439,36 +439,35 @@
                                 <input type="text" id="causaOutro" placeholder="Digite..." class="mt-2 w-full hidden rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600" oninput="verificarHistorico()">
                             </div>
 
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
-                                    <span>Especificação</span> 
+                            <div class="md:col-span-4">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
+                                    Especificação (Opcional)
                                 </label>
-                                <input type="text" id="causaEspecificacao" placeholder="Ex: Podridão..." class="w-full rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400" oninput="verificarHistorico()">
+                                <input type="text" id="causaEspecificacao" placeholder="Ex: Detalhe do fungo..." class="w-full rounded-lg input-melhorado px-2 bg-white text-slate-800 text-sm border-slate-300 focus:border-emerald-600 hover:border-slate-400" oninput="verificarHistorico()">
                             </div>
 
-                            <div class="md:col-span-2">
+                            <div class="md:col-span-4">
+                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
+                                    <span>Fotos / Anexos (Múltiplas)</span>
+                                </label>
+                                <input type="file" id="causaFoto" accept="image/*" multiple class="w-full rounded-lg input-foto px-1 text-slate-700 text-xs border-slate-300 focus:border-emerald-600 hover:border-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:uppercase file:tracking-wider file:font-black file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                            </div>
+
+                            <div class="md:col-span-4">
                                 <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1.5">
                                     Qtd Atual (UN) *
                                 </label>
                                 <input type="number" id="causaQtd" min="1" placeholder="Ex: 150" class="w-full rounded-lg input-melhorado px-2 bg-emerald-50 text-emerald-900 text-sm font-black border-slate-300 focus:border-emerald-600 hover:border-slate-400 text-center" oninput="atualizarPreviewCausaInput()">
                             </div>
 
-                            <!-- NOVO CAMPO: QUANTIDADE ANTERIOR (MEMÓRIA) -->
-                            <div class="md:col-span-2 relative group">
+                            <div class="md:col-span-4 relative group">
                                 <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center gap-1">
                                     Qtd Anterior <i class="fa-solid fa-clock-rotate-left text-slate-400" title="Preenchido automaticamente com o último registro salvo"></i>
                                 </label>
                                 <input type="number" id="causaQtdAnterior" min="0" placeholder="Auto..." class="w-full rounded-lg input-melhorado px-2 bg-slate-50 text-slate-600 text-sm font-bold border-slate-300 focus:border-slate-400 hover:border-slate-400 text-center">
                             </div>
 
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1.5 tracking-wider flex items-center justify-between">
-                                    <span>Foto / Anexo</span>
-                                </label>
-                                <input type="file" id="causaFoto" accept="image/*" class="w-full rounded-lg input-foto px-1 text-slate-700 text-xs border-slate-300 focus:border-emerald-600 hover:border-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[9px] file:uppercase file:tracking-wider file:font-black file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
-                            </div>
-
-                            <div class="md:col-span-2">
+                            <div class="md:col-span-4">
                                 <button type="button" id="btnAdicionarCausa" onclick="adicionarCausa()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold h-[48px] rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 no-print flex items-center justify-center gap-2 text-sm">
                                     <i class="fa-solid fa-plus"></i> Inserir
                                 </button>
@@ -484,19 +483,19 @@
                         <table class="w-full border-collapse text-sm text-left">
                             <thead class="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-[25%]">
+                                    <th class="px-4 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 w-[24%]">
                                         Identificação
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
-                                        Evidência
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[22%]">
+                                        Evidência (Fotos)
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[14%]">
                                         Vol Atual
                                     </th>
                                     <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[15%]">
                                         Variação <span class="block text-[8px] text-slate-400 font-normal normal-case mt-0.5">(vs Bloco Anterior)</span>
                                     </th>
-                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[25%]">
+                                    <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center w-[20%]">
                                         Impacto %
                                     </th>
                                     <th class="px-2 py-4 font-black uppercase tracking-widest text-[11px] text-slate-500 text-center no-print w-[5%]">
@@ -643,19 +642,19 @@
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-100 text-slate-600 border-b-2 border-slate-200">
                         <tr>
-                            <th class="py-5 px-6 font-black text-sm uppercase tracking-widest w-[25%]">
+                            <th class="py-4 px-5 font-black text-xs uppercase tracking-widest w-[24%]">
                                 Causa Registrada
                             </th>
-                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[20%]">
-                                Comprovativo
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[32%]">
+                                Comprovativo (Fotos)
                             </th>
-                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[15%]">
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[14%]">
                                 Vol Atual
                             </th>
-                            <th class="py-5 px-3 font-black text-sm uppercase tracking-widest text-center w-[15%]">
+                            <th class="py-4 px-3 font-black text-xs uppercase tracking-widest text-center w-[15%]">
                                 Variação <br><span class="text-[9px] font-bold text-slate-400">vs Bloco Anterior</span>
                             </th>
-                            <th class="py-5 px-5 font-black text-sm uppercase tracking-widest text-center w-[25%]">
+                            <th class="py-4 px-4 font-black text-xs uppercase tracking-widest text-center w-[15%]">
                                 Impacto % (Safra)
                             </th>
                         </tr>
@@ -739,7 +738,8 @@
         function verificarHistorico() {
             let cat = document.getElementById('causaLista').value;
             if(cat === 'outros') cat = document.getElementById('causaOutro').value;
-            let esp = document.getElementById('causaEspecificacao').value.trim();
+            let espEl = document.getElementById('causaEspecificacao');
+            let esp = espEl ? espEl.value.trim() : '';
             
             if(cat) {
                 let chave = cat + "_" + esp;
@@ -794,29 +794,29 @@
             if (qtd >= 800) {
                 return {
                     label: 'ALTO IMPACTO',
-                    badgeClass: 'bg-red-100 text-red-800 border-red-300',
-                    barGradient: 'from-red-500 via-rose-500 to-red-600',
-                    textColor: 'text-red-700',
-                    icon: 'fa-solid fa-fire text-red-500',
-                    bgContainer: 'bg-red-50/60 border-red-200'
+                    badgeClass: 'bg-rose-50/80 text-rose-700 border-rose-200/60',
+                    barGradient: 'from-rose-500 via-red-500 to-rose-600',
+                    textColor: 'text-rose-700',
+                    icon: 'fa-solid fa-fire text-rose-500',
+                    bgContainer: 'bg-rose-50/30 border-slate-200/60'
                 };
             } else if (qtd >= 500) {
                 return {
                     label: 'MÉDIO IMPACTO',
-                    badgeClass: 'bg-amber-100 text-amber-800 border-amber-300',
+                    badgeClass: 'bg-amber-50/80 text-amber-700 border-amber-200/60',
                     barGradient: 'from-amber-400 via-amber-500 to-orange-500',
                     textColor: 'text-amber-700',
                     icon: 'fa-solid fa-triangle-exclamation text-amber-500',
-                    bgContainer: 'bg-amber-50/60 border-amber-200'
+                    bgContainer: 'bg-amber-50/30 border-slate-200/60'
                 };
             } else {
                 return {
                     label: 'BAIXO IMPACTO',
-                    badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                    badgeClass: 'bg-emerald-50/80 text-emerald-700 border-emerald-200/60',
                     barGradient: 'from-emerald-400 via-teal-500 to-emerald-600',
                     textColor: 'text-emerald-700',
                     icon: 'fa-solid fa-circle-check text-emerald-500',
-                    bgContainer: 'bg-emerald-50/60 border-emerald-200'
+                    bgContainer: 'bg-emerald-50/30 border-slate-200/60'
                 };
             }
         }
@@ -834,14 +834,17 @@
             return `<div class="${bgClass} w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border border-white/50 shadow-sm"><i class="fa-solid ${iconClass}"></i></div>`;
         }
 
-        function lerFotoBase64(file) {
-            return new Promise((resolve, reject) => {
-                if (!file) { resolve(null); return; }
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.onerror = (e) => reject(e);
-                reader.readAsDataURL(file);
+        function lerFotosBase64(files) {
+            if (!files || files.length === 0) return Promise.resolve([]);
+            const promises = Array.from(files).map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsDataURL(file);
+                });
             });
+            return Promise.all(promises);
         }
 
         function showToast(message, type = 'success') {
@@ -974,7 +977,8 @@
             
             const btn = document.getElementById('btnAdicionarCausa'); const textoOriginal = btn.innerHTML;
             const sel = document.getElementById('causaLista'); let categoria = sel.value;
-            const espec = document.getElementById('causaEspecificacao').value.trim();
+            const espEl = document.getElementById('causaEspecificacao');
+            const espec = espEl ? espEl.value.trim() : '';
             const qtd = parseInt(document.getElementById('causaQtd').value);
             const valAnterior = document.getElementById('causaQtdAnterior').value;
             const qtdAnteriorInput = valAnterior === '' ? null : parseInt(valAnterior);
@@ -1000,21 +1004,29 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Inserindo...'; btn.disabled = true;
 
             try {
-                const fotoFile = fotoInput.files[0];
-                const base64Foto = await lerFotoBase64(fotoFile);
+                const fotosBase64Arr = await lerFotosBase64(fotoInput.files);
 
-                if (!base64Foto) {
-                    const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase() && !c.fotoBase64);
-                    if (idxExistente >= 0) { 
-                        causasList[idxExistente].qtd += qtd; 
-                        causasList[idxExistente].qtdAnterior = qtdAnteriorInput;
-                    } 
-                    else { causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, qtdAnterior: qtdAnteriorInput, percDisplay: 0, percPerda: 0, fotoBase64: null }); }
+                const idxExistente = causasList.findIndex(c => c.categoria === categoria && c.especificacao.toLowerCase() === espec.toLowerCase());
+
+                if (idxExistente >= 0) {
+                    causasList[idxExistente].qtd += qtd;
+                    causasList[idxExistente].qtdAnterior = qtdAnteriorInput;
+                    if (!causasList[idxExistente].fotosBase64) causasList[idxExistente].fotosBase64 = [];
+                    causasList[idxExistente].fotosBase64 = causasList[idxExistente].fotosBase64.concat(fotosBase64Arr);
                 } else {
-                    causasList.push({ categoria: categoria, especificacao: espec, qtd: qtd, qtdAnterior: qtdAnteriorInput, percDisplay: 0, percPerda: 0, fotoBase64: base64Foto });
+                    causasList.push({ 
+                        categoria: categoria, 
+                        especificacao: espec, 
+                        qtd: qtd, 
+                        qtdAnterior: qtdAnteriorInput, 
+                        percDisplay: 0, 
+                        percPerda: 0, 
+                        fotosBase64: fotosBase64Arr 
+                    });
                 }
 
-                sel.value = ''; document.getElementById('causaEspecificacao').value = '';
+                sel.value = ''; 
+                if (document.getElementById('causaEspecificacao')) document.getElementById('causaEspecificacao').value = '';
                 document.getElementById('causaQtd').value = ''; 
                 document.getElementById('causaQtdAnterior').value = '';
                 fotoInput.value = '';
@@ -1023,7 +1035,7 @@
                 
                 showToast("Causa de perda registrada!");
                 atualizarStatusCausas();
-            } catch (error) { showToast("Erro ao processar a imagem.", "error");
+            } catch (error) { showToast("Erro ao processar as imagens.", "error");
             } finally { btn.innerHTML = textoOriginal; btn.disabled = false; }
         }
 
@@ -1078,7 +1090,7 @@
                             <div class="flex flex-col items-start justify-center text-left gap-1.5">
                                 <div class="flex items-center gap-2 flex-wrap">
                                     ${rankBadge}
-                                    <span class="inline-flex items-center px-3 py-1 rounded-lg border-2 border-indigo-200 bg-indigo-50 text-indigo-900 font-extrabold text-sm shadow-sm tracking-wide">${causa.categoria}</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-lg border border-slate-200 bg-slate-50 text-slate-800 font-extrabold text-sm shadow-xs tracking-wide">${causa.categoria}</span>
                                 </div>
                     `;
                     
@@ -1094,20 +1106,27 @@
                     }
                     celulaCausa += `</div></div>`;
 
+                    let fotosArray = causa.fotosBase64 || (causa.fotoBase64 ? [causa.fotoBase64] : []);
                     let celulaFoto = '';
-                    if(causa.fotoBase64) {
-                        celulaFoto = `
-                            <div class="relative group w-20 h-14 mx-auto rounded-lg overflow-hidden border border-slate-200 shadow-sm cursor-pointer" onclick="abrirModalFoto('${causa.fotoBase64}')" title="Clique para ampliar">
-                                <img src="${causa.fotoBase64}" alt="Comprovativo" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                                <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                                    <i class="fa-solid fa-expand text-white drop-shadow-md text-lg"></i>
+                    
+                    if (fotosArray.length > 0) {
+                        let sizeClass = fotosArray.length === 1 ? 'w-16 h-16' : (fotosArray.length === 2 ? 'w-14 h-14' : 'w-12 h-12');
+                        celulaFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-2 py-1 max-w-full overflow-x-auto">`;
+                        fotosArray.forEach(fotoSrc => {
+                            celulaFoto += `
+                                <div class="relative group ${sizeClass} rounded-lg overflow-hidden border border-slate-300 shadow-sm cursor-pointer shrink-0 transition-transform hover:scale-105" onclick="abrirModalFoto('${fotoSrc}')" title="Clique para ampliar">
+                                    <img src="${fotoSrc}" alt="Comprovativo" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                        <i class="fa-solid fa-expand text-white drop-shadow-md text-xs"></i>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+                        });
+                        celulaFoto += `</div>`;
                     } else {
                         celulaFoto = `
-                            <div class="w-20 h-14 mx-auto rounded-lg border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-1">
-                                <i class="fa-solid fa-image text-sm"></i>
+                            <div class="w-12 h-12 mx-auto rounded-lg border border-slate-200 border-dashed bg-slate-50 flex flex-col items-center justify-center text-slate-400 gap-0.5">
+                                <i class="fa-solid fa-image text-xs"></i>
                                 <span class="text-[7px] uppercase font-bold tracking-widest text-slate-400">Sem Foto</span>
                             </div>
                         `;
@@ -1116,16 +1135,16 @@
                     let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior);
 
                     let impactHtmlUI = `
-                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3 rounded-xl border shadow-sm hover:shadow-md transition-all">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-2.5 rounded-xl border border-slate-200/60 shadow-xs hover:border-slate-300/80 transition-all">
                             <div class="flex items-center justify-between gap-2">
-                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
                                 </span>
-                                <span class="text-2xl md:text-3xl font-black ${impactInfo.textColor} leading-none drop-shadow-sm">${formatarPerc(causa.percDisplay)}%</span>
+                                <span class="text-xl md:text-2xl font-black ${impactInfo.textColor} leading-none">${formatarPerc(causa.percDisplay)}%</span>
                             </div>
                             
-                            <div class="w-full h-2.5 bg-white/80 rounded-full overflow-hidden border border-slate-300/80 p-0.5 shadow-inner mt-1">
-                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700 shadow-sm" style="width: ${relativeToMax}%"></div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-0.5 shadow-inner mt-0.5">
+                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700" style="width: ${relativeToMax}%"></div>
                             </div>
                         </div>
                     `;
@@ -1188,7 +1207,8 @@
                 const el = document.getElementById(id);
                 if(el) el.classList.add('hidden');
             });
-            document.getElementById('causaEspecificacao').value = '';
+            const espEl = document.getElementById('causaEspecificacao');
+            if (espEl) espEl.value = '';
             document.getElementById('causaFoto').value = '';
             document.getElementById('previewCausaCalc').textContent = '';
             document.getElementById('causaQtdAnterior').value = '';
@@ -1257,26 +1277,45 @@
                         <div class="flex items-center gap-2 py-1">
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-xs shadow-sm shrink-0">#${index + 1}</span>
                             <div class="flex flex-col gap-1 items-start">
-                                <span class="inline-block px-3 py-1 rounded border-2 border-indigo-200 bg-indigo-50 text-indigo-950 font-extrabold text-sm shadow-sm">${c.categoria}</span>
+                                <span class="inline-block px-3 py-1 rounded border border-slate-200 bg-slate-50 text-slate-900 font-extrabold text-sm shadow-xs">${c.categoria}</span>
                                 ${c.especificacao ? `<span class="text-xs text-slate-600 font-semibold leading-tight">Esp: ${c.especificacao}</span>` : ''}
                             </div>
                         </div>
                     `;
 
+                    let fotosArray = c.fotosBase64 || (c.fotoBase64 ? [c.fotoBase64] : []);
                     let relFoto = '';
-                    if(c.fotoBase64) { relFoto = `<img src="${c.fotoBase64}" alt="Comprovativo" class="w-48 h-32 object-cover rounded-xl shadow-md border border-slate-300 mx-auto block">`; } 
-                    else { relFoto = `<span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 inline-block">Sem Anexo</span>`; }
+                    
+                    if (fotosArray.length > 0) { 
+                        // Sizing inteligente por quantidade para manter lado a lado na mesma linha sem quebrar altura
+                        let imgSizeClass = 'w-28 h-28';
+                        if (fotosArray.length === 2) imgSizeClass = 'w-24 h-24';
+                        else if (fotosArray.length === 3) imgSizeClass = 'w-20 h-20';
+                        else if (fotosArray.length >= 4) imgSizeClass = 'w-16 h-16';
+
+                        relFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-2.5 p-1.5 max-w-full">`;
+                        fotosArray.forEach(fotoSrc => {
+                            relFoto += `
+                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass}">
+                                    <img src="${fotoSrc}" alt="Comprovativo ${c.categoria}" class="w-full h-full object-cover">
+                                </div>
+                            `;
+                        });
+                        relFoto += `</div>`;
+                    } else { 
+                        relFoto = `<span class="text-[11px] uppercase font-black text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 inline-block">Sem Anexo</span>`; 
+                    }
 
                     let relMiniChart = `
-                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3.5 rounded-xl border shadow-sm">
+                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3 rounded-xl border border-slate-200/60 shadow-xs">
                             <div class="flex items-center justify-between gap-2">
-                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[10px] font-black uppercase tracking-wider ${impactInfo.badgeClass}">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[10px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
                                 </span>
-                                <span class="text-3xl font-black ${impactInfo.textColor} drop-shadow-sm">${formatarPerc(c.percDisplay)}%</span>
+                                <span class="text-2xl font-black ${impactInfo.textColor}">${formatarPerc(c.percDisplay)}%</span>
                             </div>
                             
-                            <div class="w-full h-3 bg-white rounded-full overflow-hidden border border-slate-300 p-0.5 shadow-inner">
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-0.5 shadow-inner">
                                 <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full" style="width: ${relativeToMax}%"></div>
                             </div>
                         </div>
@@ -1389,7 +1428,8 @@
             let listaEnvioCausas = causasList.map(c => {
                 let nomeCompleto = c.categoria;
                 if (c.especificacao) { nomeCompleto += ` - ${c.especificacao}`; }
-                if (c.fotoBase64) { nomeCompleto += ` (Com Anexo/Foto)`; } 
+                let fotosArr = c.fotosBase64 || (c.fotoBase64 ? [c.fotoBase64] : []);
+                if (fotosArr.length > 0) { nomeCompleto += ` (${fotosArr.length} Anexo(s)/Foto(s))`; } 
                 return { nome: nomeCompleto, qtd: c.qtd, perc: formatarPerc(c.percDisplay) + '%' };
             });
 
