@@ -1288,12 +1288,12 @@
                     
                     if (fotosArray.length > 0) { 
                         // Sizing inteligente por quantidade para manter lado a lado na mesma linha sem quebrar altura
-                        let imgSizeClass = 'w-28 h-28';
-                        if (fotosArray.length === 2) imgSizeClass = 'w-24 h-24';
-                        else if (fotosArray.length === 3) imgSizeClass = 'w-20 h-20';
-                        else if (fotosArray.length >= 4) imgSizeClass = 'w-16 h-16';
+                        let imgSizeClass = 'w-44 h-44';
+                        if (fotosArray.length === 2) imgSizeClass = 'w-36 h-36';
+                        else if (fotosArray.length === 3) imgSizeClass = 'w-28 h-28';
+                        else if (fotosArray.length >= 4) imgSizeClass = 'w-24 h-24';
 
-                        relFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-2.5 p-1.5 max-w-full">`;
+                        relFoto = `<div class="flex flex-row flex-nowrap items-center justify-center gap-3 p-2 max-w-full">`;
                         fotosArray.forEach(fotoSrc => {
                             relFoto += `
                                 <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass}">
