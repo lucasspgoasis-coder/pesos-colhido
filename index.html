@@ -157,173 +157,6 @@
             line-height: normal;
         }
 
-
-        /* =========================================================
-           VISUAL PROFISSIONAL — RELATÓRIO EXPORTADO (PDF / JPEG)
-           ========================================================= */
-        #relatorioExportacao{
-            width:1280px !important;
-            padding:42px 46px !important;
-            background:#ffffff !important;
-            color:#172033 !important;
-            border:1px solid #dbe3ea;
-            box-shadow:0 24px 60px rgba(15,23,42,.12);
-        }
-        #relatorioExportacao .rel-cabecalho-pro{
-            position:relative;
-            border-radius:20px !important;
-            padding:26px 30px !important;
-            margin-bottom:30px !important;
-            border:1px solid #064e3b !important;
-            box-shadow:0 14px 30px rgba(6,78,59,.18) !important;
-            overflow:hidden;
-        }
-        #relatorioExportacao .rel-cabecalho-pro:after{
-            content:"";
-            position:absolute;
-            left:0; right:0; bottom:0;
-            height:4px;
-            background:linear-gradient(90deg,#34d399,#a7f3d0,#34d399);
-            opacity:.9;
-        }
-        #relatorioExportacao .rel-secao-pro{
-            border:1px solid #dbe3ea;
-            border-radius:16px;
-            padding:18px;
-            background:linear-gradient(180deg,#fff,#f8fafc);
-            box-shadow:0 8px 22px rgba(15,23,42,.055);
-        }
-        #relatorioExportacao .rel-parametros-pro > div{
-            border-width:1px !important;
-            border-color:#d7e1e8 !important;
-            border-radius:12px !important;
-            min-height:78px;
-            box-shadow:0 3px 10px rgba(15,23,42,.045) !important;
-        }
-        #relatorioExportacao #relBloco{
-            font-size:24px !important;
-        }
-        #relatorioExportacao #relCultura,
-        #relatorioExportacao #relVariedade,
-        #relatorioExportacao #relStatus,
-        #relatorioExportacao #relDataFim,
-        #relatorioExportacao #relDiasProd{
-            font-size:18px !important;
-        }
-        #relatorioExportacao .flash-card-perdas{
-            border:1px solid #fda4af !important;
-            border-left:7px solid #e11d48 !important;
-            box-shadow:0 12px 28px rgba(225,29,72,.10) !important;
-        }
-        #relatorioExportacao #relBlocoCausas > div{
-            border:1px solid #cfd8e3 !important;
-            border-radius:16px !important;
-            box-shadow:0 10px 24px rgba(15,23,42,.06) !important;
-            overflow:hidden;
-        }
-        #relatorioExportacao #relBlocoCausas table{
-            table-layout:fixed;
-            border-collapse:separate;
-            border-spacing:0;
-        }
-        #relatorioExportacao #relBlocoCausas thead th{
-            background:linear-gradient(180deg,#f1f5f9,#e8eef4) !important;
-            color:#334155 !important;
-            border-bottom:2px solid #cbd5e1 !important;
-            vertical-align:middle !important;
-        }
-        #relatorioExportacao #relBlocoCausas tbody tr{
-            page-break-inside:avoid;
-        }
-        #relatorioExportacao #relBlocoCausas tbody tr:nth-child(even){
-            background:#fbfdff;
-        }
-        #relatorioExportacao #relBlocoCausas tbody td{
-            border-bottom:1px solid #e2e8f0;
-            vertical-align:middle !important;
-        }
-        #relatorioExportacao .foto-relatorio-pro{
-            display:grid !important;
-            grid-template-columns:repeat(2,minmax(0,1fr));
-            gap:10px;
-            padding:5px !important;
-            width:100%;
-            box-sizing:border-box;
-        }
-        #relatorioExportacao .foto-relatorio-item{
-            position:relative;
-            height:150px;
-            border:2px solid #ffffff;
-            outline:1px solid #cbd5e1;
-            border-radius:12px;
-            overflow:hidden;
-            background:#f1f5f9;
-            box-shadow:0 5px 14px rgba(15,23,42,.16);
-        }
-        #relatorioExportacao .foto-relatorio-item:after{
-            content:"";
-            position:absolute;
-            inset:0;
-            border-radius:10px;
-            box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);
-            pointer-events:none;
-        }
-        #relatorioExportacao .foto-relatorio-item img{
-            display:block;
-            width:100% !important;
-            height:100% !important;
-            object-fit:cover !important;
-            transition:transform .2s ease;
-        }
-        #relatorioExportacao .foto-relatorio-item .foto-numero{
-            position:absolute;
-            left:7px;
-            top:7px;
-            z-index:2;
-            min-width:24px;
-            height:24px;
-            padding:0 7px;
-            border-radius:999px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:rgba(15,23,42,.82);
-            color:#fff;
-            font-size:10px;
-            font-weight:800;
-            box-shadow:0 2px 7px rgba(0,0,0,.22);
-        }
-        #relatorioExportacao .sem-foto-pro{
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            min-height:70px;
-            width:100%;
-            border:1px dashed #cbd5e1;
-            border-radius:10px;
-            background:#f8fafc;
-            color:#64748b;
-            font-size:11px;
-            font-weight:800;
-            text-transform:uppercase;
-            letter-spacing:.08em;
-        }
-        #relatorioExportacao .rel-rodape-pro{
-            margin-top:28px !important;
-            padding-top:14px !important;
-            border-top:2px solid #dbe3ea !important;
-        }
-        @media print{
-            #relatorioExportacao{
-                box-shadow:none !important;
-                border:0 !important;
-                width:100% !important;
-            }
-            #relatorioExportacao .foto-relatorio-item{
-                break-inside:avoid;
-            }
-        }
-
         @media print {
             body { background-color: white; margin: 0; padding: 0;}
             .no-print, #captureArea, .fixed, #toastContainer { display: none !important; }
@@ -693,7 +526,7 @@
     <div id="relatorioExportacao">
         
         <!-- Cabeçalho Relatório -->
-        <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-6 rounded-2xl mb-8 flex justify-between items-center shadow-md border border-emerald-800 relative overflow-hidden rel-cabecalho-pro">
+        <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white p-6 rounded-2xl mb-8 flex justify-between items-center shadow-md border border-emerald-800 relative overflow-hidden">
             <div class="flex items-center gap-6 z-10">
                 <div class="shrink-0">
                     <img src="https://i.imgur.com/wEozr34.png" class="w-28 h-28 object-contain logo-img drop-shadow-2xl" alt="Logo Fazenda Oásis">
@@ -726,7 +559,7 @@
                 <span class="w-2 h-4 bg-emerald-700 rounded-sm inline-block"></span>
                 <span>1. Parâmetros da Plantação</span>
             </h3>
-            <div class="grid grid-cols-4 gap-4 rel-parametros-pro">
+            <div class="grid grid-cols-4 gap-4">
                 <div class="border border-emerald-200 p-4 rounded-lg bg-emerald-50/40 text-center shadow-sm">
                     <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco Atual</span>
                     <span class="block text-xl font-black text-emerald-900" id="relBloco">-</span>
@@ -856,7 +689,7 @@
             </div>
         </div>
         
-        <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest rel-rodape-pro">
+        <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-certificate"></i> Documento Oficial de Registro de Perdas - Fazenda Oásis
             </div>
@@ -1455,18 +1288,17 @@
                         // Aumentando expressivamente o tamanho e a largura da foto no PDF/Exportação
                         let imgSizeClass = 'w-72 h-52'; 
 
-                        relFoto = `<div class="foto-relatorio-pro">`;
+                        relFoto = `<div class="flex flex-row flex-wrap items-center justify-center gap-4 p-2 max-w-full">`;
                         fotosArray.forEach(fotoSrc => {
                             relFoto += `
-                                <div class="foto-relatorio-item">
-                                    <span class="foto-numero">${Array.from(fotosArray).indexOf(fotoSrc) + 1}</span>
-                                    <img src="${fotoSrc}" alt="Comprovativo ${c.categoria}" loading="eager">
+                                <div class="relative shadow-md rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 flex items-center justify-center shrink-0 ${imgSizeClass}">
+                                    <img src="${fotoSrc}" alt="Comprovativo ${c.categoria}" class="w-full h-full object-cover">
                                 </div>
                             `;
                         });
                         relFoto += `</div>`;
                     } else { 
-                        relFoto = `<span class="sem-foto-pro"><i class="fa-regular fa-image" style="margin-right:6px"></i> Sem anexo fotográfico</span>`; 
+                        relFoto = `<span class="text-[11px] uppercase font-black text-slate-400 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200 inline-block shadow-sm">Sem Anexo</span>`; 
                     }
 
                     let relMiniChart = `
