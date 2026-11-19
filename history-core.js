@@ -27,6 +27,7 @@ var LossHistoryCore=(()=>{
  const all=db=>transaction(db,'records','readonly',s=>s.getAll());
  const put=(db,record)=>transaction(db,'records','readwrite',s=>s.put(record));
  const draft=(db,value)=>value===undefined?transaction(db,'drafts','readonly',s=>s.get('active')):transaction(db,'drafts','readwrite',s=>s.put(value,'active'));
+ function remove(db,id){return new Promise((resolve,reject)=>{const tx=db.transaction(['records','drafts'],'readwrite');tx.objectStore('records').delete(id);const drafts=tx.objectStore('drafts'),request=drafts.get('active');request.onsuccess=()=>{if(request.result?.currentId===id)drafts.delete('active');};tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||Error('Não foi possível excluir o registro.'));tx.onabort=()=>reject(tx.error||Error('A exclusão foi cancelada.'));});}
  function attachFiles(db,id,fingerprint,files){return new Promise((resolve,reject)=>{const tx=db.transaction('records','readwrite'),store=tx.objectStore('records'),request=store.get(id);let attached=false;request.onsuccess=()=>{const record=request.result;if(record&&record.fingerprint===fingerprint){store.put({...record,...files});attached=true;}};tx.oncomplete=()=>resolve(attached);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('Falha ao guardar os arquivos.'));});}
- return {validate,metrics,latest,summarize,open,get,all,put,draft,attachFiles};
+ return {validate,metrics,latest,summarize,open,get,all,put,draft,remove,attachFiles};
 })();
