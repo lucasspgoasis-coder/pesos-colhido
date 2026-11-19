@@ -172,7 +172,7 @@
             }
         }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="layout.css?v=20261119-loss-33"></head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="layout.css?v=20261119-loss-refine-34"></head>
 <body class="bg-grid-pattern min-h-screen p-4 md:p-8 font-sans text-gray-800 pb-36">
 
     <!-- Container Toast -->
@@ -1109,7 +1109,7 @@
                     let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior);
 
                     let impactHtmlUI = `
-                        <div class="loss-impact flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-2.5 rounded-xl border border-slate-200/60 shadow-xs hover:border-slate-300/80 transition-all">
+                        <div class="loss-impact">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
@@ -1276,7 +1276,7 @@
                     }
 
                     let relMiniChart = `
-                        <div class="loss-impact flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3 rounded-xl border border-slate-200/60 shadow-xs">
+                        <div class="loss-impact">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[10px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
