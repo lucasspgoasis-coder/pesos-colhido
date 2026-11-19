@@ -1,37 +1,58 @@
-/* Arquivos gerados a partir do registro salvo, sem depender do formulário atual. */
+/* Relatório detalhado gerado exclusivamente do registro salvo. */
 var LossHistoryReport=(()=>{
- const W=1240,H=1754,M=70,colors={ink:'#173447',accent:'#b04d45',green:'#16835e',amber:'#ca8c2a',light:'#edf4f6'};
- const num=value=>Number(value).toLocaleString('pt-BR',{maximumFractionDigits:1});
- const date=value=>new Date(value).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'});
- function textLines(ctx,text,width){const lines=[];let line='';for(const word of String(text).split(/\s+/)){if(ctx.measureText((line?line+' ':'')+word).width>width&&line){lines.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)lines.push(line);return lines;}
- async function build(record){
-  const pages=[];let canvas,ctx,y;const d=record.data,m=LossHistoryCore.metrics(d);
-  function page(){canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.fillStyle=colors.ink;ctx.fillRect(0,0,W,150);ctx.fillStyle='#fff';ctx.font='bold 32px Arial';ctx.fillText('FAZENDA OÁSIS · CONTAGEM DE PERDAS',M,65);ctx.font='18px Arial';ctx.fillText('Registro salvo neste aparelho · '+date(record.updatedAt),M,105);ctx.fillStyle='#6d8490';ctx.font='15px Arial';ctx.fillText('Registro '+record.id+' · página '+(pages.length+1),M,H-36);pages.push(canvas);y=195;}
-  function ensure(height){if(y+height>H-80)page();}
-  function text(value,size=20,bold=false,color=colors.ink,width=W-M*2){ctx.font=(bold?'bold ':'')+size+'px Arial';ctx.fillStyle=color;const lines=textLines(ctx,value,width);ensure(lines.length*(size+10));ctx.font=(bold?'bold ':'')+size+'px Arial';ctx.fillStyle=color;for(const line of lines){ctx.fillText(line,M,y);y+=size+10;}}
-  function section(title){ensure(90);y+=20;text(title,25,true);y+=10;}
-  function bar(label,value,total,color){ctx.font='18px Arial';const lines=textLines(ctx,label,W-M*2-230),height=Math.max(72,lines.length*26+32);ensure(height);ctx.font='18px Arial';ctx.fillStyle=colors.ink;for(let i=0;i<lines.length;i++)ctx.fillText(lines[i],M,y+i*26);ctx.font='bold 19px Arial';ctx.textAlign='right';ctx.fillText(num(value)+' un · '+num(total?value/total*100:0)+'%',W-M,y);ctx.textAlign='left';y+=lines.length*26+8;ctx.fillStyle=colors.light;ctx.fillRect(M,y,W-M*2,16);ctx.fillStyle=color;ctx.fillRect(M,y,(W-M*2)*Math.min(1,total?value/total:0),16);y+=35;}
+ const W=1600,H=2264,M=80,version='loss-detail-20261119-v1',C={ink:'#203c49',muted:'#617580',green:'#176b4c',red:'#b6443d',amber:'#9a651b',line:'#dce5e7',soft:'#f2f6f7'};
+ const num=n=>Number(n||0).toLocaleString('pt-BR',{maximumFractionDigits:1}),pct=n=>Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%',br=d=>d?d.split('-').reverse().join('/'):'Não informada';
+ const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(Error('Não foi possível carregar uma imagem do relatório.'));img.src=src;});
+ function comparison(current,previous){if(previous===null||previous===undefined||previous===''||!Number.isFinite(Number(previous)))return {label:'Sem comparação',detail:'Quantidade do bloco anterior não informada.',color:C.muted,arrow:'—'};const old=Number(previous),diff=current-old;return {label:diff>0?'Aumentou':diff<0?'Diminuiu':'Manteve',detail:(diff>0?'+':'')+num(diff)+' un'+(old>0?' · '+(diff>0?'+':'')+pct(diff/old*100):diff?' · anterior igual a zero':' · sem alteração'),color:diff>0?C.red:diff<0?C.green:C.muted,arrow:diff>0?'↑':diff<0?'↓':'→',previous:old};}
+ function lines(ctx,value,width,size=24,bold=false){ctx.font=(bold?'bold ':'')+size+'px Arial';const out=[];let line='';for(const word of String(value||'—').split(/\s+/)){if(ctx.measureText((line?line+' ':'')+word).width>width&&line){out.push(line);line=word;}else line+=(line?' ':'')+word;}out.push(line);return out;}
+ function icon(ctx,type,x,y,color=C.green,size=30){ctx.save();ctx.translate(x,y);ctx.scale(size/24,size/24);ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=1.8;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();const line=(a,b,c,d)=>{ctx.moveTo(a,b);ctx.lineTo(c,d);};if(type==='calendar'){ctx.rect(3,5,18,16);line(3,10,21,10);line(8,2,8,7);line(16,2,16,7);}else if(type==='clock'||type==='cycle'){ctx.arc(12,12,9,0,Math.PI*2);line(12,6,12,12);line(12,12,17,15);}else if(type==='leaf'){ctx.moveTo(5,20);ctx.quadraticCurveTo(4,3,20,3);ctx.quadraticCurveTo(22,18,5,20);line(5,20,16,8);}else if(type==='camera'){ctx.rect(2,6,20,15);ctx.moveTo(8,6);ctx.lineTo(10,3);ctx.lineTo(16,3);ctx.lineTo(18,6);ctx.moveTo(17,13);ctx.arc(12,13,5,0,Math.PI*2);}else if(type==='compare'){line(3,7,21,7);line(17,3,21,7);line(17,11,21,7);line(21,17,3,17);line(7,13,3,17);line(7,21,3,17);}else if(type==='info'){ctx.arc(12,12,9,0,Math.PI*2);line(12,11,12,17);line(12,7,12,7.2);}else if(type==='bug'){ctx.ellipse(12,13,5,7,0,0,Math.PI*2);line(9,6,7,3);line(15,6,17,3);for(const v of [9,14,19]){line(2,v,7,v-1);line(17,v-1,22,v);}}else{ctx.rect(3,3,18,18);line(3,10,21,10);line(10,3,10,21);}ctx.stroke();ctx.restore();}
+ async function build(record,options={}){
+  const d=record.data,m=LossHistoryCore.metrics(d),pages=[],loader=options.loadImage||load,logo=options.logo||await loader(new URL('logo.svg',document.baseURI).href);let ctx,y;
+  function text(value,x,top,width,size=24,bold=false,color=C.ink){const rows=lines(ctx,value,width,size,bold);ctx.fillStyle=color;ctx.font=(bold?'bold ':'')+size+'px Arial';rows.forEach((row,i)=>ctx.fillText(row,x,top+i*(size+9)));return rows.length*(size+9);}
+  function rule(top){ctx.strokeStyle=C.line;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(M,top);ctx.lineTo(W-M,top);ctx.stroke();}
+  function page(){const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;ctx=canvas.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,W,H);ctx.fillStyle=C.green;ctx.fillRect(0,0,W,12);ctx.drawImage(logo,M,46,116,116);text('ANÁLISE PERCENTUAL DE PERDAS',M+145,89,W-M*2-145,37,true,C.green);text('Fazenda Oásis · '+d.labels.bloco+' · Ciclo '+d.fields.cicloProducao,M+145,137,W-M*2-145,23);rule(194);pages.push(canvas);y=234;}
+  function ensure(height){if(y+height>H-100)page();}
+  function heading(value,type='info'){ensure(80);icon(ctx,type,M,y-23);text(value,M+46,y,W-M*2-46,28,true);y+=57;}
+  function field(label,value,type,x,top,width){icon(ctx,type,x,top-22,C.green,27);text(label.toUpperCase(),x+39,top,width-39,18,true,C.muted);return text(value,x,top+42,width,29,true);}
   page();
-  text(d.labels.bloco+' · Ciclo '+d.fields.cicloProducao,28,true);text('Data do levantamento: '+d.day.split('-').reverse().join('/'),18);text(d.labels.cultura+' · '+d.labels.variedade,22);text('Situação: '+(d.fields.statusPlantio||'Não informada')+' · Finalização: '+(d.fields.dataFinalizacao?d.fields.dataFinalizacao.split('-').reverse().join('/'):'Não informada'),18);
-  if(d.fields.diasProducao)text('Dias de produção: '+d.fields.diasProducao,18);
-  if(d.labels.blocoAnterior&&!/não inf/i.test(d.labels.blocoAnterior))text('Bloco anterior: '+d.labels.blocoAnterior,18);
-  section('Resumo da produção e perdas');
-  text('Transplantado: '+num(m.transplanted)+' un   |   Colhido: '+num(m.harvested)+' un',23,true);
-  text('Perda / não colhido: '+num(m.lost)+' un ('+num(m.lossPercent)+'%)',23,true,colors.accent);
-  text('Detalhado por causa: '+num(m.detailed)+' un   |   Saldo não detalhado: '+num(m.balance)+' un',19);
-  section('Gráfico · participação no total transplantado');
-  bar('Colhido',m.harvested,m.transplanted,colors.green);bar('Perdas com causa registrada',m.detailed,m.transplanted,colors.amber);bar('Saldo não detalhado',m.balance,m.transplanted,colors.accent);
-  section('Gráfico · causas registradas');
-  if(!d.causes.length)text('Nenhuma causa detalhada neste levantamento.',19);
-  for(const cause of [...d.causes].sort((a,b)=>b.qtd-a.qtd)){bar([cause.categoria,cause.especificacao].filter(Boolean).join(' · '),cause.qtd,m.transplanted,colors.accent);if(Number(cause.qtdAnterior)>0){const delta=cause.qtd-Number(cause.qtdAnterior);text('Referência anterior: '+num(cause.qtdAnterior)+' un · Diferença: '+(delta>0?'+':'')+num(delta)+' un ('+(delta>0?'+':'')+num(delta/cause.qtdAnterior*100)+'%)',16,false,'#6d8490');}}
-  text('Percentuais calculados sobre o total transplantado. O saldo não detalhado não recebe uma causa presumida.',16,false,'#6d8490');
-  for(const cause of d.causes){const photos=cause.fotosBase64||(cause.fotoBase64?[cause.fotoBase64]:[]);if(!photos.length)continue;section('Fotos · '+cause.categoria);for(const src of photos){if(!/^data:image\/(png|jpeg|webp|gif);base64,/i.test(src))continue;ensure(390);try{const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(Error('Foto indisponível'));img.src=src;});const scale=Math.min((W-M*2)/image.width,340/image.height);ctx.drawImage(image,M,y,image.width*scale,image.height*scale);y+=image.height*scale+30;}catch{text('Não foi possível desenhar esta foto; o arquivo original permanece no registro.',16,false,'#8b4e36');}}}
-  const pageBlobs=await Promise.all(pages.map(c=>new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('Falha ao gerar imagem JPEG.')),'image/jpeg',.9))));
-  const combined=document.createElement('canvas'),scale=Math.min(1,24000/(H*pages.length));combined.width=Math.round(W*scale);combined.height=Math.round(H*pages.length*scale);const combinedCtx=combined.getContext('2d');pages.forEach((c,i)=>combinedCtx.drawImage(c,0,Math.round(i*H*scale),combined.width,Math.round(H*scale)));
-  const jpeg=await new Promise((resolve,reject)=>combined.toBlob(b=>b?resolve(b):reject(Error('Falha ao gerar JPEG.')),'image/jpeg',.9));
-  let pdf=null;if(window.jspdf?.jsPDF){const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait'});for(let i=0;i<pages.length;i++){if(i)doc.addPage();doc.addImage(pages[i].toDataURL('image/jpeg',.9),'JPEG',0,0,210,297);}pdf=doc.output('blob');}
-  return {jpeg,pdf,pageBlobs,pageCount:pages.length,filesAt:new Date().toISOString()};
+  const fields=[['Bloco analisado',d.labels.bloco,'block'],['Ciclo',d.fields.cicloProducao,'cycle'],['Cultura',d.labels.cultura,'leaf'],['Variedade',d.labels.variedade,'leaf'],['Data de encerramento',br(d.fields.dataFinalizacao),'calendar'],['Dias de produção',d.fields.diasProducao?d.fields.diasProducao+' dias':'Não informado','clock']];
+  for(let row=0;row<2;row++){let height=0;for(let col=0;col<3;col++){const f=fields[row*3+col];height=Math.max(height,field(f[0],f[1],f[2],M+col*490,y,450));}y+=Math.max(120,height+72);}
+  y+=text('Levantamento: '+br(d.day)+' · Bloco anterior: '+(d.labels.blocoAnterior||'Não informado'),M,y,W-M*2,21,false,C.muted)+18;
+  heading('Resumo do bloco analisado','block');
+  for(const [i,label,value,color] of [[0,'Total transplantado',num(m.transplanted)+' un',C.green],[1,'Total colhido',num(m.harvested)+' un',C.green],[2,'Total de perdas',num(m.lost)+' un · '+pct(m.lossPercent),C.red]]){const x=M+i*490;icon(ctx,i===2?'info':'leaf',x,y-20,color,25);text(label,x+37,y,410,20,true,C.muted);text(value,x,y+45,450,32,true,color);}y+=108;rule(y);y+=48;
+  heading('Causas detalhadas e evidências','leaf');
+  if(!d.causes.length){y+=text('Nenhuma causa foi detalhada neste levantamento.',M,y,W-M*2,25)+26;}
+  const ordered=[...d.causes].sort((a,b)=>Number(b.qtd)-Number(a.qtd));
+  for(let index=0;index<ordered.length;index++){
+   const cause=ordered[index],photos=cause.fotosBase64||(cause.fotoBase64?[cause.fotoBase64]:[]),evidence=photos.length?photos:[null],comp=comparison(Number(cause.qtd),cause.qtdAnterior),causeIcon=/prag|lagart|pulg|formig|traça|sciara|esquiar/i.test(cause.categoria)?'bug':'leaf';
+   const description=String(cause.especificacao||'Sem detalhamento complementar informado.'),parts=lines(ctx,description,665,23),title=lines(ctx,cause.categoria,650,30,true);
+   const chunkSize=12,detailPages=Math.max(1,Math.ceil(parts.length/chunkSize)),rows=Math.max(evidence.length,detailPages);
+   for(let n=0;n<rows;n++){
+    const detail=parts.slice(Math.min(n,detailPages-1)*chunkSize,Math.min(n+1,detailPages)*chunkSize),height=Math.max(620,title.length*39+detail.length*32+330);ensure(height+32);const start=y,right=850,pw=670,ph=460;
+    icon(ctx,causeIcon,M,y-26,C.red,31);y+=text((index+1)+'. '+cause.categoria+(n?' · continuação':''),M+46,y,620,30,true,C.red)+12;
+    text('DETALHAMENTO DA CAUSA',M,y,665,17,true,C.muted);y+=34;for(const row of detail){text(row,M,y,665,23);y+=32;}y+=21;
+    icon(ctx,'info',M,y-24,C.red,27);text('Perdas desta causa',M+39,y,620,19,true,C.muted);y+=43;text(num(cause.qtd)+' un',M,y,280,37,true,C.red);text(pct(m.transplanted?Number(cause.qtd)/m.transplanted*100:0),M+310,y,350,37,true,C.red);y+=32;text('no bloco analisado',M,y,290,17,false,C.muted);text('do total transplantado',M+310,y,350,17,false,C.muted);y+=48;
+    icon(ctx,'compare',M,y-23,comp.color,28);text(comp.arrow+' '+comp.label,M+40,y,620,27,true,comp.color);y+=39;text(comp.previous===undefined?comp.detail:'Atual: '+num(cause.qtd)+' un · Anterior: '+num(comp.previous)+' un',M,y,665,21,false,C.muted);y+=32;if(comp.previous!==undefined){text(comp.detail,M,y,665,22,true,comp.color);y+=32;}
+    if(n<evidence.length){icon(ctx,'camera',right,start-23,C.green,28);text(photos.length?'Foto '+(n+1)+' de '+photos.length:'Evidência fotográfica',right+42,start,620,21,true);const top=start+23;ctx.fillStyle='#f0f4f4';ctx.fillRect(right,top,pw,ph);if(evidence[n]){try{const img=await loader(evidence[n]),scale=Math.min(pw/img.width,ph/img.height),iw=img.width*scale,ih=img.height*scale;ctx.drawImage(img,right+(pw-iw)/2,top+(ph-ih)/2,iw,ih);}catch{ text('Foto indisponível no arquivo salvo.',right+25,top+ph/2,pw-50,23,false,C.muted);}}else text('Nenhuma foto registrada.',right+25,top+ph/2,pw-50,23,false,C.muted);text('Imagem inteira · proporção preservada',right,top+ph+34,pw,18,false,C.muted);}
+    y=Math.max(y,start+height);rule(y);y+=39;
+   }
+  }
+  ensure(390);heading('Saldo de perdas sem detalhamento','info');
+  const balancePercent=m.transplanted?m.balance/m.transplanted*100:0;text(num(m.balance)+' unidades · '+pct(balancePercent)+' da safra',M,y,W-M*2,39,true,C.amber);y+=63;
+  const explanation=m.balance>0?'Este saldo é a diferença entre as perdas totais do bloco analisado e a soma das causas informadas: '+num(m.lost)+' − '+num(m.detailed)+' = '+num(m.balance)+' unidades. Representa '+pct(balancePercent)+' do total transplantado. No fechamento do descarte geral do Pack House, esse volume permanece sem identificação individual de causa.':'Todas as perdas do bloco analisado foram detalhadas por causa. Não há saldo pendente de classificação.';
+  y+=text(explanation,M,y,W-M*2,24,false,C.muted)+24;text('Base dos percentuais: '+num(m.transplanted)+' unidades transplantadas. A variação compara o volume informado para cada causa com o bloco anterior.',M,y,W-M*2,20,false,C.muted);
+  pages.forEach((canvas,i)=>{const c=canvas.getContext('2d');c.strokeStyle=C.line;c.beginPath();c.moveTo(M,H-77);c.lineTo(W-M,H-77);c.stroke();c.fillStyle=C.muted;c.font='18px Arial';c.fillText(d.labels.bloco+' · Ciclo '+d.fields.cicloProducao,M,H-40);c.textAlign='right';c.fillText('Página '+(i+1)+' de '+pages.length,W-M,H-40);c.textAlign='left';});
+  const blob=(canvas,type)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Não foi possível gerar o relatório.')),type,.94));
+  const pageBlobs=await Promise.all(pages.map(p=>blob(p,'image/jpeg'))),pngPageBlobs=await Promise.all(pages.map(p=>blob(p,'image/png'))),combined=document.createElement('canvas'),scale=Math.min(1,24000/(H*pages.length));combined.width=Math.round(W*scale);combined.height=Math.round(H*pages.length*scale);pages.forEach((p,i)=>combined.getContext('2d').drawImage(p,0,Math.round(i*H*scale),combined.width,Math.round(H*scale)));
+  const jpeg=await blob(combined,'image/jpeg'),png=await blob(combined,'image/png');let pdf=null;if(window.jspdf?.jsPDF){const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});pages.forEach((p,i)=>{if(i)doc.addPage();doc.addImage(p.toDataURL('image/jpeg',.94),'JPEG',0,0,210,297);});doc.setProperties({title:'Análise de perdas · '+d.labels.bloco,creator:'Sistema integrado'});pdf=doc.output('blob');}
+  return {jpeg,png,pdf,pageBlobs,pngPageBlobs,pageCount:pages.length,reportVersion:version,filesAt:new Date().toISOString()};
  }
- function download(blob,name){const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
- return {build,download};
+ async function zipPng(blobs){
+  const parts=[],central=[];let offset=0;const table=Array.from({length:256},(_,i)=>{let c=i;for(let j=0;j<8;j++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
+  const bytes=(size)=>new Uint8Array(size),set=(b,p,value,size)=>{for(let i=0;i<size;i++)b[p+i]=value>>>(i*8)&255;};
+  for(let i=0;i<blobs.length;i++){const data=new Uint8Array(await blobs[i].arrayBuffer()),name=new Uint8Array(Array.from('pagina-'+String(i+1).padStart(2,'0')+'.png',x=>x.charCodeAt(0)));let crc=0xffffffff;for(const n of data)crc=table[(crc^n)&255]^(crc>>>8);crc=(crc^0xffffffff)>>>0;const local=bytes(30+name.length);set(local,0,0x04034b50,4);set(local,4,20,2);set(local,14,crc,4);set(local,18,data.length,4);set(local,22,data.length,4);set(local,26,name.length,2);local.set(name,30);parts.push(local,data);const dir=bytes(46+name.length);set(dir,0,0x02014b50,4);set(dir,4,20,2);set(dir,6,20,2);set(dir,16,crc,4);set(dir,20,data.length,4);set(dir,24,data.length,4);set(dir,28,name.length,2);set(dir,42,offset,4);dir.set(name,46);central.push(dir);offset+=local.length+data.length;}
+  const size=central.reduce((sum,b)=>sum+b.length,0),end=bytes(22);set(end,0,0x06054b50,4);set(end,8,blobs.length,2);set(end,10,blobs.length,2);set(end,12,size,4);set(end,16,offset,4);return new Blob([...parts,...central,end],{type:'application/zip'});
+ }
+ function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+ return {build,download,comparison,version,zipPng};
 })();

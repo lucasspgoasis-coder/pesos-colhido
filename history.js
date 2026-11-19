@@ -18,8 +18,8 @@ function lossSave(manual=false){
   if(errors.length){lossStatus('Rascunho salvo neste aparelho. '+errors[0],true);if(manual)throw Error(errors[0]);return null;}
   const fingerprint=JSON.stringify(data),old=lossRecords.find(r=>r.id===id);
   if(old?.fingerprint===fingerprint){lossStatus('Registro salvo neste aparelho.');return old;}
-  const record={id,createdAt:old?.createdAt||now,updatedAt:now,data,fingerprint,jpeg:null,pdf:null,pageBlobs:null};
-  await LossHistoryCore.put(lossDb,record);lossSetRecord(record);lossStatus('Registro salvo. Preparando JPEG e PDF…');lossRefresh();
+  const record={id,createdAt:old?.createdAt||now,updatedAt:now,data,fingerprint,jpeg:null,png:null,pdf:null,pageBlobs:null};
+  await LossHistoryCore.put(lossDb,record);lossSetRecord(record);lossStatus('Registro salvo. Preparando PNG e PDF…');lossRefresh();
   lossFiles(record).catch(error=>lossStatus('Dados salvos. Não foi possível preparar os arquivos: '+error.message,true));return record;
  });lossSaveQueue=run.catch(()=>{});return run.catch(error=>{lossStatus('Falha ao salvar: '+error.message,true);throw error;});
 }
@@ -27,12 +27,12 @@ function lossFiles(record){
  const prior=lossFileJobs.get(record.id)||Promise.resolve();
  const task=prior.catch(()=>{}).then(async()=>{
   const current=await LossHistoryCore.get(lossDb,record.id);if(!current||current.fingerprint!==record.fingerprint)return current;
-  if(current.jpeg&&(current.pdf||!window.jspdf?.jsPDF))return current;
+  if(current.reportVersion===LossHistoryReport.version&&current.jpeg&&current.png&&(current.pdf||!window.jspdf?.jsPDF))return current;
   const files=await LossHistoryReport.build(current),attached=await LossHistoryCore.attachFiles(lossDb,current.id,current.fingerprint,files),saved=await LossHistoryCore.get(lossDb,current.id);
-  if(attached){lossSetRecord(saved);if(lossCurrentId===saved.id)lossStatus('Registro e JPEG salvos neste aparelho.'+(saved.pdf?' PDF também disponível.':' PDF será gerado quando a biblioteca estiver disponível.'));lossRefresh();}return saved;
+  if(attached){lossSetRecord(saved);if(lossCurrentId===saved.id)lossStatus('Registro e imagens salvos neste aparelho.'+(saved.pdf?' PDF também disponível.':' PDF será gerado quando a biblioteca estiver disponível.'));lossRefresh();}return saved;
  });lossFileJobs.set(record.id,task);task.finally(()=>{if(lossFileJobs.get(record.id)===task)lossFileJobs.delete(record.id);}).catch(()=>{});return task;
 }
-async function lossDownload(id,format){try{let record=await LossHistoryCore.get(lossDb,id);if(!record)throw Error('Registro não encontrado.');record=await lossFiles(record);const blob=record?.[format];if(!blob)throw Error(format==='pdf'?'Conecte-se para carregar a biblioteca PDF e tente novamente.':'Imagem ainda indisponível.');const stem='Perdas_'+record.data.day+'_Ciclo'+String(record.data.fields.cicloProducao).replace(/[^\w-]/g,'')+'_'+id.slice(0,8);LossHistoryReport.download(blob,stem+(format==='pdf'?'.pdf':'.jpg'));}catch(error){showToast(error.message,'error');}}
+async function lossDownload(id,format){try{let record=await LossHistoryCore.get(lossDb,id);if(!record)throw Error('Registro não encontrado.');record=await lossFiles(record);if(format==='png'&&record?.pngPageBlobs?.length>1){const stem='Perdas_'+record.data.day+'_Ciclo'+String(record.data.fields.cicloProducao).replace(/[^\w-]/g,'')+'_'+id.slice(0,8);LossHistoryReport.download(await LossHistoryReport.zipPng(record.pngPageBlobs),stem+'_PNG.zip');showToast('As páginas PNG foram reunidas em ZIP para preservar a qualidade.');return;}const blob=record?.[format];if(!blob)throw Error(format==='pdf'?'Conecte-se para carregar a biblioteca PDF e tente novamente.':'Imagem ainda indisponível.');const stem='Perdas_'+record.data.day+'_Ciclo'+String(record.data.fields.cicloProducao).replace(/[^\w-]/g,'')+'_'+id.slice(0,8);LossHistoryReport.download(blob,stem+(format==='pdf'?'.pdf':format==='png'?'.png':'.jpg'));}catch(error){showToast(error.message,'error');}}
 async function lossSaveAndDownload(format){try{const record=await lossSave(true);if(record)await lossDownload(record.id,format);}catch(error){showToast(error.message,'error');}}
 function lossRestore(data){
  if(!data)return;for(const id of lossFieldIds)if(lossGet(id))lossGet(id).value=data.fields[id]||'';
@@ -51,7 +51,7 @@ function lossRenderHistory(){
  const target=lossGet('lossHistoryList');target.replaceChildren();const records=lossFiltered().sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));
  if(!records.length){target.append(lossNode('p','Nenhum registro nos filtros selecionados. Preencha um levantamento na aba Registrar.','loss-empty'));return;}
  for(const record of records){const m=LossHistoryCore.metrics(record.data),card=lossNode('article',undefined,'loss-history-card');card.append(lossNode('span',record.data.day.split('-').reverse().join('/')+' · Ciclo '+record.data.fields.cicloProducao,'loss-eyebrow'),lossNode('h3',record.data.labels.bloco),lossNode('p',record.data.labels.cultura+' · '+record.data.labels.variedade),lossNode('strong',m.lost.toLocaleString('pt-BR')+' perdas / não colhido · '+m.lossPercent.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'),lossNode('p','Transplantado: '+m.transplanted.toLocaleString('pt-BR')+' · Colhido: '+m.harvested.toLocaleString('pt-BR')),lossNode('small','Atualizado em '+new Date(record.updatedAt).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'})));
-  const actions=lossNode('div',undefined,'loss-actions');for(const [label,action] of [['Ver registro','view'],['JPEG','jpeg'],['PDF','pdf'],['Editar','edit']]){const button=lossNode('button',label);button.type='button';button.dataset.lossAction=action;button.dataset.recordId=record.id;actions.append(button);}card.append(actions,lossNode('small',record.jpeg?'JPEG'+(record.pdf?' e PDF':'')+' disponíveis no histórico.':'Dados salvos · arquivos serão preparados ao abrir.'));target.append(card);
+  const actions=lossNode('div',undefined,'loss-actions');for(const [label,action] of [['Ver registro','view'],['PNG','png'],['PDF','pdf'],['Editar','edit']]){const button=lossNode('button',label);button.type='button';button.dataset.lossAction=action;button.dataset.recordId=record.id;actions.append(button);}card.append(actions,lossNode('small',record.png?'PNG'+(record.pdf?' e PDF':'')+' disponíveis no histórico.':'Dados salvos · arquivos serão preparados ao abrir.'));target.append(card);
  }
 }
 function lossRenderAnalysis(){
@@ -75,6 +75,6 @@ async function lossInitialize(){
 }
 const lossOriginalStatus=atualizarStatusCausas;atualizarStatusCausas=function(){lossOriginalStatus();lossQueueSave();};
 const lossOriginalClear=limparFormulario;limparFormulario=async function(){try{if(lossReady)await lossSave(false);lossReady=false;clearTimeout(lossSaveTimer);lossOriginalClear();lossCurrentId=null;lossGet('lossObservationDate').value=lossToday();lossUpdateDate();if(lossDb)await LossHistoryCore.draft(lossDb,{data:lossCapture(),currentId:null,updatedAt:new Date().toISOString()});lossReady=true;lossStatus('Novo levantamento. O registro anterior permanece no histórico.');}catch(error){showToast('Não foi possível iniciar outro registro: '+error.message,'error');}};
-exportarJPEG=()=>lossSaveAndDownload('jpeg');exportarPDF=()=>lossSaveAndDownload('pdf');
+exportarJPEG=()=>lossSaveAndDownload('jpeg');exportarPNG=()=>lossSaveAndDownload('png');exportarPDF=()=>lossSaveAndDownload('pdf');
 const lossOriginalSend=enviarParaPlanilha;enviarParaPlanilha=async()=>{try{await lossSave(true);await lossOriginalSend();}catch(error){showToast(error.message,'error');}};
 document.addEventListener('DOMContentLoaded',lossInitialize,{once:true});
