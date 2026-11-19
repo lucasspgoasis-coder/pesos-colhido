@@ -4,6 +4,25 @@ var LossHistoryReport=(()=>{
  const num=value=>Number(value).toLocaleString('pt-BR',{maximumFractionDigits:1});
  const date=value=>new Date(value).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'});
  function textLines(ctx,text,width){const lines=[];let line='';for(const word of String(text).split(/\s+/)){if(ctx.measureText((line?line+' ':'')+word).width>width&&line){lines.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)lines.push(line);return lines;}
+ const pdfSourceVersion='history-images-v1';
+ async function imageData(blob){const bytes=new Uint8Array(await blob.arrayBuffer());let data='';for(let i=0;i<bytes.length;i+=8192)data+=String.fromCharCode(...bytes.subarray(i,i+8192));return data;}
+ async function savedPdf(record){
+  if(!window.jspdf?.jsPDF)return null;
+  const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  let sources=record.pageBlobs?.length?record.pageBlobs:null;
+  if(!sources){
+   if(!record.jpeg)throw Error('A imagem do histórico ainda não está disponível.');
+   const bytes=await imageData(record.jpeg),props=doc.getImageProperties(bytes);
+   if(props.height/props.width>1.5){
+    const binary=bytes;
+    const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(Error('Não foi possível abrir a imagem salva no histórico.'));img.src='data:image/jpeg;base64,'+btoa(binary);});
+    const pageHeight=Math.round(image.width*H/W);sources=[];
+    for(let top=0;top<image.height;top+=pageHeight){const c=document.createElement('canvas');c.width=image.width;c.height=Math.min(pageHeight,image.height-top);c.getContext('2d').drawImage(image,0,top,c.width,c.height,0,0,c.width,c.height);sources.push(await new Promise((resolve,reject)=>c.toBlob(blob=>blob?resolve(blob):reject(Error('Falha ao separar as páginas salvas.')),'image/jpeg',.94)));}
+   }else sources=[record.jpeg];
+  }
+  for(let i=0;i<sources.length;i++){if(i)doc.addPage();const bytes=await imageData(sources[i]),props=doc.getImageProperties(bytes),scale=Math.min(210/props.width,297/props.height),width=props.width*scale,height=props.height*scale;doc.addImage(bytes,'JPEG',(210-width)/2,0,width,height);}
+  doc.setProperties({title:'Registro de perdas · '+(record.data?.labels?.bloco||'Histórico'),creator:'Sistema integrado'});return doc.output('blob');
+ }
  async function build(record){
   const pages=[];let canvas,ctx,y;const d=record.data,m=LossHistoryCore.metrics(d);
   function page(){canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.fillStyle=colors.ink;ctx.fillRect(0,0,W,150);ctx.fillStyle='#fff';ctx.font='bold 32px Arial';ctx.fillText('FAZENDA OÁSIS · CONTAGEM DE PERDAS',M,65);ctx.font='18px Arial';ctx.fillText('Registro salvo neste aparelho · '+date(record.updatedAt),M,105);ctx.fillStyle='#6d8490';ctx.font='15px Arial';ctx.fillText('Registro '+record.id+' · página '+(pages.length+1),M,H-36);pages.push(canvas);y=195;}
@@ -29,9 +48,9 @@ var LossHistoryReport=(()=>{
   const pageBlobs=await Promise.all(pages.map(c=>new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('Falha ao gerar imagem JPEG.')),'image/jpeg',.9))));
   const combined=document.createElement('canvas'),scale=Math.min(1,24000/(H*pages.length));combined.width=Math.round(W*scale);combined.height=Math.round(H*pages.length*scale);const combinedCtx=combined.getContext('2d');pages.forEach((c,i)=>combinedCtx.drawImage(c,0,Math.round(i*H*scale),combined.width,Math.round(H*scale)));
   const jpeg=await new Promise((resolve,reject)=>combined.toBlob(b=>b?resolve(b):reject(Error('Falha ao gerar JPEG.')),'image/jpeg',.9));
-  let pdf=null;if(window.jspdf?.jsPDF){const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait'});for(let i=0;i<pages.length;i++){if(i)doc.addPage();doc.addImage(pages[i].toDataURL('image/jpeg',.9),'JPEG',0,0,210,297);}pdf=doc.output('blob');}
-  return {jpeg,pdf,pageBlobs,pageCount:pages.length,filesAt:new Date().toISOString()};
+  const pdf=await savedPdf({...record,jpeg,pageBlobs});
+  return {jpeg,pdf,pageBlobs,pageCount:pages.length,filesAt:new Date().toISOString(),pdfSourceVersion};
  }
  function download(blob,name){const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
- return {build,download};
+ return {build,download,savedPdf,pdfSourceVersion};
 })();
