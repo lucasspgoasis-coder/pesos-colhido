@@ -172,7 +172,7 @@
             }
         }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="layout.css?v=20261117-five-7"></head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script><link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="stylesheet" href="layout.css?v=20261119-loss-33"></head>
 <body class="bg-grid-pattern min-h-screen p-4 md:p-8 font-sans text-gray-800 pb-36">
 
     <!-- Container Toast -->
@@ -193,7 +193,7 @@
                     </div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight flex items-center justify-center md:justify-start gap-2">
                         <svg class="metric-icon" viewBox="0 0 24 24" data-motion-icon="bars" aria-hidden="true"><path d="M3 21h19"/><rect class="motion-bar bar-a" x="4" y="11" width="4" height="8" rx="1"/><rect class="motion-bar bar-b" x="10" y="4" width="4" height="15" rx="1"/><rect class="motion-bar bar-c" x="16" y="8" width="4" height="11" rx="1"/></svg>
-                        <span>Registro Percentual de Perdas</span>
+                        <span>Análise percentual de perdas</span>
                     </h1>
                     <p class="text-emerald-100/80 text-xs md:text-sm font-medium mt-1">Gestão de Produção & Perdas Contabilizadas no Campo</p>
                 </div>
@@ -236,7 +236,7 @@
 
                     <div class="col-span-1">
                         <label for="bloco" class="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                            <svg class="metric-icon" viewBox="0 0 24 24" data-motion-icon="bars" aria-hidden="true"><path d="M3 21h19"/><rect class="motion-bar bar-a" x="4" y="11" width="4" height="8" rx="1"/><rect class="motion-bar bar-b" x="10" y="4" width="4" height="15" rx="1"/><rect class="motion-bar bar-c" x="16" y="8" width="4" height="11" rx="1"/></svg> Bloco Atual *
+                            <svg class="metric-icon" viewBox="0 0 24 24" data-motion-icon="bars" aria-hidden="true"><path d="M3 21h19"/><rect class="motion-bar bar-a" x="4" y="11" width="4" height="8" rx="1"/><rect class="motion-bar bar-b" x="10" y="4" width="4" height="15" rx="1"/><rect class="motion-bar bar-c" x="16" y="8" width="4" height="11" rx="1"/></svg> Bloco analisado *
                         </label>
                         <select id="bloco" class="w-full rounded-lg input-melhorado px-4 bg-white text-gray-800 border-emerald-300" required>
                             <option value="" disabled selected>Selecione um bloco</option>
@@ -406,13 +406,11 @@
                         <div id="barraProgressoJustificativa" class="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 transition-all duration-700 ease-out shadow-[0_0_12px_rgba(16,185,129,0.6)] rounded-full" style="width: 0%"></div>
                     </div>
                     
-                    <div id="alertaPackHouseUI" class="hidden mt-3 bg-amber-50 border border-amber-200/60 rounded-lg p-2.5 flex items-start gap-2 shadow-sm transition-all duration-300">
-                        <svg class="metric-icon" viewBox="0 0 24 24" data-motion-icon="bars" aria-hidden="true"><path d="M3 21h19"/><rect class="motion-bar bar-a" x="4" y="11" width="4" height="8" rx="1"/><rect class="motion-bar bar-b" x="10" y="4" width="4" height="15" rx="1"/><rect class="motion-bar bar-c" x="16" y="8" width="4" height="11" rx="1"/></svg>
-                        <div class="text-[11px] text-amber-800 leading-tight">
-                            <strong class="uppercase text-[9px] tracking-wider block mb-0.5 text-amber-600">Aviso para o Relatório Final (Pack House)</strong>
-                            O saldo de <span id="uiDifQtd" class="font-bold"></span> un (<span id="uiDifPerc" class="font-extrabold text-amber-700"></span> da safra) refere-se ao <strong>Descarte Geral de Pack House</strong>. Por ser descartado em lote de forma consolidada, é impossível contabilizar a causa individual por cada cabeça/unidade.
-                        </div>
-                    </div>
+                    <div id="alertaPackHouseUI" class="hidden packhouse-notice" role="status" aria-live="polite">
+ <div class="packhouse-heading"><svg class="metric-icon packhouse-icon" viewBox="0 0 24 24" data-motion-icon="box" aria-hidden="true"><path d="m3 7 9-4 9 4v13H3Z"/><path class="motion-box-lid" d="m3 7 9 5 9-5M12 12v8"/></svg><div><span class="packhouse-eyebrow">SALDO DAS PERDAS</span><h4>Descarte geral no Pack House</h4></div></div>
+ <div class="packhouse-metrics"><div><span>Quantidade de descarte</span><strong><span id="uiDifQtd"></span><small> unidades</small></strong></div><div><span>Impacto na safra</span><strong id="uiDifPerc"></strong><small>do total transplantado</small></div></div>
+ <p class="packhouse-copy">Saldo entre as perdas totais do bloco analisado e as perdas detalhadas por causa. O descarte no Pack House é registrado em lote, sem identificação individual da causa de cada unidade.</p>
+ </div>
                 </div>
                 
                 <div class="p-6 md:p-8 bg-slate-50/30">
@@ -538,7 +536,7 @@
                         <i class="fa-solid fa-file-circle-exclamation text-emerald-400"></i>
                         <span>Relatório de Perdas no Campo</span>
                     </h1>
-                    <h2 class="text-base font-semibold text-emerald-100">Contagem de Perdas e Variação por Ciclo/Bloco</h2>
+                    <h2 class="text-base font-semibold text-emerald-100">Análise percentual de perdas por ciclo e bloco</h2>
                 </div>
             </div>
             <div class="text-right border-l border-emerald-700/80 pl-6 flex flex-col justify-center z-10">
@@ -560,7 +558,7 @@
             </h3>
             <div class="grid grid-cols-4 gap-4">
                 <div class="border border-emerald-200 p-4 rounded-lg bg-emerald-50/40 text-center shadow-sm">
-                    <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco Atual</span>
+                    <span class="block text-xs font-bold text-emerald-600 uppercase mb-1">Bloco analisado</span>
                     <span class="block text-xl font-black text-emerald-900" id="relBloco">-</span>
                 </div>
                 <div class="border border-slate-200 p-4 rounded-lg bg-slate-50 text-center shadow-sm">
@@ -673,19 +671,11 @@
             </div>
 
             <!-- NOTA DO PACK HOUSE NO RELATÓRIO DE EXPORTAÇÃO -->
-            <div id="relPackHouseNota" class="hidden mt-4 bg-amber-50/80 border-2 border-amber-200 p-5 rounded-xl flex items-center gap-5 shadow-sm">
-                <div class="bg-amber-500 text-white w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-md shrink-0 border border-amber-600/50">
-                    <i class="fa-solid fa-boxes-packing"></i>
-                </div>
-                <div>
-                    <h4 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1 flex items-center gap-2">
-                        Descarte Geral no Pack House <span class="bg-amber-200 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Diferença Restante: <span id="relDifPerc"></span></span>
-                    </h4>
-                    <p class="text-xs text-amber-800 font-semibold leading-snug">
-                        <strong>Observação Importante:</strong> Os <span id="relDifQtd" class="font-black text-sm text-amber-900"></span> itens (<span id="relDifPercTxt" class="font-bold"></span> da safra) que complementam o Índice Total de Perda (<span id="relTotalPendenteNota"></span> un) referem-se ao descarte geral no <strong>Pack House</strong>. O lote é descartado de forma consolidada e global, o que impossibilita a triagem e a contabilização individual da causa primária por cada cabeça/unidade.
-                    </p>
-                </div>
-            </div>
+            <div id="relPackHouseNota" class="hidden packhouse-notice packhouse-report">
+ <div class="packhouse-heading"><svg class="metric-icon packhouse-icon" viewBox="0 0 24 24" data-motion-icon="box" aria-hidden="true"><path d="m3 7 9-4 9 4v13H3Z"/><path class="motion-box-lid" d="m3 7 9 5 9-5M12 12v8"/></svg><div><span class="packhouse-eyebrow">RESUMO DO DESCARTE</span><h4>Descarte geral no Pack House</h4></div></div>
+ <div class="packhouse-metrics"><div><span>Quantidade de descarte</span><strong><span id="relDifQtd"></span><small> unidades</small></strong></div><div><span>Impacto na safra</span><strong id="relDifPerc"></strong><small>do total transplantado</small></div></div>
+ <p class="packhouse-copy">O descarte corresponde a <strong id="relDifPercTxt"></strong> da safra e integra o total de <strong id="relTotalPendenteNota"></strong> unidades perdidas no bloco analisado. Registrado em lote no Pack House, sem identificação individual da causa de cada unidade.</p>
+ </div>
         </div>
         
         <div class="mt-10 border-t-2 border-slate-200 pt-6 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -955,7 +945,7 @@
             if(!span) return;
             if (isNaN(val) || val <= 0 || totalTransplantadoGlob <= 0) { span.textContent = ''; return; }
             const percSafra = formatarPerc((val / totalTransplantadoGlob) * 100);
-            span.textContent = `Impacto: +${percSafra}% da safra`;
+            span.textContent = `Impacto na safra: ${percSafra}% do total transplantado`;
         }
 
         function calcularPercentuaisCausas() {
@@ -1039,19 +1029,9 @@
         function removerCausa(index) { causasList.splice(index, 1); atualizarStatusCausas(); }
 
         function criarHtmlVariacao(qtdAtual, qtdAnterior) {
-            if (qtdAnterior === null || qtdAnterior === undefined || isNaN(qtdAnterior)) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-slate-500 bg-slate-100/80 border border-slate-300 px-2.5 py-0.5 rounded-md shadow-sm">Sem Dados</span><div class="flex items-center justify-center gap-1.5 text-slate-400 text-lg font-black"><i class="fa-solid fa-ban text-sm"></i> N/A</div></div>`;
-            }
-            
-            let diff = qtdAtual - qtdAnterior;
-            
-            if (diff > 0) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-red-700 bg-red-100/80 border border-red-300 px-2.5 py-0.5 rounded-md shadow-sm">Aumentou</span><div class="flex items-center justify-center gap-1.5 text-red-600 text-lg font-black"><i class="fa-solid fa-arrow-trend-up"></i> +${diff}</div></div>`;
-            } else if (diff < 0) {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-emerald-700 bg-emerald-100/80 border border-emerald-300 px-2.5 py-0.5 rounded-md shadow-sm">Diminuiu</span><div class="flex items-center justify-center gap-1.5 text-emerald-600 text-lg font-black"><i class="fa-solid fa-arrow-trend-down"></i> ${diff}</div></div>`;
-            } else {
-                 return `<div class="flex flex-col items-center gap-1 mt-1.5"><span class="text-[10px] font-black uppercase tracking-widest text-blue-700 bg-blue-100/80 border border-blue-300 px-2.5 py-0.5 rounded-md shadow-sm">Manteve</span><div class="flex items-center justify-center gap-1.5 text-blue-600 text-lg font-black"><i class="fa-solid fa-minus"></i> 0</div></div>`;
-            }
+            if (qtdAnterior === null || qtdAnterior === undefined || isNaN(qtdAnterior)) return '<div class="loss-variation is-neutral"><span class="loss-variation-label">Sem comparação</span><strong>—</strong><small>Bloco anterior não informado</small></div>';
+            const diff=qtdAtual-qtdAnterior,state=diff>0?'up':diff<0?'down':'steady',label=diff>0?'Aumentou':diff<0?'Diminuiu':'Manteve',arrow=diff>0?'↑':diff<0?'↓':'→',signed=(diff>0?'+':'')+diff.toLocaleString('pt-BR'),rate=qtdAnterior>0?(diff>0?'+':'')+formatarPerc(diff/qtdAnterior*100)+'% vs. anterior':qtdAtual>0?'Sem base percentual (anterior: 0)':'Sem alteração de volume';
+            return '<div class="loss-variation is-'+state+'"><span class="loss-variation-label">'+label+'</span><strong><span aria-hidden="true">'+arrow+'</span> '+signed+' <small>un</small></strong><small>'+rate+'</small></div>';
         }
 
         function atualizarStatusCausas() {
@@ -1064,8 +1044,6 @@
             let totalJustificado = 0; 
             let percJustificadoSoma = 0;
 
-            const maxQtd = causasList.length > 0 ? Math.max(...causasList.map(c => c.qtd)) : 0;
-
             if (causasList.length === 0) { 
                 placeholder.classList.remove('hidden'); 
             } else {
@@ -1076,7 +1054,6 @@
                     percJustificadoSoma += causa.percDisplay;
                     
                     const impactInfo = getImpactoLevel(causa.qtd);
-                    const relativeToMax = maxQtd > 0 ? (causa.qtd / maxQtd) * 100 : 0;
                     
                     const iconBox = getCausaIcon(causa.categoria);
                     const rankBadge = `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-800 text-white font-black text-[10px] shadow-sm shrink-0">#${index + 1}</span>`;
@@ -1132,7 +1109,7 @@
                     let htmlVariacao = criarHtmlVariacao(causa.qtd, causa.qtdAnterior);
 
                     let impactHtmlUI = `
-                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-2.5 rounded-xl border border-slate-200/60 shadow-xs hover:border-slate-300/80 transition-all">
+                        <div class="loss-impact flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-2.5 rounded-xl border border-slate-200/60 shadow-xs hover:border-slate-300/80 transition-all">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[9px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
@@ -1141,7 +1118,7 @@
                             </div>
                             
                             <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-0.5 shadow-inner mt-0.5">
-                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700" style="width: ${relativeToMax}%"></div>
+                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full transition-all duration-700" style="width: ${Math.min(100, Math.max(0, causa.percDisplay))}%"></div>
                             </div>
                         </div>
                     `;
@@ -1257,7 +1234,6 @@
 
             let sumQtdRegistrada = 0;
             let sumPercRegistrada = 0;
-            const maxQtd = causasList.length > 0 ? Math.max(...causasList.map(c => c.qtd)) : 0;
 
             if(causasList.length === 0) {
                 relBody.innerHTML = `
@@ -1268,7 +1244,6 @@
                     sumPercRegistrada += c.percDisplay;
 
                     const impactInfo = getImpactoLevel(c.qtd);
-                    const relativeToMax = maxQtd > 0 ? (c.qtd / maxQtd) * 100 : 0;
 
                     let relCausa = `
                         <div class="flex items-center gap-2 py-1">
@@ -1301,7 +1276,7 @@
                     }
 
                     let relMiniChart = `
-                        <div class="flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3 rounded-xl border border-slate-200/60 shadow-xs">
+                        <div class="loss-impact flex flex-col gap-2 w-full max-w-[220px] mx-auto ${impactInfo.bgContainer} p-3 rounded-xl border border-slate-200/60 shadow-xs">
                             <div class="flex items-center justify-between gap-2">
                                 <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[10px] font-bold uppercase tracking-wider ${impactInfo.badgeClass}">
                                     <i class="${impactInfo.icon}"></i> ${impactInfo.label}
@@ -1310,7 +1285,7 @@
                             </div>
                             
                             <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50 p-0.5 shadow-inner">
-                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full" style="width: ${relativeToMax}%"></div>
+                                <div class="h-full bg-gradient-to-r ${impactInfo.barGradient} rounded-full" style="width: ${Math.min(100, Math.max(0, c.percDisplay))}%"></div>
                             </div>
                         </div>
                     `;
