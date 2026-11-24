@@ -6,6 +6,7 @@ const lossCopyOptions=value=>Array.isArray(value)?value.map(lossCopyOptions):val
 const lossGet=id=>document.getElementById(id);
 const lossToday=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Fortaleza'}).format(new Date());
 function lossStatus(text,error=false){const node=lossGet('lossSaveStatus');node.textContent=text;node.dataset.state=error?'error':'saved';}
+function lossAnnounce(record){const d=record.data,m=LossHistoryCore.metrics(d),notice={id:'perdas:'+record.id+':'+record.updatedAt,route:'perdas',headers:['Bloco analisado','Ciclo','Cultura','Variedade','Data','Perdas contadas','Perdas (%)'],row:[d.labels.bloco,d.fields.cicloProducao,d.labels.cultura,d.labels.variedade,d.day,m.detailed,m.lossPercent.toFixed(2)]};try{localStorage.setItem('oasis.appRecordNotice.v1',JSON.stringify(notice));window.parent.postMessage({type:'APP_RECORD_SAVED',record:notice},location.origin);}catch{}}
 function lossCapture(){const fields=Object.fromEntries(lossFieldIds.map(id=>[id,lossGet(id)?.value||'']));return {day:lossGet('lossObservationDate').value||lossToday(),fields,labels:{bloco:getSelectValue('bloco','blocoOutro'),blocoAnterior:getSelectValue('blocoAnterior','blocoAnteriorOutro'),cultura:getSelectValue('cultura','culturaOutro'),variedade:getSelectValue('variedade','variedadeOutro')},causes:structuredClone(causasList)};}
 function lossSetRecord(record){lossRecords=lossRecords.filter(r=>r.id!==record.id);lossRecords.push(record);}
 function lossQueueSave(){if(!lossReady||(lossCurrentId&&lossDeletedIds.has(lossCurrentId)))return;clearTimeout(lossSaveTimer);lossStatus('Salvando alterações neste aparelho…');lossSaveTimer=setTimeout(()=>lossSave(false).catch(()=>{}),1500);}
@@ -19,9 +20,9 @@ function lossSave(manual=false){
   await LossHistoryCore.draft(lossDb,{data,currentId:id,updatedAt:now});
   if(errors.length){lossStatus('Rascunho salvo neste aparelho. '+errors[0],true);if(manual)throw Error(errors[0]);return null;}
   const fingerprint=JSON.stringify(data),old=lossRecords.find(r=>r.id===id);
-  if(old?.fingerprint===fingerprint){lossStatus('Registro salvo neste aparelho.');return old;}
+  if(old?.fingerprint===fingerprint){lossStatus('Registro salvo neste aparelho.');if(manual)lossAnnounce(old);return old;}
   const record={id,createdAt:old?.createdAt||now,updatedAt:now,data,fingerprint,jpeg:null,png:null,pdf:null,pageBlobs:null};
-  await LossHistoryCore.put(lossDb,record);lossSetRecord(record);lossStatus('Registro salvo. Preparando PNG e PDF…');lossRefresh();
+  await LossHistoryCore.put(lossDb,record);lossSetRecord(record);lossStatus('Registro salvo. Preparando PNG e PDF…');lossRefresh();if(manual||!old)lossAnnounce(record);
   lossFiles(record).catch(error=>lossStatus('Dados salvos. Não foi possível preparar os arquivos: '+error.message,true));return record;
  });lossSaveQueue=run.catch(()=>{});return run.catch(error=>{lossStatus('Falha ao salvar: '+error.message,true);throw error;});
 }
